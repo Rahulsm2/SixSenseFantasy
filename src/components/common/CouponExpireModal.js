@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { WIDTH } from './Constants';
 import { gstyles } from './GlobalStyles';
@@ -10,9 +10,9 @@ const CouponExpireModal = (props) => {
     return (
         <Modal
             transparent
-            visible={true}
+            visible={props.visible}
             animationType="fade"
-            onRequestClose={() => { props.setIsLogOutModal(false) }}>
+            onRequestClose={() => { props.setcouponStatus('pending') }}>
             <StatusBar
                 backgroundColor={'rgba(0,0,0,0.5)'}
                 barStyle="light-content"
@@ -24,7 +24,7 @@ const CouponExpireModal = (props) => {
                         style={[gstyles.iconSize(128), gstyles.centerX, gstyles.mt(25), gstyles.mb(15)]}
                     />
                     <TouchableOpacity activeOpacity={0.6}
-                        onPress={() => { props.setIsExipreModal(!props.isExipreModal) }}
+                        onPress={() => { props.setcouponStatus('pending') }}
                         style={{ position: 'absolute', right: 30, top: 30 }}
                     >
                         <AntDesign name='close' size={25} color='#0276E5' />

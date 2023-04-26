@@ -14,6 +14,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { showToast } from '../../components/common/ShowToast';
 
 const ProfileComponent = (props) => {
 
@@ -40,7 +41,7 @@ const ProfileComponent = (props) => {
                     </View>
                 </View>
                 <View style={[gstyles.centerXY, gstyles.mt(35)]}>
-                    <ImageBackground source={require('../../assets/images/prof.jpg')}
+                    <ImageBackground source={require('../../assets/images/account.png')}
                         style={styles.profImg}
                         borderRadius={100}
                         borderColor={'#0276E5'}
@@ -56,17 +57,17 @@ const ProfileComponent = (props) => {
 
                     <View style={[gstyles.mt(15), gstyles.centerXY]}>
                         <Text style={gstyles.OpenSans_SemiBold(16, '#000000')}>
-                            Basavaraddi Mulimani
+                            {props.userData && props.userData.first_name}
                         </Text>
                         <Text style={gstyles.OpenSans_Medium(12, '#000000', gstyles.mt(5))}>
-                            +91 99645 33375
+                            {props.userData && props.userData.phone}
                         </Text>
                         <Text style={gstyles.OpenSans_Medium(12, '#000000')}>
-                            basavaraddi3522@gmail.com
+                            {props.userData && props.userData.email}
                         </Text>
                     </View>
 
-                    <TouchableOpacity activeOpacity={1}
+                    <TouchableOpacity  onPress={()=>showToast("Coming soon..!")} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(50), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,
@@ -80,7 +81,7 @@ const ProfileComponent = (props) => {
                         </Text>
                     </TouchableOpacity>
                     <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} />
-                    <TouchableOpacity activeOpacity={1}
+                    <TouchableOpacity  onPress={()=>showToast("Coming soon..!")} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(15), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,
@@ -94,7 +95,7 @@ const ProfileComponent = (props) => {
                         </Text>
                     </TouchableOpacity>
                     <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} />
-                    <TouchableOpacity activeOpacity={1}
+                    <TouchableOpacity onPress={()=>showToast("Coming soon..!")} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(15), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,
@@ -108,7 +109,7 @@ const ProfileComponent = (props) => {
                         </Text>
                     </TouchableOpacity>
                     <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} />
-                    <TouchableOpacity activeOpacity={1}
+                    <TouchableOpacity onPress={()=>props.onClickLogout()} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(15), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,
@@ -123,7 +124,7 @@ const ProfileComponent = (props) => {
                     </TouchableOpacity>
                     <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} />
 
-                    <Text style={gstyles.OpenSans_SemiBold(12, '#8338EC', { opacity: 0.3, marginTop: 25, textDecorationLine: 'underline' })}>
+                    <Text style={gstyles.OpenSans_SemiBold(12, '#8338EC', { opacity: 0.3, marginTop: 25 })}>
                         Version 1.0.0
                     </Text>
 

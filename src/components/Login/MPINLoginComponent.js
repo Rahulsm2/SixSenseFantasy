@@ -11,6 +11,7 @@ import { gstyles } from '../../components/common/GlobalStyles';
 import { OpenSans_Medium, OpenSans_SemiBold, WIDTH, app_Bg } from '../../components/common/Constants';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput } from 'react-native-paper';
+import LoadingModel from "../../components/common/Loading"
 
 const MPINLoginComponent = (props) => {
 
@@ -23,12 +24,12 @@ const MPINLoginComponent = (props) => {
             />
             <View style={[gstyles.container(app_Bg)]}>
                 <View style={[gstyles.mt(60), gstyles.centerXY]}>
-                    {/* <Image source={require('../../assets/images/login_logo.png')}
+                    <Image source={require('../../assets/images/login_logo.png')}
                         style={gstyles.iconSize(107, 86)}
-                    /> */}
-                    <Image source={require('../../assets/images/toca-logo.png')}
-                        style={gstyles.iconSize(110)}
                     />
+                    {/* <Image source={require('../../assets/images/toca-logo.png')}
+                        style={gstyles.iconSize(110)}
+                    /> */}
                     <Text style={gstyles.OpenSans_SemiBold(20, '#000000', gstyles.mt(25))}>
                         Enter MPIN to Login
                     </Text>
@@ -42,8 +43,8 @@ const MPINLoginComponent = (props) => {
                         style={styles.inputText}
                         outlineColor='#8338EC'
                         keyboardType='number-pad'
-                        maxLength={6}
-                        secureTextEntry={true}
+                        maxLength={4}
+                        secureTextEntry={props.hideMpin}
                         left={
                             <TextInput.Icon
                                 icon={'account-lock'}
@@ -53,11 +54,14 @@ const MPINLoginComponent = (props) => {
                         }
                         right={
                             <TextInput.Icon
-                                icon={'eye'}
+                                icon={props.hideMpin ? 'eye' : 'eye-off-outline'}
                                 iconColor="#3F3F3F"
                                 size={22}
+                                onPress={()=>props.setHideMpin(!props.hideMpin)}
                             />
                         }
+                        value={props.mpin}
+                        onChangeText={(text)=>props.setMpin(text)}
                     />
                 </View>
 
@@ -87,6 +91,7 @@ const MPINLoginComponent = (props) => {
                 </LinearGradient>
 
             </View>
+            <LoadingModel loading={props.isLoading}/>
         </>
     );
 }

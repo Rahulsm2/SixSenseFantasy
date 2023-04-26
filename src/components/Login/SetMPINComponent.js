@@ -39,7 +39,7 @@ const SetMPINComponent = (props) => {
                         style={styles.inputText}
                         outlineColor='#8338EC'
                         keyboardType='number-pad'
-                        maxLength={6}
+                        maxLength={4}
                         secureTextEntry={true}
                         left={
                             <TextInput.Icon
@@ -48,6 +48,8 @@ const SetMPINComponent = (props) => {
                                 size={22}
                             />
                         }
+                        value={props.mpin}
+                        onChangeText={(text)=>props.setMpin(text)}
                     />
                 </View>
 
@@ -59,12 +61,13 @@ const SetMPINComponent = (props) => {
                         style={styles.inputText}
                         outlineColor='#8338EC'
                         keyboardType='number-pad'
-                        maxLength={6}
+                        maxLength={4}
                         left={
                             <TextInput.Icon
                                 icon={'account-lock'}
                                 iconColor="#3F3F3F"
                                 size={22}
+                                onPress={()=>props.setHideMpin(!props.hideMpin)}
                             />
                         }
                         right={
@@ -72,15 +75,18 @@ const SetMPINComponent = (props) => {
                                 icon={'eye'}
                                 iconColor="#3F3F3F"
                                 size={22}
+                                onPress={()=>props.setHideMpin(!props.hideMpin)}
                             />
                         }
+                        value={props.confirmMpin}
+                        onChangeText={(text)=>props.setConfirmMpin(text)}
                     />
                 </View>
 
                 <View style={styles.forgetTextView}>
                     <View style={[{ alignSelf: 'flex-start' }]}>
                         <Text style={gstyles.OpenSans_Medium(16, '#3F3F3F')}>
-                            *MPIN should be 6 digits in length
+                            *MPIN should be 4 digits in length
                         </Text>
                     </View>
                 </View>

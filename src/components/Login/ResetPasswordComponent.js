@@ -38,7 +38,9 @@ const ResetPasswordComponent = (props) => {
                     placeholder="Enter New Password"
                     style={styles.inputText}
                     outlineColor='#8338EC'
-                    secureTextEntry={true}
+                    secureTextEntry={props.hidePassword}
+                    value={props.password}
+                    onChangeText={(value)=>props.setPassword(value)}
                     maxLength={25}
                     left={
                         <TextInput.Icon
@@ -49,9 +51,10 @@ const ResetPasswordComponent = (props) => {
                     }
                     right={
                         <TextInput.Icon
-                            icon={'eye'}
+                            icon={props.hidePassword ? 'eye' : 'eye-off-outline'}
                             iconColor="#3F3F3F"
                             size={22}
+                            onPress={()=>props.setHidePassword(!props.hidePassword)}
                         />
                     }
                 />
@@ -65,6 +68,8 @@ const ResetPasswordComponent = (props) => {
                     style={styles.inputText}
                     outlineColor='#8338EC'
                     secureTextEntry={true}
+                    value={props.confPassword}
+                    onChangeText={(value)=>props.setConfPassword(value)}
                     maxLength={25}
                     left={
                         <TextInput.Icon

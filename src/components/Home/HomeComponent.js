@@ -7,7 +7,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     FlatList,
-    ScrollView
+    ScrollView,
+    RefreshControl
 } from 'react-native';
 import { gstyles } from '../../components/common/GlobalStyles';
 import { HEIGHT, OpenSans_Medium, WIDTH, app_Bg } from '../../components/common/Constants';
@@ -20,15 +21,16 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { TextInput } from 'react-native-paper';
-
+import LoadingModel from "../../components/common/Loading"
+import moment from 'moment';
 
 const HomeComponent = (props) => {
 
     const [selectedLanguage, setSelectedLanguage] = useState();
 
-    const _renderRecentTrans = () => {
+    const _renderRecentTrans = ({item,index}) => {
         return (
-            <TouchableOpacity onPress={() => { props.setIsDetailModal(!props.isDetailModal) }}
+            <TouchableOpacity onPress={() => { props.setIsDetailModal({visible:!props.isDetailModal.visible,data:item}) }}
                 style={styles.transCardView}>
                 <View style={[gstyles.inRowJSB, gstyles.mt(10), gstyles.mx(12)]}>
                     <View style={gstyles.inRow}>
@@ -36,11 +38,11 @@ const HomeComponent = (props) => {
                             Bill No.
                         </Text>
                         <Text style={gstyles.OpenSans_Bold(14, '#000000')}>
-                            : 123
+                            :   {item.bill_no}
                         </Text>
                     </View>
                     <Text style={gstyles.OpenSans_Bold(24, '#000000')}>
-                        {'\u20B9'} 250
+                        {'\u20B9'} {Number(item.amount_used).toFixed(0)}
                     </Text>
                 </View>
                 <View style={[gstyles.inRowJSB, gstyles.mt(6), gstyles.mx(12)]}>
@@ -48,12 +50,12 @@ const HomeComponent = (props) => {
                         <Text style={gstyles.OpenSans_Regular(12, '#000000', gstyles.size(75))}>
                             Coupon ID
                         </Text>
-                        <Text style={gstyles.OpenSans_Bold(12, '#000000')}>
-                            : 123456
+                        <Text style={gstyles.OpenSans_Bold(14, '#000000')}>
+                            :  #{item.id}
                         </Text>
                     </View>
                     <Text style={gstyles.OpenSans_Regular(10, '#000000')}>
-                        10 APR 23 | 06:50 PM
+                        {moment(item.created_at).format("DD MMM YY | hh:mm A")}
                     </Text>
                 </View>
                 <View style={[gstyles.inRowJSB, gstyles.mt(8), gstyles.mx(12), gstyles.mb(10)]}>
@@ -64,14 +66,14 @@ const HomeComponent = (props) => {
                         <Text style={gstyles.OpenSans_SemiBold(12, '#000000', gstyles.size(120))}
                             numberOfLines={1}
                         >
-                            : shankar Salimath
+                            :   {item.distribute_id} | shankar Salimath
                         </Text>
                     </View>
-                    <Text style={gstyles.OpenSans_Regular(10, '#000000', { ...gstyles.size('40%'), textAlign: 'right' })}
+                    {props.userData && props.userData.role=="Biller" ? <Text style={gstyles.OpenSans_Regular(10, '#000000', { ...gstyles.size('40%'), textAlign: 'right' })}
                         numberOfLines={1}
                     >
                         Redmeed by Ganesh
-                    </Text>
+                    </Text> : null }
                 </View>
             </TouchableOpacity>
         );
@@ -79,7 +81,7 @@ const HomeComponent = (props) => {
 
     const _renderNoTrans = () => {
         return (
-            <View style={[gstyles.centerXY, { height: HEIGHT - 180 }]}>
+            <View style={[gstyles.centerXY, { marginTop:'25%' }]}>
                 <Image source={require('../../assets/images/no_trans.png')}
                     style={[gstyles.iconSize(WIDTH / 1.8), { opacity: 0.7 }]}
                 />
@@ -90,7 +92,7 @@ const HomeComponent = (props) => {
         );
     }
 
-    const refRBSheet = useRef();
+    const arrayLength = props.isBtnSelected == 'settled' ? props.sTransactions.length : props.usTransactions.length
     return (
         <>
             <StatusBar
@@ -107,7 +109,7 @@ const HomeComponent = (props) => {
                         <Text style={gstyles.OpenSans_SemiBold(18, '#000000', { ...gstyles.ms(10), width: '75%' })}
                             numberOfLines={1}
                         >
-                            Welcome, Sai Kiran
+                            Welcome, {props.userData ? props.userData.first_name : "User"}
                         </Text>
                     </View>
                     <TouchableOpacity activeOpacity={0.6}
@@ -118,20 +120,26 @@ const HomeComponent = (props) => {
                 </View>
 
 
-
+                <ScrollView refreshControl={
+                    <RefreshControl refreshing={props.isRefreshing} 
+                        onRefresh={()=>{
+                            props.setisRefreshing(true)
+                            props.getTransactions()
+                        }} />
+                }>
                 <View style={styles.totalRedeemCard}>
                     <View style={[gstyles.inRowJSB, gstyles.mx(10), gstyles.mt(15)]}>
                         <Text style={gstyles.OpenSans_SemiBold(14, '#000000')}>
                             Total Redeemptions
                         </Text>
-                        <TouchableOpacity
+                        {props.userData && props.userData.role=="Biller" ? <TouchableOpacity
                             onPress={() => { props.setIsPopMenu(true) }}
                             activeOpacity={0.6} style={gstyles.inRow}>
                             <Text style={gstyles.OpenSans_SemiBold(14, '#000000', gstyles.me(5))}>
                                 All
                             </Text>
                             <Ionicons name='caret-down-circle-sharp' size={20} color='#3F3F3F' />
-                        </TouchableOpacity>
+                        </TouchableOpacity>: null }
 
                         {/* <View style={{ width: 120 }}>
                             <Picker
@@ -146,7 +154,7 @@ const HomeComponent = (props) => {
                     </View>
                     <View style={[gstyles.mt(10), gstyles.mx(10), gstyles.mb(15)]}>
                         <Text style={gstyles.OpenSans_SemiBold(30, '#0276E5')}>
-                            {'\u20B9'} 5,500
+                            {'\u20B9'} {props.totalAmount.toFixed(2)}
                         </Text>
                     </View>
                 </View>
@@ -162,7 +170,7 @@ const HomeComponent = (props) => {
                             onPress={() => { props.setIsBtnSelected('unSettled') }}
                         >
                             <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'unSettled' ? '#FFFFFF' : '#8338EC')}>
-                                Unsettled (5)
+                                Unsettled ({props.usTransactions.length})
                             </Text>
                         </TouchableOpacity>
                     </LinearGradient>
@@ -178,195 +186,49 @@ const HomeComponent = (props) => {
                             onPress={() => { props.setIsBtnSelected('settled') }}
                         >
                             <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'settled' ? '#FFFFFF' : '#8338EC')}>
-                                Settled (8)
+                                Settled ({props.sTransactions.length})
                             </Text>
                         </TouchableOpacity>
                     </LinearGradient>
                 </View>
 
-                <View style={[gstyles.mt(15), gstyles.inRowJSB, { width: WIDTH - 35 }, gstyles.centerX]}>
+                {arrayLength>0 && <View style={[gstyles.mt(15), gstyles.inRowJSB, { width: WIDTH - 35 }, gstyles.centerX]}>
                     <Text style={gstyles.OpenSans_SemiBold(14, '#000000')}>
                         Recent Transactions
                     </Text>
-                    <TouchableOpacity activeOpacity={0.6}
+                    {arrayLength>4 && <TouchableOpacity activeOpacity={0.6}
                         onPress={() => { props.onClickViewAll(); }}
                     >
                         <Text style={gstyles.OpenSans_Medium(12, '#0276E5')}>
                             View All
                         </Text>
-                    </TouchableOpacity>
-                </View>
+                    </TouchableOpacity> }
+                </View> }
 
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <FlatList
-                        data={props.transData}
+                        data={props.isBtnSelected == 'settled' ? props.sTransactions.slice(0,4) : props.usTransactions.slice(0,4)}
                         renderItem={_renderRecentTrans}
                         keyExtractor={item => item.id}
                         showsVerticalScrollIndicator={false}
                         scrollEnabled={false}
+                        ListEmptyComponent={_renderNoTrans}
                     />
                 </ScrollView>
-                <RBSheet
-                    ref={refRBSheet}
-                    closeOnDragDown={true}
-                    closeOnPressMask={true}
-                    animationType={'slide'}
-                    openDuration={250}
-                    customStyles={{
-                        wrapper: {
-                            backgroundColor: 'rgba(0,0,0,0.5)'
-                        },
-                        draggableIcon: {
-                            backgroundColor: "rgba(0,0,0,0.5)",
-                            width: 50,
-                            borderRadius: 4
-
-                        },
-                        container: {
-                            borderTopLeftRadius: 24,
-                            borderTopRightRadius: 24,
-                            height: WIDTH * 1.25
-                        }
-                    }}
-                >
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={[gstyles.centerX, gstyles.mt(15), gstyles.mb(25)]}>
-                            <Text style={gstyles.OpenSans_SemiBold(20, '#0276E5')}>
-                                Redeem Coupon
-                            </Text>
-                        </View>
-                        <TouchableOpacity activeOpacity={0.6}
-                            style={{ position: 'absolute', right: 25, top: 15 }}
-                            onPress={() => refRBSheet.current.close()}
-                        >
-                            <AntDesign name='close' size={25} color='#0276E5' />
-                        </TouchableOpacity>
-                        <View style={[gstyles.inRowJSB, gstyles.px(16)]}>
-                            <View style={[gstyles.inRow, gstyles.mt(20)]}>
-                                <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                                    Coupon ID
-                                </Text>
-                                <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                                    :{'    '}<Text style={gstyles.OpenSans_Regular(16, '#000000')}>0133456</Text>
-                                </Text>
-                            </View>
-                            <View style={[gstyles.inRow, gstyles.mt(20)]}>
-                                <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                                    Balance
-                                </Text>
-                                <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                                    :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#0276E5')}>{'\u20B9'} 2200</Text>
-                                </Text>
-                            </View>
-                        </View>
-                        <View style={[gstyles.mt(25)]}>
-                            <TextInput
-                                mode="outlined"
-                                label="Redeem Amount"
-                                placeholder="Enter Redeem Amount"
-                                style={styles.inputText}
-                                outlineColor='#8338EC'
-                                keyboardType='number-pad'
-                                maxLength={10}
-                                left={
-                                    <TextInput.Icon
-                                        icon={'currency-inr'}
-                                        iconColor="#3F3F3F"
-                                        size={22}
-                                    />
-                                }
-                            />
-                        </View>
-                        <View style={{ width: WIDTH - 35, alignSelf: 'center' }}>
-                            <Text style={gstyles.OpenSans_Regular(14, '#FF0000', gstyles.mt(5))}>
-                                *Bill exceeds Coupon amount, Collect Rs. 500 in cash
-                            </Text>
-                        </View>
-                        <View style={[gstyles.mt(20)]}>
-                            <TextInput
-                                mode="outlined"
-                                label="Bill Number"
-                                placeholder="Enter Bill Number"
-                                style={styles.inputText}
-                                outlineColor='#8338EC'
-                                keyboardType='number-pad'
-                                maxLength={10}
-                                left={
-                                    <TextInput.Icon
-                                        icon={'ticket-confirmation-outline'}
-                                        iconColor="#3F3F3F"
-                                        size={22}
-                                    />
-                                }
-                            />
-                        </View>
-                        <View style={[gstyles.mt(24)]}>
-                            <TextInput
-                                mode="outlined"
-                                label="Remarks"
-                                placeholder="Enter Remarks"
-                                style={styles.inputText}
-                                outlineColor='#8338EC'
-                                left={
-                                    <TextInput.Icon
-                                        icon={'note-text'}
-                                        iconColor="#3F3F3F"
-                                        size={22}
-                                    />
-                                }
-                            />
-                        </View>
-
-                        <View style={[gstyles.inRowJSB, gstyles.centerX, { width: WIDTH - 35, marginTop: 24, marginBottom: 25 }]}>
-                            <LinearGradient
-                                start={{ x: 0, y: 1 }}
-                                end={{ x: 1, y: 1 }}
-                                colors={['#FFFFFF', '#FFFFFF']} style={[styles.settleBtnTouch, { height: 50 }]}>
-                                <TouchableOpacity activeOpacity={0.6}
-                                    style={[styles.btnTouch, styles.unSettleBtnTouch, { height: 50 }]}
-                                    onPress={() => refRBSheet.current.open()}
-                                >
-                                    <Text style={gstyles.OpenSans_Bold(20, '#8338EC')}>
-                                        Scan Bill
-                                    </Text>
-                                </TouchableOpacity>
-                            </LinearGradient>
-
-                            <LinearGradient
-                                start={{ x: 0, y: 1 }}
-                                end={{ x: 1, y: 1 }}
-                                colors={['#8338EC', '#3A86FF']} style={[styles.settleBtnTouch, { height: 50 }]}
-                            >
-                                <TouchableOpacity activeOpacity={0.6}
-                                    style={[styles.btnTouch, { height: 50 }]}
-                                >
-                                    <Text style={gstyles.OpenSans_Bold(20, '#FFFFFF')}>
-                                        Redeem
-                                    </Text>
-                                </TouchableOpacity>
-                            </LinearGradient>
-                        </View>
-                    </ScrollView>
-                </RBSheet>
-                {/* 
-                for:- No Transaction Found Use Below FlatList
-                <FlatList
-                    data={[{ id: 1 }]}
-                    renderItem={_renderNoTrans}
-                    keyExtractor={item => item.id}
-                    showsVerticalScrollIndicator={false}
-                    scrollEnabled={false}
-                /> */}
-
+                </ScrollView>
             </View>
-            {props.isDetailModal &&
+            {props.isDetailModal.visible &&
                 <RedeemedDetailsModal
-                    isDetailModal={props.isDetailModal}
-                    setIsDetailModal={props.setIsDetailModal} />}
+                    isDetailModal={props.isDetailModal.visible}
+                    data={props.isDetailModal.data}
+                    setIsDetailModal={props.setIsDetailModal}
+                    onClickMoveToSettled={props.onClickMoveToSettled} />}
             {props.isPopMenu &&
                 <PopMenuModal
                     isPopMenu={props.isPopMenu}
                     setIsPopMenu={props.setIsPopMenu} />}
+                    
+            <LoadingModel loading={props.isLoading}/>
         </>
     );
 }

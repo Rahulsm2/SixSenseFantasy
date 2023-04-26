@@ -11,6 +11,7 @@ import { gstyles } from '../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg } from '../../components/common/Constants';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput } from 'react-native-paper';
+import LoadingModel from "../../components/common/Loading"
 
 const ForgetPasswordComponent = (props) => {
 
@@ -47,6 +48,19 @@ const ForgetPasswordComponent = (props) => {
                                 size={22}
                             />
                         }
+                        right={
+                            <TextInput.Icon
+                                icon={'square-edit-outline'}
+                                iconColor={"#3F3F3F"}
+                                size={22}
+                                disabled={!props.isOtpSent}
+                                onPress={()=>{props.setIsOtpSent(false)
+                                props.setOtp('')}}
+                            />
+                        }
+                        value={props.mobileNumber}
+                        onChangeText={(text)=>{props.setMobileNumber(text)}}
+                        editable={!props.isOtpSent}
                     />
                 </View>
 
@@ -54,34 +68,40 @@ const ForgetPasswordComponent = (props) => {
                     <TextInput
                         mode="outlined"
                         label="Enter OTP"
+                        disabled={!props.isOtpSent}
                         placeholder="Enter OTP"
                         style={styles.inputText}
                         outlineColor='#8338EC'
-                        secureTextEntry={true}
+                        secureTextEntry={props.hideOtp}
                         keyboardType='number-pad'
-                        maxLength={6}
+                        maxLength={4}
                         left={
                             <TextInput.Icon
                                 icon={'lock'}
-                                iconColor="#3F3F3F"
+                                iconColor={"#3F3F3F"}
                                 size={22}
+                                disabled={!props.isOtpSent}
                             />
                         }
                         right={
                             <TextInput.Icon
-                                icon={'eye'}
-                                iconColor="#3F3F3F"
+                                icon={props.hideOtp ? 'eye' : 'eye-off-outline'}
+                                iconColor={"#3F3F3F"}
                                 size={22}
+                                disabled={!props.isOtpSent}
+                                onPress={()=>props.setHideOtp(!props.hideOtp)}
                             />
                         }
+                        value={props.otp}
+                        onChangeText={(text)=>{props.setOtp(text)}}
                     />
                 </View>
 
                 <View style={styles.forgetTextView}>
-                    <TouchableOpacity activeOpacity={0.6}
+                    <TouchableOpacity onPress={()=>props.onClickSendOTP()} disabled={!props.isOtpSent || props.timer>1} activeOpacity={0.6}
                         style={[{ alignSelf: 'flex-end' }]}>
-                        <Text style={gstyles.OpenSans_Medium(16, '#3F3F3F')}>
-                            Resend OTP?
+                        <Text style={gstyles.OpenSans_Medium(16, props.isOtpSent ? "#3F3F3F" : "#3F3F3F40")}>
+                               {props.timer!=0 ? props.timer+"s" : null} <Text style={gstyles.OpenSans_Medium(16, props.timer<1 ? "#3F3F3F" : "#3F3F3F40")}>Resend OTP?</Text>
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -90,18 +110,19 @@ const ForgetPasswordComponent = (props) => {
                     start={{ x: 0, y: 1 }}
                     end={{ x: 1, y: 1 }}
                     colors={['#8338EC', '#3A86FF']} style={styles.gradientTouch}>
-                    <TouchableOpacity
-                        activeOpacity={0.6}
-                        style={styles.btnTouch}
-                        onPress={()=>{ props.onClickContinue() }}
-                    >
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            style={styles.btnTouch}
+                            onPress={()=>{ props.isOtpSent ? props.onClickContinue() : props.onClickSendOTP() }}
+                        >
                         <Text style={gstyles.OpenSans_SemiBold(20, '#FFFFFF')}>
-                            Continue
+                            {props.isOtpSent ? "Verify OTP" : "Send OTP"}
                         </Text>
                     </TouchableOpacity>
                 </LinearGradient>
 
             </View>
+            <LoadingModel loading={props.isLoading}/>
         </>
     );
 }

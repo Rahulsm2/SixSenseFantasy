@@ -1,18 +1,18 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { WIDTH } from './Constants';
 import { gstyles } from './GlobalStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
+import moment from 'moment';
 
 const CouponVerificationModal = (props) => {
-
     return (
         <Modal
             transparent
-            visible={true}
+            visible={props.isVisible}
             animationType="fade"
-            onRequestClose={() => { props.setIsLogOutModal(false) }}>
+            onRequestClose={() => { props.setcouponStatus('pending') }}>
             <StatusBar
                 backgroundColor={'rgba(0,0,0,0.5)'}
                 barStyle="light-content"
@@ -24,7 +24,7 @@ const CouponVerificationModal = (props) => {
                         style={[gstyles.iconSize(128), gstyles.centerX, gstyles.mt(25), gstyles.mb(15)]}
                     />
                     <TouchableOpacity activeOpacity={0.6}
-                        onPress={()=>{ props.setIsModal(!props.isModal) }}
+                        onPress={()=>{ props.setcouponStatus('pending') }}
                         style={{ position: 'absolute', right: 30, top: 30 }}
                     >
                         <AntDesign name='close' size={25} color='#0276E5' />
@@ -37,7 +37,7 @@ const CouponVerificationModal = (props) => {
                             Coupon ID
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#000000')}>0133456</Text>
+                            :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#000000')}>#{props.couponData.id}</Text>
                         </Text>
                     </View>
                     <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
@@ -45,7 +45,7 @@ const CouponVerificationModal = (props) => {
                             Created at
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}02/02/23,   05: 35 PM
+                            :{'    '}{moment(props.couponData.created_at).format('DD/MM/YY,   hh: MM A')}
                         </Text>
                     </View>
                     <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
@@ -53,7 +53,7 @@ const CouponVerificationModal = (props) => {
                             Valid till
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}03/02/23,   01: 10 AM
+                            :{'    '}{moment(props.couponData.expiry_time).format('DD/MM/YY,   hh: MM A')}
                         </Text>
                     </View>
                     <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
@@ -61,8 +61,8 @@ const CouponVerificationModal = (props) => {
                             Balance
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}<Text style={gstyles.OpenSans_SemiBold(20, '#0276E5')}>
-                                {'\u20B9'} 2000
+                            :{'    '}<Text style={gstyles.OpenSans_SemiBold(22, '#0276E5')}>
+                                {'\u20B9'} {props.couponData.amount}
                             </Text>
                         </Text>
                     </View>
@@ -70,7 +70,10 @@ const CouponVerificationModal = (props) => {
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
                         colors={['#8338EC', '#3A86FF']} style={styles.settleBtnTouch}>
-                        <TouchableOpacity activeOpacity={0.6}
+                        <TouchableOpacity onPress={()=>{
+                            props.setcouponStatus('redeem');
+                            props.onCliclRedeem()
+                        }} activeOpacity={0.6}
                             style={styles.btnTouch}
                         >
                             <Text style={gstyles.OpenSans_Bold(20, '#FFFFFF')}>

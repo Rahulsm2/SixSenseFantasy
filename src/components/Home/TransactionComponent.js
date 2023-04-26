@@ -8,7 +8,7 @@ import {
     TouchableOpacity,
     FlatList,
     ScrollView,
-    TextInput
+    TextInput,RefreshControl
 } from 'react-native';
 import { gstyles } from '../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg } from '../../components/common/Constants';
@@ -20,26 +20,26 @@ import RedeemedDetailsModal from '../common/RedeemedDetailsModal';
 import RBSheet from "react-native-raw-bottom-sheet";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import moment from 'moment';
+import LoadingModel from "../../components/common/Loading"
 
 const TransactionComponent = (props) => {
 
-    const _renderRecentTrans = ({ index, item }) => {
+    const _renderRecentTrans = ({item,index}) => {
         return (
-            <TouchableOpacity style={styles.transCardView}
-                activeOpacity={0.6}
-                onPress={() => { props.setIsDetailModal(!props.isDetailModal) }}
-            >
+            <TouchableOpacity onPress={() => { props.setIsDetailModal({visible:!props.isDetailModal.visible,data:item}) }}
+                style={styles.transCardView}>
                 <View style={[gstyles.inRowJSB, gstyles.mt(10), gstyles.mx(12)]}>
                     <View style={gstyles.inRow}>
                         <Text style={gstyles.OpenSans_Regular(12, '#000000', gstyles.size(75))}>
                             Bill No.
                         </Text>
                         <Text style={gstyles.OpenSans_Bold(14, '#000000')}>
-                            : 123
+                            :   {item.bill_no}
                         </Text>
                     </View>
                     <Text style={gstyles.OpenSans_Bold(24, '#000000')}>
-                        {'\u20B9'} 250
+                        {'\u20B9'} {Number(item.amount_used).toFixed(0)}
                     </Text>
                 </View>
                 <View style={[gstyles.inRowJSB, gstyles.mt(6), gstyles.mx(12)]}>
@@ -47,12 +47,12 @@ const TransactionComponent = (props) => {
                         <Text style={gstyles.OpenSans_Regular(12, '#000000', gstyles.size(75))}>
                             Coupon ID
                         </Text>
-                        <Text style={gstyles.OpenSans_Bold(12, '#000000')}>
-                            : 123456
+                        <Text style={gstyles.OpenSans_Bold(14, '#000000')}>
+                            :  #{item.id}
                         </Text>
                     </View>
                     <Text style={gstyles.OpenSans_Regular(10, '#000000')}>
-                        10 APR 23 | 06:50 PM
+                        {moment(item.created_at).format("DD MMM YY | hh:mm A")}
                     </Text>
                 </View>
                 <View style={[gstyles.inRowJSB, gstyles.mt(8), gstyles.mx(12), gstyles.mb(10)]}>
@@ -63,18 +63,32 @@ const TransactionComponent = (props) => {
                         <Text style={gstyles.OpenSans_SemiBold(12, '#000000', gstyles.size(120))}
                             numberOfLines={1}
                         >
-                            : shankar Salimath
+                            :   {item.distribute_id} | shankar Salimath
                         </Text>
                     </View>
-                    <Text style={gstyles.OpenSans_Regular(10, '#000000', { ...gstyles.size('40%'), textAlign: 'right' })}
+                    {props.userData && props.userData.role=="Biller" ? <Text style={gstyles.OpenSans_Regular(10, '#000000', { ...gstyles.size('40%'), textAlign: 'right' })}
                         numberOfLines={1}
                     >
                         Redmeed by Ganesh
-                    </Text>
+                    </Text> : null }
                 </View>
             </TouchableOpacity>
         );
     }
+
+    const _renderNoTrans = () => {
+        return (
+            <View style={[gstyles.centerXY, { marginTop:'40%' }]}>
+                <Image source={require('../../assets/images/no_trans.png')}
+                    style={[gstyles.iconSize(WIDTH / 1.8), { opacity: 0.7 }]}
+                />
+                <Text style={[gstyles.OpenSans_SemiBold(20, '#0276E5'), { opacity: 0.7 }]}>
+                    No Transactions Found
+                </Text>
+            </View>
+        );
+    }
+
 
     const refRBSheet = useRef();
 
@@ -108,13 +122,15 @@ const TransactionComponent = (props) => {
                             placeholder='Search'
                             placeholderTextColor={'#3F3F3F'}
                             style={styles.inputSearchText}
+                            value={props.searchQuery}
+                            onChangeText={(val)=>props.onSearch(val)}
                         />
                     </View>
-                    <TouchableOpacity activeOpacity={0.6}
+                    {props.userData && props.userData.role=="Biller" ? <TouchableOpacity activeOpacity={0.6}
                         onPress={() => refRBSheet.current.open()}
                     >
                         <FontAwesome name='filter' size={22} color='#3F3F3F' />
-                    </TouchableOpacity>
+                    </TouchableOpacity> : null }
                 </View>
 
                 <View style={[gstyles.inRowJSB, gstyles.centerX, { width: WIDTH - 35 }, gstyles.mb(8)]}>
@@ -128,7 +144,7 @@ const TransactionComponent = (props) => {
                             onPress={() => { props.setIsBtnSelected('unSettled') }}
                         >
                             <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'unSettled' ? '#FFFFFF' : '#8338EC')}>
-                                Unsettled (5)
+                                Unsettled ({props.filteredUSTransactions  && props.filteredUSTransactions.length>0  ? props.filteredUSTransactions.length : props.usTransactions.length})
                             </Text>
                         </TouchableOpacity>
                     </LinearGradient>
@@ -144,7 +160,7 @@ const TransactionComponent = (props) => {
                             onPress={() => { props.setIsBtnSelected('settled') }}
                         >
                             <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'settled' ? '#FFFFFF' : '#8338EC')}>
-                                Settled (8)
+                                Settled ({props.filteredSTransactions  && props.filteredSTransactions.length>0 ? props.filteredSTransactions.length : props.sTransactions.length})
                             </Text>
                         </TouchableOpacity>
                     </LinearGradient>
@@ -152,11 +168,19 @@ const TransactionComponent = (props) => {
 
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <FlatList
-                        data={props.transData}
+                        data={props.isBtnSelected == 'settled' ? props.filteredSTransactions && props.filteredSTransactions.length>0 ? props.filteredSTransactions : props.sTransactions : props.filteredUSTransactions && props.filteredUSTransactions.length>0 ? props.filteredUSTransactions : props.usTransactions}
                         renderItem={_renderRecentTrans}
                         keyExtractor={item => item.id}
                         showsVerticalScrollIndicator={false}
                         scrollEnabled={false}
+                        ListEmptyComponent={_renderNoTrans}
+                        refreshControl={
+                            <RefreshControl refreshing={props.isRefreshing} 
+                                onRefresh={()=>{
+                                    props.setisRefreshing(true)
+                                    props.getTransactions()
+                                }} />
+                        }
                     />
                 </ScrollView>
 
@@ -213,10 +237,13 @@ const TransactionComponent = (props) => {
                     </ScrollView>
                 </RBSheet>
 
-                {props.isDetailModal &&
-                    <RedeemedDetailsModal
-                        isDetailModal={props.isDetailModal}
-                        setIsDetailModal={props.setIsDetailModal} />}
+                {props.isDetailModal.visible &&
+                <RedeemedDetailsModal
+                    isDetailModal={props.isDetailModal.visible}
+                    data={props.isDetailModal.data}
+                    setIsDetailModal={props.setIsDetailModal}
+                    onClickMoveToSettled={props.onClickMoveToSettled} />}
+            <LoadingModel loading={props.isLoading}/>
             </View>
         </>
     );

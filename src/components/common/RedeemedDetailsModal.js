@@ -4,6 +4,7 @@ import { WIDTH } from './Constants';
 import { gstyles } from './GlobalStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
+import moment from 'moment';
 
 const RedeemedDetailsModal = (props) => {
 
@@ -36,7 +37,7 @@ const RedeemedDetailsModal = (props) => {
                             Bill No.
                         </Text>
                         <Text style={gstyles.OpenSans_Bold(16, '#000000')}>
-                            :{'    '}0133456
+                            :{'    '}{props.data.bill_no}
                         </Text>
                     </View>
                     <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14)]}>
@@ -44,7 +45,7 @@ const RedeemedDetailsModal = (props) => {
                             Coupon Id
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}012455
+                            :{'    '}#{props.data.id}
                         </Text>
                     </View>
                     <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14)]}>
@@ -52,7 +53,7 @@ const RedeemedDetailsModal = (props) => {
                             Name
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}Shankar
+                            :{'    '}{props.data.distribute_id} | Shankar
                         </Text>
                     </View>
                     <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14)]}>
@@ -60,33 +61,33 @@ const RedeemedDetailsModal = (props) => {
                             Redeemed at
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}03/02/23,   01: 10 AM
+                            :{'    '}{moment(props.data.created_at).format("DD/MM/YY,  hh:mm A")}
                         </Text>
                     </View>
-                    <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14)]}>
+                    <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14) , {paddingBottom:props.data.status=="0" ? 0 : 30}]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Amount
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(20, '#000000')}>
                             :{'    '}<Text style={gstyles.OpenSans_SemiBold(20, '#0276E5')}>
-                                {'\u20B9'} 2000
+                                {'\u20B9'} {props.data.amount_used}
                             </Text>
                         </Text>
                     </View>
 
-                    <LinearGradient
+                    {props.data.status=="0" && <LinearGradient
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
                         colors={['#8338EC', '#3A86FF']} style={styles.settleBtnTouch}>
                         <TouchableOpacity activeOpacity={0.6}
                             style={styles.btnTouch}
-                            onPress={() => { props.setIsDetailModal(!props.isDetailModal) }}
+                            onPress={() => { props.onClickMoveToSettled() }}
                         >
-                            <Text style={gstyles.OpenSans_Bold(20, '#FFFFFF')}>
-                                Bill Settled
+                            <Text style={gstyles.OpenSans_Bold(17, '#FFFFFF')}>
+                                Move to Settled
                             </Text>
                         </TouchableOpacity>
-                    </LinearGradient>
+                    </LinearGradient> }
                 </View>
             </View>
         </Modal>

@@ -11,6 +11,7 @@ import { gstyles } from '../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg } from '../../components/common/Constants';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput } from 'react-native-paper';
+import LoadingModel from "../../components/common/Loading"
 
 const LoginComponent = (props) => {
 
@@ -40,6 +41,8 @@ const LoginComponent = (props) => {
                             outlineColor='#8338EC'
                             keyboardType='number-pad'
                             maxLength={10}
+                            value={props.mobileNumber}
+                            onChangeText={(text) => props.setMobileNumber(text)}
                             left={
                                 <TextInput.Icon
                                     icon={'phone'}
@@ -57,8 +60,10 @@ const LoginComponent = (props) => {
                             placeholder="Enter Your Password"
                             style={styles.inputText}
                             outlineColor='#8338EC'
-                            secureTextEntry={true}
+                            secureTextEntry={props.hidePassword}
                             maxLength={25}
+                            value={props.password}
+                            onChangeText={(text) => props.setPassword(text)}
                             left={
                                 <TextInput.Icon
                                     icon={'lock'}
@@ -71,6 +76,7 @@ const LoginComponent = (props) => {
                                     icon={'eye'}
                                     iconColor="#3F3F3F"
                                     size={22}
+                                    onPress={()=>props.setHidePassword(!props.hidePassword)}
                                 />
                             }
                         />
@@ -101,6 +107,7 @@ const LoginComponent = (props) => {
                     </LinearGradient>
 
                 </View>
+                <LoadingModel loading={props.isLoading}/>
             </View>
         </>
     );

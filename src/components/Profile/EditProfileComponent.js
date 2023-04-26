@@ -38,17 +38,17 @@ const EditProfileComponent = (props) => {
                     </View>
                 </View>
                 <View style={[gstyles.centerXY, gstyles.mt(35)]}>
-                    <ImageBackground source={require('../../assets/images/prof.jpg')}
+                    <ImageBackground source={require('../../assets/images/account.png')}
                         style={styles.profImg}
                         borderRadius={100}
                         borderColor={'#0276E5'}
                         borderWidth={1}
                     >
-                        <TouchableOpacity activeOpacity={0.6}
+                        {/* <TouchableOpacity activeOpacity={0.6}
                             style={[gstyles.me(5), gstyles.mb(5), styles.cameraTouch]}
                         >
                             <MaterialCommunityIcons name='camera' size={18} color='#0276E5' />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </ImageBackground>
                 </View>
                 <View style={[gstyles.mt(50)]}>
@@ -56,7 +56,7 @@ const EditProfileComponent = (props) => {
                         mode="outlined"
                         label="Name"
                         placeholder="Edit Your Name"
-                        value='Basavaraddi Mulimani'
+                        value={props.name}
                         style={styles.inputText}
                         outlineColor='#8338EC'
                         keyboardType='number-pad'
@@ -68,6 +68,7 @@ const EditProfileComponent = (props) => {
                                 size={22}
                             />
                         }
+                        disabled={true}
                     />
                 </View>
                 <View style={[gstyles.mt(25)]}>
@@ -86,6 +87,7 @@ const EditProfileComponent = (props) => {
                                 size={22}
                             />
                         }
+                        disabled={true}
                     />
                 </View>
                 <View style={[gstyles.mt(25)]}>
@@ -104,6 +106,7 @@ const EditProfileComponent = (props) => {
                                 size={22}
                             />
                         }
+                        disabled={true}
                     />
                 </View>
                 {/* <View style={[styles.inputBoxView, gstyles.mt(30)]}>

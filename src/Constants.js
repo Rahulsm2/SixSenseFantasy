@@ -1,20 +1,4 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+export const BASE_URI = 'https://ticket.yuktatech.com/';
+export const BASE_AUTH = '1234';
 
-class Constants extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  render() {
-    return (
-      <View>
-        <Text> Constants </Text>
-      </View>
-    );
-  }
-}
-
-export default Constants;
+export const STORAGE_URI = 'https://ticket.yuktatech.com/';
