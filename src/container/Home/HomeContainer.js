@@ -83,7 +83,7 @@ const HomeContainer = (props) => {
             setIsLoading(false);
             setisRefreshing(true);
             getTransactions();
-            setIsBtnSelected("settled");
+            // setIsBtnSelected("settled");
         } else {
             setIsLoading(false);
             showToast(

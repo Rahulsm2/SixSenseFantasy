@@ -66,7 +66,7 @@ const HomeComponent = (props) => {
                         <Text style={gstyles.OpenSans_SemiBold(12, '#000000', gstyles.size(120))}
                             numberOfLines={1}
                         >
-                            :   {item.distribute_id} | shankar Salimath
+                            :   {item.distribute_id} | {item.name}
                         </Text>
                     </View>
                     {props.userData && props.userData.role=="Biller" ? <Text style={gstyles.OpenSans_Regular(10, '#000000', { ...gstyles.size('40%'), textAlign: 'right' })}

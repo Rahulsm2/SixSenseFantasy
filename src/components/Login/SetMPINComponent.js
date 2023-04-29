@@ -40,7 +40,7 @@ const SetMPINComponent = (props) => {
                         outlineColor='#8338EC'
                         keyboardType='number-pad'
                         maxLength={4}
-                        secureTextEntry={true}
+                        secureTextEntry={props.hideMpin}
                         left={
                             <TextInput.Icon
                                 icon={'account-lock'}
@@ -50,6 +50,14 @@ const SetMPINComponent = (props) => {
                         }
                         value={props.mpin}
                         onChangeText={(text)=>props.setMpin(text)}
+                        right={
+                            <TextInput.Icon
+                                icon={props.hideMpin ? 'eye' : 'eye-off-outline'}
+                                iconColor="#3F3F3F"
+                                size={22}
+                                onPress={()=>props.setHideMpin(!props.hideMpin)}
+                            />
+                        }
                     />
                 </View>
 
@@ -62,22 +70,6 @@ const SetMPINComponent = (props) => {
                         outlineColor='#8338EC'
                         keyboardType='number-pad'
                         maxLength={4}
-                        left={
-                            <TextInput.Icon
-                                icon={'account-lock'}
-                                iconColor="#3F3F3F"
-                                size={22}
-                                onPress={()=>props.setHideMpin(!props.hideMpin)}
-                            />
-                        }
-                        right={
-                            <TextInput.Icon
-                                icon={'eye'}
-                                iconColor="#3F3F3F"
-                                size={22}
-                                onPress={()=>props.setHideMpin(!props.hideMpin)}
-                            />
-                        }
                         value={props.confirmMpin}
                         onChangeText={(text)=>props.setConfirmMpin(text)}
                     />

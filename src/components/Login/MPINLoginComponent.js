@@ -62,6 +62,7 @@ const MPINLoginComponent = (props) => {
                         }
                         value={props.mpin}
                         onChangeText={(text)=>props.setMpin(text)}
+                        autoFocus={true}
                     />
                 </View>
 

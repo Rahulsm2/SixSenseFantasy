@@ -1,4 +1,4 @@
-import React, { useState,useRef } from 'react';
+import React, { useState,useRef, useEffect } from 'react';
 import ValCouponComponent from '../../components/Home/ValCouponComponent';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
@@ -27,6 +27,16 @@ const ValCouponContainer = (props) => {
     const onClickBack = () => {
         navigation.goBack();
     }
+
+    // useEffect(()=>{
+    //   if(couponStatus!="pending"){
+    //     setInterval(() => {
+    //       setcouponStatus('pending')
+    //       showToast("Timeout , Please scan again.")
+    //       refRBSheet.current.close();
+    //     }, 90000);
+    //   }
+    // },[couponStatus]);
 
     onBarCodeRead = async scanResult => {
         const token = await getToken();

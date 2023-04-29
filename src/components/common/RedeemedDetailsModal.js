@@ -53,7 +53,7 @@ const RedeemedDetailsModal = (props) => {
                             Name
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}{props.data.distribute_id} | Shankar
+                            :{'    '}{props.data.distribute_id} | {props.data.name}
                         </Text>
                     </View>
                     <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14)]}>
@@ -64,6 +64,14 @@ const RedeemedDetailsModal = (props) => {
                             :{'    '}{moment(props.data.created_at).format("DD/MM/YY,  hh:mm A")}
                         </Text>
                     </View>
+                    {props.data.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14)]}>
+                        <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
+                            Remarks
+                        </Text>
+                        <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                            :{'    '}{props.data.remarks}
+                        </Text>
+                    </View> }
                     <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14) , {paddingBottom:props.data.status=="0" ? 0 : 30}]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Amount

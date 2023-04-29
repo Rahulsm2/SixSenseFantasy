@@ -1,4 +1,4 @@
-import React,{useRef} from 'react';
+import React,{useRef,useEffect} from 'react';
 import {
     View,
     StatusBar,
@@ -15,7 +15,7 @@ import Icons from 'react-native-vector-icons/Ionicons';
 import { RNCamera } from 'react-native-camera';
 import LoadingModel from "../../components/common/Loading"
 import CouponVerificationModal from "../../components/common/CouponVerificationModal"
-import showToast from "../common/ShowToast"
+import {showToast} from "../common/ShowToast"
 import CouponExpireModal from "../../components/common/CouponExpireModal"
 import RBSheet from "react-native-raw-bottom-sheet";
 import Feather from 'react-native-vector-icons/Feather';
@@ -29,10 +29,19 @@ const ValCouponComponent = (props) => {
     const verticalWidth = width;
     const horizontalHeight = QR_BOX_SIZE;
     const horizontalWidth = (width-QR_BOX_SIZE)/2;
+    const inputRef = useRef()
 
     const onCliclRedeem=()=>{
+        props.setredeemAmount('');
+        props.setbillAmount('');
+        props.setremarks('');
         props.refRBSheet.current.open()
     }
+
+    // useEffect(()=>{
+    //     console.log(inputRef.current)
+    //     inputRef.current.focus()
+    // },[])
     return (
         <>
             <StatusBar
@@ -181,7 +190,7 @@ const ValCouponComponent = (props) => {
                         }
                     }}
                 >
-                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <ScrollView keyboardShouldPersistTaps={'handled'} showsVerticalScrollIndicator={false}>
                         <View style={[gstyles.centerX, gstyles.mt(15), gstyles.mb(25)]}>
                             <Text style={gstyles.OpenSans_SemiBold(20, '#0276E5')}>
                                 Redeem Coupon
@@ -214,6 +223,7 @@ const ValCouponComponent = (props) => {
                         </View>
                         <View style={[gstyles.mt(25)]}>
                             <TextInput
+                                ref={inputRef}
                                 mode="outlined"
                                 label="Redeem Amount"
                                 placeholder="Enter Redeem Amount"
@@ -229,7 +239,13 @@ const ValCouponComponent = (props) => {
                                     />
                                 }
                                 value={props.redeemAmount}
-                                onChangeText={(text)=>{props.setredeemAmount(text)}}
+                                onChangeText={(text)=>{
+                                    const re = /^[0-9\b]+$/;
+                                    if (text === '' || re.test(text)) {
+                                        props.setredeemAmount(text)}}
+                                     }
+                                autoFocus={true}
+                                onLayout={()=> inputRef.current.focus()}
                             />
                         </View>
                         {/* <View style={{ width: WIDTH - 35, alignSelf: 'center' }}>

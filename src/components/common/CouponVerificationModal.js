@@ -45,7 +45,7 @@ const CouponVerificationModal = (props) => {
                             Created at
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}{moment(props.couponData.created_at).format('DD/MM/YY,   hh: MM A')}
+                            :{'    '}{moment(props.couponData.created_at).format('DD/MM/YY,   hh: mm A')}
                         </Text>
                     </View>
                     <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
@@ -53,7 +53,7 @@ const CouponVerificationModal = (props) => {
                             Valid till
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}{moment(props.couponData.expiry_time).format('DD/MM/YY,   hh: MM A')}
+                            :{'    '}{moment(props.couponData.expiry_time).format('DD/MM/YY,   hh: mm A')}
                         </Text>
                     </View>
                     <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
