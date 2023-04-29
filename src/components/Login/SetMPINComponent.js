@@ -46,16 +46,17 @@ const SetMPINComponent = (props) => {
                                 icon={'account-lock'}
                                 iconColor="#3F3F3F"
                                 size={22}
+                                rippleColor='rgba(0,0,0,0)'
                             />
                         }
                         value={props.mpin}
-                        onChangeText={(text)=>props.setMpin(text)}
+                        onChangeText={(text) => props.setMpin(text)}
                         right={
                             <TextInput.Icon
                                 icon={props.hideMpin ? 'eye' : 'eye-off-outline'}
                                 iconColor="#3F3F3F"
                                 size={22}
-                                onPress={()=>props.setHideMpin(!props.hideMpin)}
+                                onPress={() => props.setHideMpin(!props.hideMpin)}
                             />
                         }
                     />
@@ -71,13 +72,21 @@ const SetMPINComponent = (props) => {
                         keyboardType='number-pad'
                         maxLength={4}
                         value={props.confirmMpin}
-                        onChangeText={(text)=>props.setConfirmMpin(text)}
+                        onChangeText={(text) => props.setConfirmMpin(text)}
+                        left={
+                            <TextInput.Icon
+                                icon={'account-lock'}
+                                iconColor="#3F3F3F"
+                                size={22}
+                                rippleColor='rgba(0,0,0,0)'
+                            />
+                        }
                     />
                 </View>
 
                 <View style={styles.forgetTextView}>
                     <View style={[{ alignSelf: 'flex-start' }]}>
-                        <Text style={gstyles.OpenSans_Medium(16, '#3F3F3F')}>
+                        <Text style={gstyles.OpenSans_Medium(12, '#3F3F3F')}>
                             *MPIN should be 4 digits in length
                         </Text>
                     </View>

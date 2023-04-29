@@ -50,6 +50,7 @@ const MPINLoginComponent = (props) => {
                                 icon={'account-lock'}
                                 iconColor="#3F3F3F"
                                 size={22}
+                                rippleColor='rgba(0,0,0,0)'
                             />
                         }
                         right={
@@ -71,7 +72,7 @@ const MPINLoginComponent = (props) => {
                         onPress={() => { props.onClickForget() }}
                         style={[{ alignSelf: 'flex-end' }]}>
                         <Text style={gstyles.OpenSans_Medium(16, '#3F3F3F')}>
-                            Forget MPIN?
+                            Forgot MPIN?
                         </Text>
                     </TouchableOpacity>
                 </View>

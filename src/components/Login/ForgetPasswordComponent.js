@@ -46,6 +46,7 @@ const ForgetPasswordComponent = (props) => {
                                 icon={'phone'}
                                 iconColor="#3F3F3F"
                                 size={22}
+                                rippleColor='rgba(0,0,0,0)'
                             />
                         }
                         right={
@@ -54,12 +55,14 @@ const ForgetPasswordComponent = (props) => {
                                 iconColor={"#3F3F3F"}
                                 size={22}
                                 disabled={!props.isOtpSent}
-                                onPress={()=>{props.setIsOtpSent(false)
-                                props.setOtp('')}}
+                                onPress={() => {
+                                    props.setIsOtpSent(false)
+                                    props.setOtp('')
+                                }}
                             />
                         }
                         value={props.mobileNumber}
-                        onChangeText={(text)=>{props.setMobileNumber(text)}}
+                        onChangeText={(text) => { props.setMobileNumber(text) }}
                         editable={!props.isOtpSent}
                     />
                 </View>
@@ -81,6 +84,7 @@ const ForgetPasswordComponent = (props) => {
                                 iconColor={"#3F3F3F"}
                                 size={22}
                                 disabled={!props.isOtpSent}
+                                rippleColor='rgba(0,0,0,0)'
                             />
                         }
                         right={
@@ -89,19 +93,19 @@ const ForgetPasswordComponent = (props) => {
                                 iconColor={"#3F3F3F"}
                                 size={22}
                                 disabled={!props.isOtpSent}
-                                onPress={()=>props.setHideOtp(!props.hideOtp)}
+                                onPress={() => props.setHideOtp(!props.hideOtp)}
                             />
                         }
                         value={props.otp}
-                        onChangeText={(text)=>{props.setOtp(text)}}
+                        onChangeText={(text) => { props.setOtp(text) }}
                     />
                 </View>
 
                 <View style={styles.forgetTextView}>
-                    <TouchableOpacity onPress={()=>props.onClickSendOTP()} disabled={!props.isOtpSent || props.timer>1} activeOpacity={0.6}
+                    <TouchableOpacity onPress={() => props.onClickSendOTP()} disabled={!props.isOtpSent || props.timer > 1} activeOpacity={0.6}
                         style={[{ alignSelf: 'flex-end' }]}>
                         <Text style={gstyles.OpenSans_Medium(16, props.isOtpSent ? "#3F3F3F" : "#3F3F3F40")}>
-                               {props.timer!=0 ? props.timer+"s" : null} <Text style={gstyles.OpenSans_Medium(16, props.timer<1 ? "#3F3F3F" : "#3F3F3F40")}>Resend OTP?</Text>
+                            {props.timer != 0 ? props.timer + "s" : null} <Text style={gstyles.OpenSans_Medium(16, props.timer < 1 ? "#3F3F3F" : "#3F3F3F40")}>Resend OTP?</Text>
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -110,11 +114,11 @@ const ForgetPasswordComponent = (props) => {
                     start={{ x: 0, y: 1 }}
                     end={{ x: 1, y: 1 }}
                     colors={['#8338EC', '#3A86FF']} style={styles.gradientTouch}>
-                        <TouchableOpacity
-                            activeOpacity={0.6}
-                            style={styles.btnTouch}
-                            onPress={()=>{ props.isOtpSent ? props.onClickContinue() : props.onClickSendOTP() }}
-                        >
+                    <TouchableOpacity
+                        activeOpacity={0.6}
+                        style={styles.btnTouch}
+                        onPress={() => { props.isOtpSent ? props.onClickContinue() : props.onClickSendOTP() }}
+                    >
                         <Text style={gstyles.OpenSans_SemiBold(20, '#FFFFFF')}>
                             {props.isOtpSent ? "Verify OTP" : "Send OTP"}
                         </Text>
@@ -122,7 +126,7 @@ const ForgetPasswordComponent = (props) => {
                 </LinearGradient>
 
             </View>
-            <LoadingModel loading={props.isLoading}/>
+            <LoadingModel loading={props.isLoading} />
         </>
     );
 }

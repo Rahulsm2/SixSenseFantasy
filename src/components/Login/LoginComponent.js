@@ -42,12 +42,19 @@ const LoginComponent = (props) => {
                             keyboardType='number-pad'
                             maxLength={10}
                             value={props.mobileNumber}
-                            onChangeText={(text) => props.setMobileNumber(text)}
+                            onChangeText={(text) => {
+                                const re = /^[0-9\b]+$/;
+                                if (text === '' || re.test(text)) {
+                                    props.setMobileNumber(text)
+                                }
+                            }
+                            }
                             left={
                                 <TextInput.Icon
                                     icon={'phone'}
                                     iconColor="#3F3F3F"
                                     size={22}
+                                    rippleColor='rgba(0,0,0,0)'
                                 />
                             }
                         />
@@ -69,24 +76,25 @@ const LoginComponent = (props) => {
                                     icon={'lock'}
                                     iconColor="#3F3F3F"
                                     size={22}
+                                    rippleColor='rgba(0,0,0,0)'
                                 />
                             }
                             right={
                                 <TextInput.Icon
-                                    icon={'eye'}
+                                    icon={props.hidePassword ? 'eye' : 'eye-off-outline'}
                                     iconColor="#3F3F3F"
                                     size={22}
-                                    onPress={()=>props.setHidePassword(!props.hidePassword)}
+                                    onPress={() => props.setHidePassword(!props.hidePassword)}
                                 />
                             }
                         />
                     </View>
                     <View style={styles.forgetTextView}>
                         <TouchableOpacity activeOpacity={0.6}
-                        onPress={()=> { props.onClickForget() }}
+                            onPress={() => { props.onClickForget() }}
                             style={[{ alignSelf: 'flex-end' }]}>
                             <Text style={gstyles.OpenSans_Medium(16, '#3F3F3F')}>
-                                Forget Password?
+                                Forgot Password?
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -107,7 +115,7 @@ const LoginComponent = (props) => {
                     </LinearGradient>
 
                 </View>
-                <LoadingModel loading={props.isLoading}/>
+                <LoadingModel loading={props.isLoading} />
             </View>
         </>
     );

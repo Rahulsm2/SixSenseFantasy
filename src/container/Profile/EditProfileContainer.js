@@ -23,6 +23,7 @@ const EditProfileContainer = (props) => {
             name={name}
             setName={setName}
             isLoading={isLoading}
+            userData={props.userData}
         />
     );
 }

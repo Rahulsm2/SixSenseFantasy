@@ -45,7 +45,7 @@ const ProfileComponent = (props) => {
                         style={styles.profImg}
                         borderRadius={100}
                         borderColor={'#0276E5'}
-                        borderWidth={1}
+                        borderWidth={1.5}
                     >
                         <TouchableOpacity activeOpacity={0.6}
                             onPress={() => { props.onClickEditProf() }}
@@ -55,19 +55,22 @@ const ProfileComponent = (props) => {
                         </TouchableOpacity>
                     </ImageBackground>
 
-                    <View style={[gstyles.mt(15), gstyles.centerXY]}>
-                        <Text style={gstyles.OpenSans_SemiBold(16, '#000000')}>
+                    <View style={[gstyles.mt(15), gstyles.centerXY, { width: WIDTH - 90 }]}>
+                        <Text numberOfLines={1}
+                            style={gstyles.OpenSans_SemiBold(16, '#000000')}>
                             {props.userData && props.userData.first_name}
                         </Text>
-                        <Text style={gstyles.OpenSans_Medium(12, '#000000', gstyles.mt(5))}>
+                        <Text numberOfLines={1}
+                            style={gstyles.OpenSans_Medium(12, '#000000', gstyles.mt(5))}>
                             {props.userData && props.userData.phone}
                         </Text>
-                        <Text style={gstyles.OpenSans_Medium(12, '#000000')}>
+                        <Text numberOfLines={1}
+                            style={gstyles.OpenSans_Medium(12, '#000000')}>
                             {props.userData && props.userData.email}
                         </Text>
                     </View>
 
-                    <TouchableOpacity  onPress={()=>showToast("Coming soon..!")} activeOpacity={1}
+                    <TouchableOpacity onPress={() => showToast("Coming soon..!")} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(50), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,
@@ -81,7 +84,7 @@ const ProfileComponent = (props) => {
                         </Text>
                     </TouchableOpacity>
                     <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} />
-                    <TouchableOpacity  onPress={()=>showToast("Coming soon..!")} activeOpacity={1}
+                    <TouchableOpacity onPress={() => showToast("Coming soon..!")} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(15), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,
@@ -95,7 +98,7 @@ const ProfileComponent = (props) => {
                         </Text>
                     </TouchableOpacity>
                     <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} />
-                    <TouchableOpacity onPress={()=>showToast("Coming soon..!")} activeOpacity={1}
+                    <TouchableOpacity onPress={() => showToast("Coming soon..!")} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(15), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,
@@ -109,7 +112,7 @@ const ProfileComponent = (props) => {
                         </Text>
                     </TouchableOpacity>
                     <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} />
-                    <TouchableOpacity onPress={()=>props.onClickLogout()} activeOpacity={1}
+                    <TouchableOpacity onPress={() => props.onClickLogout()} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(15), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,

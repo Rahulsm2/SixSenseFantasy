@@ -42,7 +42,7 @@ const EditProfileComponent = (props) => {
                         style={styles.profImg}
                         borderRadius={100}
                         borderColor={'#0276E5'}
-                        borderWidth={1}
+                        borderWidth={1.5}
                     >
                         {/* <TouchableOpacity activeOpacity={0.6}
                             style={[gstyles.me(5), gstyles.mb(5), styles.cameraTouch]}
@@ -76,7 +76,7 @@ const EditProfileComponent = (props) => {
                         mode="outlined"
                         label="Mobile Number"
                         placeholder="Edit Your Mobile Number"
-                        value='9964533375'
+                        value={props.userData && props.userData.phone}
                         style={styles.inputText}
                         outlineColor='#8338EC'
                         maxLength={10}
@@ -95,7 +95,7 @@ const EditProfileComponent = (props) => {
                         mode="outlined"
                         label="Mail ID"
                         placeholder="Edit Your Mail Id"
-                        value='basavaraddi3522@gmail.com'
+                        value={props.userData && props.userData.email}
                         style={styles.inputText}
                         outlineColor='#8338EC'
                         maxLength={30}
