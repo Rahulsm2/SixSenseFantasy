@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import TransactionComponent from '../../components/Home/TransactionComponent';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
-import { postData } from '../../services/rootService';
+import { getData, postData } from '../../services/rootService';
 import {getToken} from '../../services/persistData';
 import { showToast } from '../../components/common/ShowToast';
 
@@ -20,11 +20,80 @@ const TransactionContainer = (props) => {
     const [filteredSTransactions, setFilterdSTransactions] = useState([]);
     const [filteredUSTransactions, setFilterdUSTransactions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const refRBSheet = useRef();
+    const [isPopMenu, setIsPopMenu] = useState(false);
+    const [onChangeStaffList, setonChangeStaffList] = useState(false);
 
-    const getTransactions=async()=>{
+    
+    const getStaffs=async()=>{
+        if(props.saffsList && props.saffsList.length==0){
+            setIsLoading(true);
+            const token = await getToken();
+            const response = await getData('api/app/coupon/staff_list',null, token);
+            if (response.statusCode == 200) {
+                setIsLoading(false);
+                if (response.errors) {
+                    showToast(response.message);
+                    return;
+                }
+                refRBSheet.current.open();
+                let data=response.staffs;
+                let selfdata={}
+                if(props.userData && props.userData.role=="Biller"){
+                    let index = data.findIndex(obj => obj.staff_id == props.userData.id);
+                    selfdata=data[index];
+                    data.splice(index,1);
+                    data.unshift(selfdata);
+                }
+                for (let i = 0; i < data.length; i++) {
+                    if(props.selectedFilter=='all'){
+                        data[i].selected=true;
+                    }else if(props.selectedFilter=='self'){
+                        data[0].selected=true;
+                    }else{
+                        data[i].selected=false;
+                    }
+                }
+                props.updateStaffsList(data);
+            }else{
+                setIsLoading(false);
+                showToast(
+                    response.message ? response.message : 'Something went wrong, try again',
+                );
+            }
+        }else{
+            let data=props.saffsList;
+            for (let i = 0; i < data.length; i++) {
+                if(props.selectedFilter=='all'){
+                    data[i].selected=true;
+                }else if(props.selectedFilter=='self'){
+                    data[0].selected=true;
+                }
+            }
+            props.updateStaffsList(data);
+            refRBSheet.current.open()
+        }
+    }
+
+    const getTransactions=async(selectedFilter=null)=>{
         const token = await getToken();
         let formData = new FormData();
-        formData.append('staff_id', '');
+        if(selectedFilter=='all'){
+            formData.append('staff_id', '');
+        }else if(selectedFilter=="self"){
+            formData.append('staff_id', ""+props.userData.id);
+        }else{
+            let data=props.saffsList;
+            let id="";
+            for (let i = 0; i < data.length; i++) {
+                if(data[i].selected){
+                    let val= i==0 ? "" : ",";
+                    id=id+val+data[i].staff_id;
+                }
+            }
+            console.log(id);
+            formData.append('staff_id', id);
+        }
         const response = await postData('api/app/coupon/transaction_settled',formData, token);
         if (response.statusCode == 200) {
             if (response.errors) {
@@ -87,7 +156,7 @@ const TransactionContainer = (props) => {
             }
             setIsLoading(false);
             setisRefreshing(true);
-            getTransactions();
+            getTransactions(props.selectedFilter);
             setIsBtnSelected("settled");
         } else {
             setIsLoading(false);
@@ -95,6 +164,83 @@ const TransactionContainer = (props) => {
                 response.message ? response.message : 'Something went wrong, try again',
             );
         }
+    }
+
+    const getCurrentSelectedCount=(data)=>{
+        // let data = props.saffsList;
+        let selectedCount=0;
+        for (let i = 0; i < data.length; i++) {
+            if(data[i].selected){
+                selectedCount=selectedCount+1;
+            }
+        }
+        return selectedCount;
+    }
+
+    const onChangeFilterData=(index)=>{
+        let data = props.saffsList;
+        if(index==-1){
+            let selectedCount=getCurrentSelectedCount(data);
+            if(selectedCount==data.length){
+                // showToast("Please  atleast one.")
+                for (let i = 0; i < data.length; i++) {
+                    data[i].selected=false;
+                }
+                props.updateSelectedFilter('self');
+                data[0].selected=true;
+                setisRefreshing(true);
+                getTransactions('self');
+            }else{
+                props.updateSelectedFilter('all')
+                setisRefreshing(true);
+                getTransactions('all');
+                for (let i = 0; i < data.length; i++) {
+                    data[i].selected=true;
+                }
+            }
+        }else{
+            let selectedCount=getCurrentSelectedCount(data);
+            if(selectedCount-1==0 && data[index].selected){
+                showToast("Please select atleast one.")
+            }else{
+                data[index].selected=!data[index].selected;
+                let selectedCount=getCurrentSelectedCount(data);
+                if(selectedCount==data.length){
+                    props.updateSelectedFilter('all')
+                    setisRefreshing(true);
+                    getTransactions('all');
+                }else if(selectedCount==1 && data[0].selected){
+                    props.updateSelectedFilter('self')
+                    setisRefreshing(true);
+                    getTransactions('self');
+                }else{
+                    props.updateSelectedFilter('custom')
+                    setisRefreshing(true);
+                    getTransactions('custom');
+                }
+            }
+        }
+        setonChangeStaffList(!onChangeStaffList);
+        props.updateStaffsList(data);
+    }
+
+    const setSelectedFilter=(val)=>{
+        let data = props.saffsList;
+        for (let i = 0; i < data.length; i++) {
+            if(val=='all'){
+                data[i].selected=true;
+            }else if(val=='self' && i==0){
+                data[i].selected=true;
+            }else{
+                data[i].selected=false;
+            }
+        }
+        if(val=='all' || val=='self'){
+            props.updateSelectedFilter(val);
+        }else{
+            getStaffs();
+        }
+        props.updateStaffsList(data);
     }
     
 
@@ -112,13 +258,22 @@ const TransactionContainer = (props) => {
             isRefreshing={isRefreshing}
             setisRefreshing={setisRefreshing}
             userData={props.userData}
-            getTransactions={getTransactions}
+            getTransactions={()=>getTransactions(props.selectedFilter)}
             searchQuery={searchQuery}
             onSearch={onSearch}
             filteredSTransactions={filteredSTransactions}
             filteredUSTransactions={filteredUSTransactions}
             onClickMoveToSettled={onClickMoveToSettled}
             isLoading={isLoading}
+            refRBSheet={refRBSheet}
+            getStaffs={getStaffs}
+            saffsList={props.saffsList}
+            selectedFilter={props.selectedFilter}
+            isPopMenu={isPopMenu}
+            setIsPopMenu={setIsPopMenu}
+            setSelectedFilter={setSelectedFilter}
+            onChangeFilterData={onChangeFilterData}
+            onChangeStaffList={onChangeStaffList}
         />
     );
 }
@@ -129,14 +284,18 @@ const mapStateToProps = state => ({
     userData: state.userreducer.userData,
     sTransactions: state.transactionsreducer.sTransactions,
     usTransactions: state.transactionsreducer.usTransactions,
-    totalAmount: state.transactionsreducer.totalAmount
+    totalAmount: state.transactionsreducer.totalAmount,
+    saffsList: state.transactionsreducer.saffsList,
+    selectedFilter: state.transactionsreducer.selectedFilter
 });
 
 const mapDispatchToProps = dispatch => ({
     updateuser:(userData) => dispatch({type: 'UPDATE_USERDATA', payload: {userData:userData}}),
     updatesTransactions:(sTransactions) => dispatch({type: 'UPDATE_S_TRANSACTIONS', payload: {sTransactions:sTransactions}}),
     updateusTransactions:(usTransactions) => dispatch({type: 'UPDATE_US_TRANSACTIONS', payload: {usTransactions:usTransactions}}),
-    updateTotalAmount:(totalAmount) => dispatch({type: 'UPDATE_TOTAL_AMOUNT', payload: {totalAmount:totalAmount}})
+    updateTotalAmount:(totalAmount) => dispatch({type: 'UPDATE_TOTAL_AMOUNT', payload: {totalAmount:totalAmount}}),
+    updateStaffsList:(saffsList) => dispatch({type: 'UPDATE_STFFS_LIST', payload: {saffsList:saffsList}}),
+    updateSelectedFilter:(selectedFilter) => dispatch({type: 'UPDATE_SELECTED_FILTER', payload: {selectedFilter:selectedFilter}})
 });
 
 

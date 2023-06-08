@@ -68,6 +68,7 @@ const MPINLoginContainer = (props) => {
             props.updateusTransactions(response.notsettled_data.reverse());
             return true;
         } else {
+            onClickForget();
             showToast(
                 response.message ? response.message : 'Something went wrong, try again',
             );
@@ -102,7 +103,7 @@ const MPINLoginContainer = (props) => {
                     index: 0,
                     routes: [
                     {
-                        name: 'LoginContainer',
+                        name: 'ForgetPasswordContainer',
                     },
                     ],
                 }),

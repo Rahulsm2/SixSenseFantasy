@@ -6,6 +6,7 @@ import { postData } from '../../services/rootService';
 import {getToken} from '../../services/persistData';
 import { showToast } from '../../components/common/ShowToast';
 import moment from 'moment';
+import { PermissionsAndroid } from "react-native";
 
 const ValCouponContainer = (props) => {
 
@@ -21,6 +22,7 @@ const ValCouponContainer = (props) => {
     const [couponData, setCouponData] = useState('');
     const [redeemAmount, setredeemAmount] = useState('');
     const [billAmount, setbillAmount] = useState('');
+    const [seekPremission, setSeekPremission] = useState(false);
     const [remarks, setremarks] = useState('');
     const refRBSheet = useRef();
 
@@ -37,6 +39,16 @@ const ValCouponContainer = (props) => {
     //     }, 90000);
     //   }
     // },[couponStatus]);
+
+    useEffect(()=>{
+      const granted = PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.CAMERA
+      );
+      console.log("granted",granted);
+      if(granted === PermissionsAndroid.RESULTS.DENIED){
+        setSeekPremission(true);
+      }
+    },[seekPremission]);
 
     onBarCodeRead = async scanResult => {
         const token = await getToken();
@@ -106,7 +118,7 @@ const ValCouponContainer = (props) => {
         //   return;
         // }
         if (Number(redeemAmount)>Number(couponData.amount)) {
-          message = 'Enter amount less than balence.';
+          message = 'Enter amount less than balance.';
           showToast(message);
           return;
         }
@@ -204,6 +216,8 @@ const ValCouponContainer = (props) => {
             setremarks={setremarks}
             onClickRedeem={onClickRedeem}
             refRBSheet={refRBSheet}
+            seekPremission={seekPremission}
+            setSeekPremission={setSeekPremission}
         />
     );
 }

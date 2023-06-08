@@ -5,7 +5,8 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    Image,Dimensions,ScrollView
+    Image,Dimensions,ScrollView,
+    PermissionsAndroid
 } from 'react-native';
 import { gstyles } from '../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg } from '../../components/common/Constants';
@@ -20,7 +21,7 @@ import CouponExpireModal from "../../components/common/CouponExpireModal"
 import RBSheet from "react-native-raw-bottom-sheet";
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { TextInput } from 'react-native-paper';
+import { Modal, TextInput } from 'react-native-paper';
 
 const ValCouponComponent = (props) => {
     const { height, width } = Dimensions.get('window');
@@ -38,10 +39,12 @@ const ValCouponComponent = (props) => {
         props.refRBSheet.current.open()
     }
 
-    // useEffect(()=>{
-    //     console.log(inputRef.current)
-    //     inputRef.current.focus()
-    // },[])
+    useEffect(()=>{
+        console.log(inputRef)
+        if(inputRef.current){
+            inputRef.current.forceFocus()
+        }
+    },[inputRef,props.couponStatus])
     return (
         <>
             <StatusBar
@@ -84,6 +87,7 @@ const ValCouponComponent = (props) => {
                             alignSelf: 'center',
                         }}
                         onBarCodeRead={(data)=>props.isLoading || props.couponStatus!=='pending' ? {} : props.onBarCodeRead(data)}
+                        
                     >
                         <View style={{flex: 1}}>
                             <View style={{
@@ -244,8 +248,6 @@ const ValCouponComponent = (props) => {
                                     if (text === '' || re.test(text)) {
                                         props.setredeemAmount(text)}}
                                      }
-                                autoFocus={true}
-                                onLayout={()=> inputRef.current.focus()}
                             />
                         </View>
                         {/* <View style={{ width: WIDTH - 35, alignSelf: 'center' }}>
@@ -323,6 +325,22 @@ const ValCouponComponent = (props) => {
                         </View>
                     </ScrollView>
                 </RBSheet>
+                <Modal
+                    transparent
+                    visible={props.seekPremission}
+                    animationType="fade">
+                    <View style={{backgroundColor:'#fff',padding:10,alignItems:'center',justifyContent:'center'}}>
+                        <TouchableOpacity onPress={
+                            async ()=> {
+                            const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA)
+                            if(granted == PermissionsAndroid.RESULTS.GRANTED){
+                                props.setSeekPremission(false);
+                            }
+                        }}>
+                        <Text>seekPremission</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
             </View>
         </>
     );

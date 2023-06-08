@@ -28,7 +28,7 @@ const ForgetPasswordComponent = (props) => {
                         style={gstyles.iconSize(107, 86)}
                     />
                     <Text style={gstyles.OpenSans_SemiBold(20, '#000000', gstyles.mt(25))}>
-                        Forget Password
+                        Login to TicketsQue Insider
                     </Text>
                 </View>
 

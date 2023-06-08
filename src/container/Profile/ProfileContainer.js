@@ -28,7 +28,7 @@ const ProfileContainer = (props) => {
                     index: 0,
                     routes: [
                     {
-                        name: 'LoginContainer',
+                        name: 'ForgetPasswordContainer',
                     },
                     ],
                 }),

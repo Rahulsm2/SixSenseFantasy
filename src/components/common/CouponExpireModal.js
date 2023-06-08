@@ -4,6 +4,7 @@ import { WIDTH } from './Constants';
 import { gstyles } from './GlobalStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
+import moment from 'moment';
 
 const CouponExpireModal = (props) => {
 
@@ -37,7 +38,7 @@ const CouponExpireModal = (props) => {
                             Coupon ID
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#000000')}>0133456</Text>
+                            :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#000000')}>#{props.couponData.id}</Text>
                         </Text>
                     </View>
                     <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
@@ -45,7 +46,7 @@ const CouponExpireModal = (props) => {
                             Created at
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}02/02/23,   05: 35 PM
+                            :{'    '}{moment(props.couponData.created_at).format('DD/MM/YY,   hh: mm A')}
                         </Text>
                     </View>
                     <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14), gstyles.mb(50)]}>
@@ -53,7 +54,7 @@ const CouponExpireModal = (props) => {
                             Valid till
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}03/02/23,   01: 10 AM
+                            :{'    '}{moment(props.couponData.expiry_time).format('DD/MM/YY,   hh: mm A')}
                         </Text>
                     </View>
                 </View>

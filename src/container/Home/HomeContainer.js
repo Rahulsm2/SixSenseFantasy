@@ -18,6 +18,7 @@ const HomeContainer = (props) => {
     // const [usTransactions, setUsTransactions] = useState(props.usTransactions);
     const [isRefreshing, setisRefreshing] = useState(false);
     // const [totalAmount, setTotalAmount] = useState(props.totalAmount);
+    // const [selectedFilter, setSelectedFilter] = useState('all');
 
     useEffect(() => {
         // setIsLoading(true);
@@ -25,10 +26,16 @@ const HomeContainer = (props) => {
         return () => {};
     }, []);
 
-    const getTransactions=async()=>{
+    const getTransactions=async(selectedFilter=null)=>{
         const token = await getToken();
         let formData = new FormData();
-        formData.append('staff_id', '');
+        if(selectedFilter=='all'){
+            formData.append('staff_id', '');
+        }else if(selectedFilter=="self"){
+            formData.append('staff_id', ""+props.userData.id);
+        }else{
+            formData.append('staff_id', '');
+        }
         const response = await postData('api/app/coupon/transaction_settled',formData, token);
         if (response.statusCode == 200) {
             if (response.errors) {
@@ -49,6 +56,7 @@ const HomeContainer = (props) => {
             props.updateusTransactions(response.notsettled_data.reverse());
             setIsLoading(false);
             setisRefreshing(false)
+            console.log(allTransaction);
         } else {
             setIsLoading(false);
             setisRefreshing(false)
@@ -82,7 +90,7 @@ const HomeContainer = (props) => {
             }
             setIsLoading(false);
             setisRefreshing(true);
-            getTransactions();
+            getTransactions(props.selectedFilter);
             // setIsBtnSelected("settled");
         } else {
             setIsLoading(false);
@@ -90,6 +98,30 @@ const HomeContainer = (props) => {
                 response.message ? response.message : 'Something went wrong, try again',
             );
         }
+    }
+
+    const setSelectedFilter=(val)=>{
+        props.updateSelectedFilter(val);
+        let data = props.saffsList;
+        for (let i = 0; i < data.length; i++) {
+            if(val=='all'){
+                data[i].selected=true;
+            }else if(val=='self' && i==0){
+                data[i].selected=true;
+            }else{
+                data[i].selected=false;
+            }
+        }
+        props.updateStaffsList(data);
+        setisRefreshing(true);
+        getTransactions(val);
+        // let array=[]
+        // const searchResult = props.data.filter(function (item) {
+        //     for (let index = 0; index < array.length; index++) {
+        //         const element = array[index];
+                
+        //     }
+        // });
     }
 
     return (
@@ -110,9 +142,11 @@ const HomeContainer = (props) => {
             isLoading={isLoading}
             isRefreshing={isRefreshing}
             setisRefreshing={setisRefreshing}
-            getTransactions={getTransactions}
+            getTransactions={()=>getTransactions(props.selectedFilter)}
             totalAmount={props.totalAmount}
             onClickMoveToSettled={onClickMoveToSettled}
+            selectedFilter={props.selectedFilter}
+            setSelectedFilter={setSelectedFilter}
         />
     );
 }
@@ -122,14 +156,18 @@ const mapStateToProps = state => ({
     userData: state.userreducer.userData,
     sTransactions: state.transactionsreducer.sTransactions,
     usTransactions: state.transactionsreducer.usTransactions,
-    totalAmount: state.transactionsreducer.totalAmount
+    totalAmount: state.transactionsreducer.totalAmount,
+    selectedFilter: state.transactionsreducer.selectedFilter,
+    saffsList: state.transactionsreducer.saffsList,
 });
 
 const mapDispatchToProps = dispatch => ({
     updateuser:(userData) => dispatch({type: 'UPDATE_USERDATA', payload: {userData:userData}}),
     updatesTransactions:(sTransactions) => dispatch({type: 'UPDATE_S_TRANSACTIONS', payload: {sTransactions:sTransactions}}),
     updateusTransactions:(usTransactions) => dispatch({type: 'UPDATE_US_TRANSACTIONS', payload: {usTransactions:usTransactions}}),
-    updateTotalAmount:(totalAmount) => dispatch({type: 'UPDATE_TOTAL_AMOUNT', payload: {totalAmount:totalAmount}})
+    updateTotalAmount:(totalAmount) => dispatch({type: 'UPDATE_TOTAL_AMOUNT', payload: {totalAmount:totalAmount}}),
+    updateStaffsList:(saffsList) => dispatch({type: 'UPDATE_STFFS_LIST', payload: {saffsList:saffsList}}),
+    updateSelectedFilter:(selectedFilter) => dispatch({type: 'UPDATE_SELECTED_FILTER', payload: {selectedFilter:selectedFilter}})
 });
 
 

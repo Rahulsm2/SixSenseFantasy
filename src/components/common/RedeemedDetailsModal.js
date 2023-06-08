@@ -13,7 +13,7 @@ const RedeemedDetailsModal = (props) => {
             transparent
             visible={true}
             animationType="fade"
-            onRequestClose={() => { props.setIsLogOutModal(false) }}>
+            onRequestClose={() => { props.setIsDetailModal(!props.isDetailModal) }}>
             <StatusBar
                 backgroundColor={'rgba(0,0,0,0.5)'}
                 barStyle="light-content"
@@ -68,7 +68,7 @@ const RedeemedDetailsModal = (props) => {
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Remarks
                         </Text>
-                        <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                        <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'),{maxWidth:195,textAlign:'justify'}]}>
                             :{'    '}{props.data.remarks}
                         </Text>
                     </View> }

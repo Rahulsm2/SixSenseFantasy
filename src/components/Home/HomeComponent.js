@@ -72,7 +72,7 @@ const HomeComponent = (props) => {
                     {props.userData && props.userData.role=="Biller" ? <Text style={gstyles.OpenSans_Regular(10, '#000000', { ...gstyles.size('40%'), textAlign: 'right' })}
                         numberOfLines={1}
                     >
-                        Redmeed by Ganesh
+                        Redmeed by {item.first_name}
                     </Text> : null }
                 </View>
             </TouchableOpacity>
@@ -136,7 +136,7 @@ const HomeComponent = (props) => {
                             onPress={() => { props.setIsPopMenu(true) }}
                             activeOpacity={0.6} style={gstyles.inRow}>
                             <Text style={gstyles.OpenSans_SemiBold(14, '#000000', gstyles.me(5))}>
-                                All
+                                {props.selectedFilter=='all' ? "All" : props.selectedFilter=='self' ? "Self" : "Custom"}
                             </Text>
                             <Ionicons name='caret-down-circle-sharp' size={20} color='#3F3F3F' />
                         </TouchableOpacity>: null }
@@ -226,7 +226,9 @@ const HomeComponent = (props) => {
             {props.isPopMenu &&
                 <PopMenuModal
                     isPopMenu={props.isPopMenu}
-                    setIsPopMenu={props.setIsPopMenu} />}
+                    setIsPopMenu={props.setIsPopMenu}
+                    setSelectedFilter={props.setSelectedFilter}
+                    selectedFilter={props.selectedFilter} />}
                     
             <LoadingModel loading={props.isLoading}/>
         </>

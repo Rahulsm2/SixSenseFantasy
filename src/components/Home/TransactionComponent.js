@@ -11,7 +11,7 @@ import {
     TextInput,RefreshControl
 } from 'react-native';
 import { gstyles } from '../../components/common/GlobalStyles';
-import { OpenSans_Medium, WIDTH, app_Bg } from '../../components/common/Constants';
+import { HEIGHT, OpenSans_Medium, WIDTH, app_Bg } from '../../components/common/Constants';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -22,6 +22,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 import LoadingModel from "../../components/common/Loading"
+import PopMenuModal from '../common/PopMenuModal';
 
 const TransactionComponent = (props) => {
 
@@ -69,7 +70,7 @@ const TransactionComponent = (props) => {
                     {props.userData && props.userData.role=="Biller" ? <Text style={gstyles.OpenSans_Regular(10, '#000000', { ...gstyles.size('40%'), textAlign: 'right' })}
                         numberOfLines={1}
                     >
-                        Redmeed by Ganesh
+                        Redmeed by {item.first_name}
                     </Text> : null }
                 </View>
             </TouchableOpacity>
@@ -89,8 +90,38 @@ const TransactionComponent = (props) => {
         );
     }
 
+    const _renderFilterData = ({item,index}) => {
+        return (
+            <View>
+            {index == 0 ?
+                <TouchableOpacity onPress={()=>props.onChangeFilterData(-1)} activeOpacity={0.6}
+                style={[gstyles.inRow, gstyles.ms(20),gstyles.mb(10)]}>
+                <MaterialCommunityIcons name={props.selectedFilter=='all' ? 'checkbox-outline' : 'checkbox-blank-outline'} size={25} color={props.selectedFilter=='all' ? '#8338EC' : "#000000"} />
+                <Text style={gstyles.OpenSans_SemiBold(16, props.selectedFilter=='all' ? '#8338EC' : "#000000", gstyles.ms(15))}>
+                 ALL
+                </Text>
+            </TouchableOpacity> : null }
 
-    const refRBSheet = useRef();
+            {/* {index == 0 && props.userData && props.userData.role=="Biller" ?
+                <TouchableOpacity activeOpacity={0.6}
+                style={[gstyles.inRow, gstyles.ms(20),gstyles.mb(10)]}>
+                <MaterialCommunityIcons name={props.selectedFilter=='self' || props.selectedFilter=='all' ? 'checkbox-outline' : 'checkbox-blank-outline'} size={25} color={props.selectedFilter=='self'|| props.selectedFilter=='all' ? '#8338EC' : "#000000"} />
+                <Text style={gstyles.OpenSans_SemiBold(16, props.selectedFilter=='self'|| props.selectedFilter=='all' ? '#8338EC' : "#000000", gstyles.ms(15))}>
+                 SELF ({props.userData.first_name} {props.userData.last_name})
+                </Text>
+            </TouchableOpacity> : null } */}
+                
+            <TouchableOpacity onPress={()=>props.onChangeFilterData(index)} activeOpacity={0.6}
+                style={[gstyles.inRow, gstyles.ms(20),gstyles.mb(10)]}>
+                <MaterialCommunityIcons name={item.selected ? 'checkbox-outline' : 'checkbox-blank-outline'} size={25} color={item.selected ? '#8338EC' : '#000000'} />
+                <Text style={gstyles.OpenSans_Medium(16, item.selected ? '#8338EC' : '#000000', gstyles.ms(15))}>
+                    {index == 0 ? "SELF - " : null}{item.first_name} {item.last_name}
+                </Text>
+            </TouchableOpacity>
+            </View>
+        );
+    }
+    
 
     return (
         <>
@@ -126,8 +157,9 @@ const TransactionComponent = (props) => {
                             onChangeText={(val)=>props.onSearch(val)}
                         />
                     </View>
-                    {props.userData && props.userData.role=="Biller" ? <TouchableOpacity activeOpacity={0.6}
-                        onPress={() => refRBSheet.current.open()}
+                    {props.userData && props.userData.role=="Biller" ? 
+                    <TouchableOpacity activeOpacity={0.6}
+                        onPress={() =>  props.getStaffs()}
                     >
                         <FontAwesome name='filter' size={22} color='#3F3F3F' />
                     </TouchableOpacity> : null }
@@ -185,8 +217,8 @@ const TransactionComponent = (props) => {
                 </ScrollView>
 
                 <RBSheet
-                    ref={refRBSheet}
-                    closeOnDragDown={true}
+                    ref={props.refRBSheet}
+                    closeOnDragDown={false}
                     closeOnPressMask={true}
                     animationType={'slide'}
                     openDuration={250}
@@ -203,37 +235,40 @@ const TransactionComponent = (props) => {
                         container: {
                             borderTopLeftRadius: 24,
                             borderTopRightRadius: 24,
-                            height: WIDTH / 1.6
+                            height:'auto'
                         }
                     }}
                 >
-                    <ScrollView showsVerticalScrollIndicator={false}>
-                        <View style={[gstyles.centerX, gstyles.mt(15), gstyles.mb(50)]}>
+                    <ScrollView showsVerticalScrollIndicator={true}>
+                        <View style={[gstyles.centerX, gstyles.mt(15), gstyles.mb(20)]}>
                             <Text style={gstyles.OpenSans_SemiBold(20, '#0276E5')}>
                                 Filter Transactions
                             </Text>
                         </View>
                         <TouchableOpacity activeOpacity={0.6}
                             style={{ position: 'absolute', right: 25, top: 15 }}
-                            onPress={() => refRBSheet.current.close()}
+                            onPress={() => props.refRBSheet.current.close()}
                         >
                             <AntDesign name='close' size={25} color='#0276E5' />
                         </TouchableOpacity>
 
-                        <TouchableOpacity activeOpacity={0.6}
-                            style={[gstyles.inRow, gstyles.ms(20)]}>
-                            <MaterialCommunityIcons name='checkbox-marked-outline' size={25} color='#8338EC' />
-                            <Text style={gstyles.OpenSans_SemiBold(16, '#8338EC', gstyles.ms(15))}>
-                                High to Low
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity activeOpacity={0.6}
+                        {/* props.saffsList */}
+
+                        <FlatList
+                            data={props.saffsList}
+                            extraData={props.onChangeStaffList}
+                            renderItem={_renderFilterData}
+                            keyExtractor={item => item.id}
+                            showsVerticalScrollIndicator={true}
+                        />
+
+                        {/* <TouchableOpacity activeOpacity={0.6}
                             style={[gstyles.inRow, gstyles.ms(20), gstyles.mt(20)]}>
                             <MaterialCommunityIcons name='checkbox-blank-outline' size={25} color='#000000' />
                             <Text style={gstyles.OpenSans_Medium(16, '#000', gstyles.ms(15))}>
                                 Low to High
                             </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </ScrollView>
                 </RBSheet>
 
@@ -244,6 +279,13 @@ const TransactionComponent = (props) => {
                     setIsDetailModal={props.setIsDetailModal}
                     onClickMoveToSettled={props.onClickMoveToSettled} />}
             <LoadingModel loading={props.isLoading}/>
+
+            {props.isPopMenu &&
+                <PopMenuModal
+                    isPopMenu={props.isPopMenu}
+                    setIsPopMenu={props.setIsPopMenu}
+                    setSelectedFilter={props.setSelectedFilter}
+                    selectedFilter={props.selectedFilter} />}
             </View>
         </>
     );

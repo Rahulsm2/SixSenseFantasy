@@ -5,8 +5,9 @@ import { showToast } from '../../components/common/ShowToast';
 import { persistToken } from '../../services/persistData';
 import { postData } from '../../services/rootService';
 import {CommonActions} from '@react-navigation/native';
+import { connect } from 'react-redux';
 
-const ForgetPasswordContainer = () => {
+const ForgetPasswordContainer = (props) => {
     
     const [mobileNumber, setMobileNumber] = useState('');
     const [otp, setOtp] = useState('');
@@ -47,30 +48,65 @@ const ForgetPasswordContainer = () => {
         }, 1000);
       };
 
-    const onClickContinue = () => {
+    const onClickContinue = async () => {
         if (otp.length<4) {
             message = 'Enter valid OTP';
             showToast(message);
             return;
         } 
-        if (otp==response.otp) {
+        // if (otp==response.otp) {
             // navigation.navigate('ResetPasswordContainer');
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                    {
-                        name: 'ResetPasswordContainer',
-                        params:{response:response,mobileNumber:mobileNumber}
-                    },
-                    ],
-                }),
-            );
-        }else{
-            message = 'Invalid OTP';
-            showToast(message);
-            return;
-        } 
+            // navigation.dispatch(
+            //     CommonActions.reset({
+            //         index: 0,
+            //         routes: [
+            //         {
+            //             name: 'ResetPasswordContainer',
+            //             params:{response:response,mobileNumber:mobileNumber}
+            //         },
+            //         ],
+            //     }),
+            // );
+            setIsLoading(true)
+          let formData = new FormData();
+          formData.append('phone', mobileNumber);
+          formData.append('code', otp);
+          const response = await postData('api/app/otplogin', formData);
+          console.log(response);
+    
+          if (response.statusCode === 200) {
+            setIsLoading(false)
+            if (response.errors) {
+                showToast(response.message);
+                return;
+            }
+            props.updateuser(response.data)
+            const isPersist = await persistToken(response.token.access_token);
+            if(isPersist){
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                        {
+                            name: 'SetMPINContainer',
+                        },
+                        ],
+                    }),
+                );
+            }
+          } else {
+            setIsLoading(false)
+            response.message
+              ? showToast(response.message)
+              : showToast(
+                  'Something went wrong, please try again later'
+                );
+          }
+        // }else{
+        //     message = 'Invalid OTP';
+        //     showToast(message);
+        //     return;
+        // } 
     }
 
     const onClickSendOTP= async ()=>{
@@ -124,4 +160,14 @@ const ForgetPasswordContainer = () => {
     );
 }
 
-export default ForgetPasswordContainer;
+// export default ForgetPasswordContainer;
+const mapStateToProps = state => ({
+  userData: state.userreducer.userData,
+});
+
+
+const mapDispatchToProps = dispatch => ({
+  updateuser:(userData) => dispatch({type: 'UPDATE_USERDATA', payload: {userData:userData}})
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ForgetPasswordContainer)
