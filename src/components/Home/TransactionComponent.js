@@ -96,9 +96,9 @@ const TransactionComponent = (props) => {
             {index == 0 ?
                 <TouchableOpacity onPress={()=>props.onChangeFilterData(-1)} activeOpacity={0.6}
                 style={[gstyles.inRow, gstyles.ms(20),gstyles.mb(10)]}>
-                <MaterialCommunityIcons name={props.selectedFilter=='all' ? 'checkbox-outline' : 'checkbox-blank-outline'} size={25} color={props.selectedFilter=='all' ? '#8338EC' : "#000000"} />
-                <Text style={gstyles.OpenSans_SemiBold(16, props.selectedFilter=='all' ? '#8338EC' : "#000000", gstyles.ms(15))}>
-                 ALL
+                <MaterialCommunityIcons name={props.selectedFilter=='all' ? 'checkbox-marked' : 'checkbox-blank-outline'} size={25} color={props.selectedFilter=='all' ? '#8338EC' : "#00000095"} />
+                <Text style={gstyles.OpenSans_Bold(16, props.selectedFilter=='all' ? '#000000' : "#00000095", gstyles.ms(15))}>
+                 {props.selectedFilter=='all' ? 'Unselect All' : 'Select All'}
                 </Text>
             </TouchableOpacity> : null }
 
@@ -113,8 +113,8 @@ const TransactionComponent = (props) => {
                 
             <TouchableOpacity onPress={()=>props.onChangeFilterData(index)} activeOpacity={0.6}
                 style={[gstyles.inRow, gstyles.ms(20),gstyles.mb(10)]}>
-                <MaterialCommunityIcons name={item.selected ? 'checkbox-outline' : 'checkbox-blank-outline'} size={25} color={item.selected ? '#8338EC' : '#000000'} />
-                <Text style={gstyles.OpenSans_Medium(16, item.selected ? '#8338EC' : '#000000', gstyles.ms(15))}>
+                <MaterialCommunityIcons name={item.selected ? 'checkbox-outline' : 'checkbox-blank-outline'} size={25} color={item.selected ? '#8338EC' : '#00000090'} />
+                <Text style={[item.selected ? gstyles.OpenSans_SemiBold(16, item.selected ? '#000000' : '#00000090', gstyles.ms(15)): gstyles.OpenSans_Medium(16, item.selected ? '#000000' : '#00000090', gstyles.ms(15)),{textTransform: 'capitalize'}]}>
                     {index == 0 ? "SELF - " : null}{item.first_name} {item.last_name}
                 </Text>
             </TouchableOpacity>

@@ -42,7 +42,7 @@ const ValCouponComponent = (props) => {
     useEffect(()=>{
         console.log(inputRef)
         if(inputRef.current){
-            inputRef.current.forceFocus()
+            inputRef.current?.forceFocus()
         }
     },[inputRef,props.couponStatus])
     return (
@@ -77,6 +77,7 @@ const ValCouponComponent = (props) => {
                         barcodeFinderBorderColor="white"
                         barcodeFinderBorderWidth={2}
                         defaultTouchToFocus
+                        barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
                         flashMode={props.isFlash == true ?
                             RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
                         style={{

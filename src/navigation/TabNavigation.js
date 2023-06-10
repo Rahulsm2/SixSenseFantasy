@@ -63,8 +63,8 @@ const TabBarComponent = ({ state, descriptors, navigation }) => {
 
         <View style={tabStyles.scanImgView}>
           <Image source={require('../assets/images/qrcode-scan.png')}
-            style={currentRouteName == 'ValCouponContainer' ? [gstyles.iconSize(28), { backgroundColor: '#FFFFFF', tintColor: '#8338EC' }] :
-              [gstyles.iconSize(28), { backgroundColor: '#FFFFFF', tintColor: '#3F3F3F' }]
+            style={currentRouteName == 'ValCouponContainer' ? [gstyles.iconSize(28), { tintColor: '#8338EC' }] :
+              [gstyles.iconSize(28), { tintColor: '#3F3F3F' }]
             }
           />
         </View>
