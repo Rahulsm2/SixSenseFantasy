@@ -28,10 +28,10 @@ const PopMenuModal = (props) => {
                                 props.setSelectedFilter('all')
                                 props.setIsPopMenu(false) }}
                         >
-                            <View style={[styles.iconBg, { backgroundColor: props.selectedFilter=='all' ? '#8338EC' : '#fff' }]}>
+                            <View style={[styles.iconBg, { backgroundColor: props.selectedFilter=='all' ? '#0276E5' : '#fff' }]}>
                                 <MaterialCommunityIcons name={props.selectedFilter=='all' ? 'check-all': 'check'} size={12} color={props.selectedFilter=='all' ? '#fff' : '#000'} />
                             </View>
-                            <Text style={gstyles.OpenSans_SemiBold(14, props.selectedFilter=='all' ? '#8338EC' : '#000', gstyles.ms(15))}>
+                            <Text style={gstyles.OpenSans_SemiBold(14, props.selectedFilter=='all' ? '#0276E5' : '#000', gstyles.ms(15))}>
                                 All  Transactions
                             </Text>
                         </TouchableOpacity>
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     hrLine: {
         width: '90%',
         height: 0.7,
-        backgroundColor: '#8338EC',
+        backgroundColor: '#0276E5',
         marginVertical: 9,
         alignSelf: 'center'
     }

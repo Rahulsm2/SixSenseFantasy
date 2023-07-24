@@ -41,7 +41,7 @@ const ProfileComponent = (props) => {
                     </View>
                 </View>
                 <View style={[gstyles.centerXY, gstyles.mt(35)]}>
-                    <ImageBackground source={require('../../assets/images/account.png')}
+                    {/* <ImageBackground source={require('../../assets/images/account.png')}
                         style={styles.profImg}
                         borderRadius={100}
                         borderColor={'#0276E5'}
@@ -53,12 +53,16 @@ const ProfileComponent = (props) => {
                         >
                             <MaterialCommunityIcons name='circle-edit-outline' size={24} color='#0276E5' />
                         </TouchableOpacity>
-                    </ImageBackground>
+                    </ImageBackground> */}
+
+                    <View style={styles.profImg}>
+                        <Text style={gstyles.OpenSans_SemiBold(38, '#000000')}>{props.userData && props.userData.first_name[0]}{props.userData && props.userData.last_name[0]}</Text>
+                    </View>
 
                     <View style={[gstyles.mt(15), gstyles.centerXY, { width: WIDTH - 90 }]}>
                         <Text numberOfLines={1}
                             style={gstyles.OpenSans_SemiBold(16, '#000000')}>
-                            {props.userData && props.userData.first_name}
+                            {props.userData && props.userData.first_name} {props.userData && props.userData.last_name}
                         </Text>
                         <Text numberOfLines={1}
                             style={gstyles.OpenSans_Medium(12, '#000000', gstyles.mt(5))}>
@@ -83,8 +87,8 @@ const ProfileComponent = (props) => {
                             Change Password
                         </Text>
                     </TouchableOpacity>
-                    <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} />
-                    <TouchableOpacity onPress={() => showToast("Coming soon..!")} activeOpacity={1}
+                    {/* <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} /> */}
+                    <TouchableOpacity onPress={() => props.onClickShareApp()} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(15), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,
@@ -97,8 +101,8 @@ const ProfileComponent = (props) => {
                             Share
                         </Text>
                     </TouchableOpacity>
-                    <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} />
-                    <TouchableOpacity onPress={() => showToast("Coming soon..!")} activeOpacity={1}
+                    {/* <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} /> */}
+                    <TouchableOpacity onPress={() => props.onClickContact()} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(15), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,
@@ -111,7 +115,7 @@ const ProfileComponent = (props) => {
                             Contact Us
                         </Text>
                     </TouchableOpacity>
-                    <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} />
+                    {/* <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} /> */}
                     <TouchableOpacity onPress={() => props.onClickLogout()} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(15), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
@@ -125,10 +129,10 @@ const ProfileComponent = (props) => {
                             Logout
                         </Text>
                     </TouchableOpacity>
-                    <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} />
+                    {/* <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} /> */}
 
-                    <Text style={gstyles.OpenSans_SemiBold(12, '#8338EC', { opacity: 0.3, marginTop: 25 })}>
-                        Version 1.0.0
+                    <Text style={gstyles.OpenSans_SemiBold(12, '#0276E5', { opacity: 0.2, marginTop: 25 })}>
+                        Version 1.0.1
                     </Text>
 
 
@@ -185,8 +189,11 @@ const styles = StyleSheet.create({
 
     profImg: {
         ...gstyles.iconSize(109),
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end'
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor:'#000',
+        borderWidth:1,
+        borderRadius:100
     },
 
     inputBoxView: {

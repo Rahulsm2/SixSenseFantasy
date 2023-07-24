@@ -36,6 +36,7 @@ const ValCouponComponent = (props) => {
         props.setredeemAmount('');
         props.setbillAmount('');
         props.setremarks('');
+        props.setcouponStatus('redeem')
         props.refRBSheet.current.open()
     }
 
@@ -153,7 +154,7 @@ const ValCouponComponent = (props) => {
                                             : 'flash'
                                     }
                                     size={25}
-                                    color={'#8338EC'}
+                                    color={'#0276E5'}
                                 />
                             </TouchableOpacity>
                         </View>
@@ -233,7 +234,7 @@ const ValCouponComponent = (props) => {
                                 label="Redeem Amount"
                                 placeholder="Enter Redeem Amount"
                                 style={styles.inputText}
-                                outlineColor='#8338EC'
+                                outlineColor='#0276E5'
                                 keyboardType='number-pad'
                                 maxLength={5}
                                 left={
@@ -256,13 +257,18 @@ const ValCouponComponent = (props) => {
                                 *Bill exceeds Coupon amount, Collect Rs. 500 in cash
                             </Text>
                         </View> */}
+                        {props.redeemAmount>props.couponData.amount && <View style={{ width: WIDTH - 35, alignSelf: 'center' }}>
+                            <Text style={gstyles.OpenSans_Regular(12, '#FF0000', gstyles.mt(2))}>
+                                *Enter redeem amount less than coupon balence amount
+                            </Text>
+                        </View> }
                         <View style={[gstyles.mt(20)]}>
                             <TextInput
                                 mode="outlined"
                                 label="Bill Number"
                                 placeholder="Enter Bill Number"
                                 style={styles.inputText}
-                                outlineColor='#8338EC'
+                                outlineColor='#0276E5'
                                 keyboardType='number-pad'
                                 maxLength={10}
                                 left={
@@ -282,7 +288,8 @@ const ValCouponComponent = (props) => {
                                 label="Remarks"
                                 placeholder="Enter Remarks"
                                 style={styles.inputText}
-                                outlineColor='#8338EC'
+                                maxLength={250}
+                                outlineColor='#0276E5'
                                 left={
                                     <TextInput.Icon
                                         icon={'note-text'}
@@ -304,7 +311,7 @@ const ValCouponComponent = (props) => {
                                     style={[styles.btnTouch, styles.unSettleBtnTouch, { height: 50 }]}
                                     onPress={()=>showToast("Coming soon..!")}
                                 >
-                                    <Text style={gstyles.OpenSans_Bold(20, '#8338EC')}>
+                                    <Text style={gstyles.OpenSans_Bold(20, '#0276E5')}>
                                         Scan Bill
                                     </Text>
                                 </TouchableOpacity>
@@ -383,7 +390,7 @@ const styles = StyleSheet.create({
 
     unSettleBtnTouch: {
         backgroundColor: '#FFFFFF',
-        borderColor: '#8338EC',
+        borderColor: '#0276E5',
         borderWidth: 1
     },
 

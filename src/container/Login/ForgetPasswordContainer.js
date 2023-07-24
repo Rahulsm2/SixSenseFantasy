@@ -130,7 +130,6 @@ const ForgetPasswordContainer = (props) => {
                 return;
             }
             setresponse(response)
-            showToast(response.otp.toString());
             setIsOtpSent(true);
         } else {
             setIsLoading(false)

@@ -3,8 +3,16 @@ import HomeComponent from '../../components/Home/HomeComponent';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import { postData } from '../../services/rootService';
-import {getToken} from '../../services/persistData';
+import {CommonActions} from '@react-navigation/native';
+import { removeMpin, removeToken,getToken } from '../../services/persistData';
 import { showToast } from '../../components/common/ShowToast';
+import SpInAppUpdates, {
+    NeedsUpdateResponse,
+    IAUUpdateKind,
+    StartUpdateOptions,
+  } from 'sp-react-native-in-app-updates';
+
+const inAppUpdates = new SpInAppUpdates(false); //isDebug
 
 const HomeContainer = (props) => {
 
@@ -23,6 +31,19 @@ const HomeContainer = (props) => {
     useEffect(() => {
         // setIsLoading(true);
         // getTransactions();
+        inAppUpdates.checkNeedsUpdate().then((result) => {
+            console.log(result);
+            if (result.shouldUpdate) {
+              let updateOptions = {};
+              if (Platform.OS === 'android') {
+                // android only, on iOS the user will be promped to go to your app store page
+                updateOptions = {
+                  updateType: IAUUpdateKind.FLEXIBLE,
+                };
+              }
+              inAppUpdates.startUpdate(updateOptions); // https://github.com/SudoPlz/sp-react-native-in-app-updates/blob/master/src/types.ts#L78
+            }
+          });
         return () => {};
     }, []);
 
@@ -61,7 +82,25 @@ const HomeContainer = (props) => {
             setIsLoading(false);
             setisRefreshing(false)
             showToast(
-                response.message ? response.message : 'Something went wrong, try again',
+                response.message ? response.message : 'Session might expired, please login again.'
+            );
+            onClickForget();
+        }
+    }
+
+    const onClickForget = async () => {
+        const token = await removeToken();
+        const mpin = await removeMpin();
+        if(token && mpin){
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [
+                    {
+                        name: 'ForgetPasswordContainer',
+                    },
+                    ],
+                }),
             );
         }
     }

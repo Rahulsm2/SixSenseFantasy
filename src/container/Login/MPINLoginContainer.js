@@ -26,6 +26,7 @@ const MPINLoginContainer = (props) => {
             setIsLoading(true);
             const isResponce = await getTransactions();
             const isResponce1 = await getProfile();
+            const isResponce2 = await getConfigs();
             if(isResponce && isResponce1){
                 setIsLoading(false)
                 navigation.dispatch(
@@ -94,6 +95,24 @@ const MPINLoginContainer = (props) => {
         }
     }
 
+    const getConfigs=async()=>{
+        const token = await getToken();
+        const response = await getData('api/app/appconfig',null, token);
+        if (response.statusCode == 200) {
+            if (response.errors) {
+                showToast(response.message);
+                return false;
+            }
+            props.updateconfigs(response.data);
+            return true;
+        } else {
+            showToast(
+                response.message ? response.message : 'Something went wrong, try again',
+            );
+            return false;
+        }
+    }
+
     const onClickForget = async () => {
         const token = await removeToken();
         const mpin = await removeMpin();
@@ -137,7 +156,8 @@ const mapStateToProps = state => ({
     updateuser:(userData) => dispatch({type: 'UPDATE_USERDATA', payload: {userData:userData}}),
     updatesTransactions:(sTransactions) => dispatch({type: 'UPDATE_S_TRANSACTIONS', payload: {sTransactions:sTransactions}}),
     updateusTransactions:(usTransactions) => dispatch({type: 'UPDATE_US_TRANSACTIONS', payload: {usTransactions:usTransactions}}),
-    updateTotalAmount:(totalAmount) => dispatch({type: 'UPDATE_TOTAL_AMOUNT', payload: {totalAmount:totalAmount}})
+    updateTotalAmount:(totalAmount) => dispatch({type: 'UPDATE_TOTAL_AMOUNT', payload: {totalAmount:totalAmount}}),
+    updateconfigs:(appConfigs) => dispatch({type: 'UPDATE_APP_CONFIGS', payload: {appConfigs:appConfigs}})
   });
   
   export default connect(mapStateToProps, mapDispatchToProps)(MPINLoginContainer)

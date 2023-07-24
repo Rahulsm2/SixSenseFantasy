@@ -31,12 +31,13 @@ const ValCouponContainer = (props) => {
     }
 
     // useEffect(()=>{
-    //   if(couponStatus!="pending"){
-    //     setInterval(() => {
+    //   // console.log(refRBSheet.current);
+    //   if(couponStatus!="pending" && (couponStatus=="verified" || couponStatus=='redeem')){
+    //     setTimeout(() => {
     //       setcouponStatus('pending')
     //       showToast("Timeout , Please scan again.")
     //       refRBSheet.current.close();
-    //     }, 90000);
+    //     }, 300000);
     //   }
     // },[couponStatus]);
 

@@ -169,7 +169,7 @@ const HomeComponent = (props) => {
                             style={props.isBtnSelected == 'unSettled' ? styles.btnTouch : [styles.btnTouch, styles.unSettleBtnTouch]}
                             onPress={() => { props.setIsBtnSelected('unSettled') }}
                         >
-                            <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'unSettled' ? '#FFFFFF' : '#8338EC')}>
+                            <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'unSettled' ? '#FFFFFF' : '#0276E5')}>
                                 Unsettled ({props.usTransactions.length})
                             </Text>
                         </TouchableOpacity>
@@ -185,7 +185,7 @@ const HomeComponent = (props) => {
                             style={props.isBtnSelected == 'settled' ? styles.btnTouch : [styles.btnTouch, styles.unSettleBtnTouch]}
                             onPress={() => { props.setIsBtnSelected('settled') }}
                         >
-                            <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'settled' ? '#FFFFFF' : '#8338EC')}>
+                            <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'settled' ? '#FFFFFF' : '#0276E5')}>
                                 Settled ({props.sTransactions.length})
                             </Text>
                         </TouchableOpacity>
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
 
     unSettleBtnTouch: {
         backgroundColor: '#FFFFFF',
-        borderColor: '#8338EC',
+        borderColor: '#0276E5',
         borderWidth: 1
     },
 

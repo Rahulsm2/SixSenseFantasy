@@ -45,11 +45,11 @@ const TabBarComponent = ({ state, descriptors, navigation }) => {
           navigation.navigate('HomeContainer');
         }}>
         <Image source={require('../assets/images/text-search.png')}
-          style={currentRouteName == 'HomeContainer' ? [gstyles.iconSize(28), { tintColor: '#8338EC' }] :
+          style={currentRouteName == 'HomeContainer' ? [gstyles.iconSize(28), { tintColor: '#0276E5' }] :
             [gstyles.iconSize(28), { tintColor: '#3F3F3F' }]
           }
         />
-        <Text style={currentRouteName == 'HomeContainer' ? [gstyles.OpenSans_Bold(12, '#8338EC', gstyles.mt(7))] :
+        <Text style={currentRouteName == 'HomeContainer' ? [gstyles.OpenSans_Bold(12, '#0276E5', gstyles.mt(7))] :
           [gstyles.OpenSans_Medium(12, '#3F3F3F', gstyles.mt(7))]
         }>
           Transactions
@@ -63,7 +63,7 @@ const TabBarComponent = ({ state, descriptors, navigation }) => {
 
         <View style={tabStyles.scanImgView}>
           <Image source={require('../assets/images/qrcode-scan.png')}
-            style={currentRouteName == 'ValCouponContainer' ? [gstyles.iconSize(28), { tintColor: '#8338EC' }] :
+            style={currentRouteName == 'ValCouponContainer' ? [gstyles.iconSize(28), { tintColor: '#0276E5' }] :
               [gstyles.iconSize(28), { tintColor: '#3F3F3F' }]
             }
           />
@@ -72,7 +72,7 @@ const TabBarComponent = ({ state, descriptors, navigation }) => {
         <View
           style={[gstyles.iconSize(27)]}
         />
-        <Text style={currentRouteName == 'ValCouponContainer' ? [gstyles.OpenSans_Bold(12, '#8338EC', gstyles.mt(7))] :
+        <Text style={currentRouteName == 'ValCouponContainer' ? [gstyles.OpenSans_Bold(12, '#0276E5', gstyles.mt(7))] :
           [gstyles.OpenSans_Medium(12, '#3F3F3F', gstyles.mt(7))]
         }>
           Validate Coupon
@@ -84,11 +84,11 @@ const TabBarComponent = ({ state, descriptors, navigation }) => {
           navigation.navigate('ProfileContainer');
         }}>
         <Image source={require('../assets/images/account.png')}
-          style={currentRouteName == 'ProfileContainer' ? [gstyles.iconSize(28), { tintColor: '#8338EC' }] :
+          style={currentRouteName == 'ProfileContainer' ? [gstyles.iconSize(28), { tintColor: '#0276E5' }] :
             [gstyles.iconSize(28), { tintColor: '#3F3F3F' }]
           }
         />
-        <Text style={currentRouteName == 'ProfileContainer' ? [gstyles.OpenSans_Bold(12, '#8338EC', gstyles.mt(7))] :
+        <Text style={currentRouteName == 'ProfileContainer' ? [gstyles.OpenSans_Bold(12, '#0276E5', gstyles.mt(7))] :
           [gstyles.OpenSans_Medium(12, '#3F3F3F', gstyles.mt(7))]
         }>
           Profile

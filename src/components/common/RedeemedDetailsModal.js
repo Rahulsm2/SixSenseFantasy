@@ -52,7 +52,7 @@ const RedeemedDetailsModal = (props) => {
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Name
                         </Text>
-                        <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                        <Text numberOfLines={1} style={[gstyles.OpenSans_Regular(16, '#000000'),{maxWidth:195}]}>
                             :{'    '}{props.data.distribute_id} | {props.data.name}
                         </Text>
                     </View>
@@ -64,12 +64,15 @@ const RedeemedDetailsModal = (props) => {
                             :{'    '}{moment(props.data.created_at).format("DD/MM/YY,  hh:mm A")}
                         </Text>
                     </View>
-                    {props.data.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14)]}>
+                    {props.data.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14),{alignItems:'flex-start'}]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Remarks
                         </Text>
-                        <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'),{maxWidth:195,textAlign:'justify'}]}>
-                            :{'    '}{props.data.remarks}
+                        <Text style={[gstyles.OpenSans_Regular(16, '#000000')]}>
+                            :{'    '}
+                        </Text>
+                        <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'),{maxWidth:195,textAlign:'left'}]}>
+                            {props.data.remarks}
                         </Text>
                     </View> }
                     <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14) , {paddingBottom:props.data.status=="0" ? 0 : 30}]}>

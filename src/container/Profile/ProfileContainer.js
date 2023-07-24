@@ -1,7 +1,7 @@
 import React from 'react';
 import ProfileComponent from '../../components/Profile/ProfileComponent';
 import { useNavigation } from '@react-navigation/core';
-import {Alert} from 'react-native'
+import {Alert,Share,Linking} from 'react-native'
 import { connect } from 'react-redux';
 import { removeMpin, removeToken } from '../../services/persistData';
 import {CommonActions} from '@react-navigation/native';
@@ -16,6 +16,28 @@ const ProfileContainer = (props) => {
 
     const onClickEditProf = () => {
         navigation.navigate('EditProfileContainer');
+    }
+
+    // Hey there! Discover Ticketsque Insider, the ultimate solution for guest management, digital coupon distribution, verification, and redemption. Simplify operations, boost efficiency, and enhance the customer experience. Get it now on the Google Play Store: 
+
+    const onClickShareApp=async()=>{
+        try {
+            const result = await Share.share({
+                title: 'Share Ticketsque Insider',
+                message: 'Hey there! Discover Ticketsque Insider, the ultimate solution for guest management, digital coupon distribution, verification, and redemption. Simplify operations, boost efficiency, and enhance the customer experience. Get it now on the Google Play Store: https://play.google.com/store/apps/details?id=com.ticketsque.insider',
+            });
+            if (result.action === Share.sharedAction) {
+              if (result.activityType) {
+                // shared with activity type of result.activityType
+              } else {
+                // shared
+              }
+            } else if (result.action === Share.dismissedAction) {
+              // dismissed
+            }
+          } catch (error) {
+            
+          }
     }
 
     const loggingOut=async()=>{
@@ -44,19 +66,33 @@ const ProfileContainer = (props) => {
           ]);
     }
 
+    const onClickContact=()=>{
+        let data=props.appConfigs;
+        let phonedata=props.appConfigs;
+        for (let i = 0; i < data.length; i++) {
+            if(data[i].config_name=="contact_us"){
+                phonedata=data[i].version;
+            }
+        }
+        Linking.openURL('tel:'+phonedata);
+    }
+
     return (
         <ProfileComponent
             onClickBack={onClickBack}
             onClickEditProf={onClickEditProf}
             onClickLogout={onClickLogout}
             userData={props.userData}
+            onClickShareApp={onClickShareApp}
+            onClickContact={onClickContact}
         />
     );
 }
 
 // export default ProfileContainer;
 const mapStateToProps = state => ({
-    userData: state.userreducer.userData
+    userData: state.userreducer.userData,
+    appConfigs: state.userreducer.appConfigs
   });
   
   

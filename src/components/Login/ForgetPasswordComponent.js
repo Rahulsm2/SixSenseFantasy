@@ -5,7 +5,7 @@ import {
     Image,
     Text,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,Linking
 } from 'react-native';
 import { gstyles } from '../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg } from '../../components/common/Constants';
@@ -124,7 +124,9 @@ const ForgetPasswordComponent = (props) => {
                         </Text>
                     </TouchableOpacity>
                 </LinearGradient>
-
+                <TouchableOpacity onPress={()=>{Linking.openURL('https://ticketsque.com/');}} style={{position:'absolute',bottom:10,alignSelf:'center'}}>
+                    <Text>Join as a Business Partner</Text>
+                </TouchableOpacity>
             </View>
             <LoadingModel loading={props.isLoading} />
         </>

@@ -125,17 +125,26 @@ const TransactionContainer = (props) => {
         setSearchQuery(query);
         // let allTransaction= props.sTransactions.concat(props.usTransactions);
         const searchResult = props.usTransactions.filter(function (item) {
-          return ( item['bill_no'].includes(query) || 
+          return ( item['bill_no'].toString().includes(query) || 
           item["id"].toString().includes(query) || 
-          item["amount_used"].includes(query)
+          item["id"].toString().includes(query) || 
+          item["distribute_id"].toString().includes(query) ||
+          item["name"].toString().includes(query) ||
+          item["first_name"].toString().includes(query)
           )
         });
         const searchResult1 = props.sTransactions.filter(function (item) {
-            return ( item['bill_no'].includes(query) || 
+            return ( item['bill_no'].toString().includes(query) || 
             item["id"].toString().includes(query) || 
-            item["amount_used"].includes(query)
+            item["amount_used"].toString().includes(query)||
+            item["distribute_id"].toString().includes(query) ||
+            item["name"].toString().includes(query) ||
+            item["first_name"].toString().includes(query)
             )
         });
+        if(searchQuery.length<query.length && query.length>=3 && searchResult.length<=0 && searchResult1.length<=0){
+            showToast("No result found..");
+        }
         setFilterdUSTransactions(searchResult);
         setFilterdSTransactions(searchResult1);
       };
@@ -157,7 +166,7 @@ const TransactionContainer = (props) => {
             setIsLoading(false);
             setisRefreshing(true);
             getTransactions(props.selectedFilter);
-            setIsBtnSelected("settled");
+            // setIsBtnSelected("settled");
         } else {
             setIsLoading(false);
             showToast(

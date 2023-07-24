@@ -96,7 +96,7 @@ const TransactionComponent = (props) => {
             {index == 0 ?
                 <TouchableOpacity onPress={()=>props.onChangeFilterData(-1)} activeOpacity={0.6}
                 style={[gstyles.inRow, gstyles.ms(20),gstyles.mb(10)]}>
-                <MaterialCommunityIcons name={props.selectedFilter=='all' ? 'checkbox-marked' : 'checkbox-blank-outline'} size={25} color={props.selectedFilter=='all' ? '#8338EC' : "#00000095"} />
+                <MaterialCommunityIcons name={props.selectedFilter=='all' ? 'checkbox-marked' : 'checkbox-blank-outline'} size={25} color={props.selectedFilter=='all' ? '#0276E5' : "#00000095"} />
                 <Text style={gstyles.OpenSans_Bold(16, props.selectedFilter=='all' ? '#000000' : "#00000095", gstyles.ms(15))}>
                  {props.selectedFilter=='all' ? 'Unselect All' : 'Select All'}
                 </Text>
@@ -113,7 +113,7 @@ const TransactionComponent = (props) => {
                 
             <TouchableOpacity onPress={()=>props.onChangeFilterData(index)} activeOpacity={0.6}
                 style={[gstyles.inRow, gstyles.ms(20),gstyles.mb(10)]}>
-                <MaterialCommunityIcons name={item.selected ? 'checkbox-outline' : 'checkbox-blank-outline'} size={25} color={item.selected ? '#8338EC' : '#00000090'} />
+                <MaterialCommunityIcons name={item.selected ? 'checkbox-outline' : 'checkbox-blank-outline'} size={25} color={item.selected ? '#0276E5' : '#00000090'} />
                 <Text style={[item.selected ? gstyles.OpenSans_SemiBold(16, item.selected ? '#000000' : '#00000090', gstyles.ms(15)): gstyles.OpenSans_Medium(16, item.selected ? '#000000' : '#00000090', gstyles.ms(15)),{textTransform: 'capitalize'}]}>
                     {index == 0 ? "SELF - " : null}{item.first_name} {item.last_name}
                 </Text>
@@ -175,7 +175,7 @@ const TransactionComponent = (props) => {
                             style={props.isBtnSelected == 'unSettled' ? styles.btnTouch : [styles.btnTouch, styles.unSettleBtnTouch]}
                             onPress={() => { props.setIsBtnSelected('unSettled') }}
                         >
-                            <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'unSettled' ? '#FFFFFF' : '#8338EC')}>
+                            <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'unSettled' ? '#FFFFFF' : '#0276E5')}>
                                 Unsettled ({props.filteredUSTransactions  && props.filteredUSTransactions.length>0  ? props.filteredUSTransactions.length : props.usTransactions.length})
                             </Text>
                         </TouchableOpacity>
@@ -191,7 +191,7 @@ const TransactionComponent = (props) => {
                             style={props.isBtnSelected == 'settled' ? styles.btnTouch : [styles.btnTouch, styles.unSettleBtnTouch]}
                             onPress={() => { props.setIsBtnSelected('settled') }}
                         >
-                            <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'settled' ? '#FFFFFF' : '#8338EC')}>
+                            <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'settled' ? '#FFFFFF' : '#0276E5')}>
                                 Settled ({props.filteredSTransactions  && props.filteredSTransactions.length>0 ? props.filteredSTransactions.length : props.sTransactions.length})
                             </Text>
                         </TouchableOpacity>
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         borderRadius: 4,
         borderWidth: 1,
-        borderColor: '#8338EC',
+        borderColor: '#0276E5',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
 
     unSettleBtnTouch: {
         backgroundColor: '#FFFFFF',
-        borderColor: '#8338EC',
+        borderColor: '#0276E5',
         borderWidth: 1
     },
 
