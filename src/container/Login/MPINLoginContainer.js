@@ -24,10 +24,10 @@ const MPINLoginContainer = (props) => {
         }
         if(cmpin==mpin){
             setIsLoading(true);
-            const isResponce = await getTransactions();
+            // const isResponce = await getTransactions();
             const isResponce1 = await getProfile();
             const isResponce2 = await getConfigs();
-            if(isResponce && isResponce1){
+            if(isResponce1 && isResponce2){
                 setIsLoading(false)
                 navigation.dispatch(
                     CommonActions.reset({

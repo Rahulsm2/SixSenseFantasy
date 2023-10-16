@@ -18,6 +18,11 @@ const ProfileContainer = (props) => {
         navigation.navigate('EditProfileContainer');
     }
 
+    onClickChangeMpin=()=>{
+        showToast("Coming soon..!")
+        // navigation.navigate('ChangeMpinContainer');
+    }
+
     // Hey there! Discover Ticketsque Insider, the ultimate solution for guest management, digital coupon distribution, verification, and redemption. Simplify operations, boost efficiency, and enhance the customer experience. Get it now on the Google Play Store: 
 
     const onClickShareApp=async()=>{

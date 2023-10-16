@@ -51,6 +51,18 @@ const ValCouponContainer = (props) => {
       }
     },[seekPremission]);
 
+    
+    exceptionOnBarcodeRead = () => {
+        if(couponStatus=="aboutToStart"){
+          showToast("Event yet to start.")
+        }else{
+          showToast("Something went wrong,Please try again.")
+        }
+        setTimeout(() => {
+          setcouponStatus('pending');
+        }, 4000);
+    }
+
     onBarCodeRead = async scanResult => {
         const token = await getToken();
         console.log(scanResult);
@@ -82,11 +94,13 @@ const ValCouponContainer = (props) => {
               ){
                 setcouponStatus('verified')
               }else if(curenttime.isBefore(moment(response.data.start_time))){
-                setcouponStatus('aboutToStart')
+                // setcouponStatus('aboutToStart')
+                showToast("Event yet to start");
               }else if(curenttime.isAfter(moment(response.data.expiry_time))){
                 setcouponStatus('expired')
               }else{
-                setcouponStatus('invalid')
+                // setcouponStatus('invalid')
+                showToast("Invalid QR code.");
               }
               console.log("couponStatus",couponStatus);
           } else {
@@ -103,6 +117,9 @@ const ValCouponContainer = (props) => {
       };
 
       const onClickRedeem=async()=>{
+        if(isLoading){
+          return;
+        }
         if (Number(redeemAmount)<=0) {
           message = 'Enter valid Redeem Amount.';
           showToast(message);
@@ -219,6 +236,7 @@ const ValCouponContainer = (props) => {
             refRBSheet={refRBSheet}
             seekPremission={seekPremission}
             setSeekPremission={setSeekPremission}
+            exceptionOnBarcodeRead={exceptionOnBarcodeRead}
         />
     );
 }

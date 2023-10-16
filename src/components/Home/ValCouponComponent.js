@@ -72,12 +72,9 @@ const ValCouponComponent = (props) => {
                     <RNCamera
                         mirrorImage={false}
                         captureAudio={false}
-                        barcodeFinderVisible={true}
-                        barcodeFinderWidth={280}
-                        barcodeFinderHeight={220}
-                        barcodeFinderBorderColor="white"
-                        barcodeFinderBorderWidth={2}
-                        defaultTouchToFocus
+                        defaultTouchToFocus={true}
+                        defaultOnFocusComponent={true}
+                        aspect={1}
                         barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
                         flashMode={props.isFlash == true ?
                             RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
@@ -88,8 +85,7 @@ const ValCouponComponent = (props) => {
                             width: '100%',
                             alignSelf: 'center',
                         }}
-                        onBarCodeRead={(data)=>props.isLoading || props.couponStatus!=='pending' ? {} : props.onBarCodeRead(data)}
-                        
+                        onBarCodeRead={(data)=>props.isLoading || props.couponStatus!=='pending' ? showToast('Something went wrong, please try again later') : props.onBarCodeRead(data)}
                     >
                         <View style={{flex: 1}}>
                             <View style={{

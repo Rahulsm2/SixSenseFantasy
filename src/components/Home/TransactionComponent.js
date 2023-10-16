@@ -146,6 +146,15 @@ const TransactionComponent = (props) => {
                     </View>
                 </View>
 
+                <ScrollView showsVerticalScrollIndicator={false} 
+                    refreshControl={
+                        <RefreshControl refreshing={props.isRefreshing} 
+                            onRefresh={()=>{
+                                props.setisRefreshing(true)
+                                props.getTransactions()
+                            }} />
+                    }>
+
                 <View style={styles.searchBoxView}>
                     <View style={gstyles.inRow}>
                         <Ionicons name='ios-search-outline' size={22} color='#3F3F3F' />
@@ -198,22 +207,14 @@ const TransactionComponent = (props) => {
                     </LinearGradient>
                 </View>
 
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <FlatList
-                        data={props.isBtnSelected == 'settled' ? props.filteredSTransactions && props.filteredSTransactions.length>0 ? props.filteredSTransactions : props.sTransactions : props.filteredUSTransactions && props.filteredUSTransactions.length>0 ? props.filteredUSTransactions : props.usTransactions}
-                        renderItem={_renderRecentTrans}
-                        keyExtractor={item => item.id}
-                        showsVerticalScrollIndicator={false}
-                        scrollEnabled={false}
-                        ListEmptyComponent={_renderNoTrans}
-                        refreshControl={
-                            <RefreshControl refreshing={props.isRefreshing} 
-                                onRefresh={()=>{
-                                    props.setisRefreshing(true)
-                                    props.getTransactions()
-                                }} />
-                        }
-                    />
+                <FlatList
+                    data={props.isBtnSelected == 'settled' ? props.filteredSTransactions && props.filteredSTransactions.length>0 ? props.filteredSTransactions : props.sTransactions : props.filteredUSTransactions && props.filteredUSTransactions.length>0 ? props.filteredUSTransactions : props.usTransactions}
+                    renderItem={_renderRecentTrans}
+                    keyExtractor={item => item.id}
+                    showsVerticalScrollIndicator={false}
+                    scrollEnabled={false}
+                    ListEmptyComponent={_renderNoTrans}
+                />
                 </ScrollView>
 
                 <RBSheet
