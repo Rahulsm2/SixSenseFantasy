@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity } from 'react-native';
-import { WIDTH } from './Constants';
+import { WIDTH, HEIGHT } from './Constants';
 import { gstyles } from './GlobalStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
@@ -52,7 +52,7 @@ const RedeemedDetailsModal = (props) => {
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Name
                         </Text>
-                        <Text numberOfLines={1} style={[gstyles.OpenSans_Regular(16, '#000000'),{maxWidth:195}]}>
+                        <Text numberOfLines={1} style={[gstyles.OpenSans_Regular(16, '#000000'), { maxWidth: 195 }]}>
                             :{'    '}{props.data.distribute_id} | {props.data.name}
                         </Text>
                     </View>
@@ -64,18 +64,18 @@ const RedeemedDetailsModal = (props) => {
                             :{'    '}{moment(props.data.created_at).format("DD/MM/YY,  hh:mm A")}
                         </Text>
                     </View>
-                    {props.data.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14),{alignItems:'flex-start'}]}>
+                    {props.data.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { alignItems: 'flex-start' }]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Remarks
                         </Text>
                         <Text style={[gstyles.OpenSans_Regular(16, '#000000')]}>
                             :{'    '}
                         </Text>
-                        <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'),{maxWidth:195,textAlign:'left'}]}>
+                        <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'), { maxWidth: 195, paddingRight: 10, textAlign: 'left' }]}>
                             {props.data.remarks}
                         </Text>
-                    </View> }
-                    <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14) , {paddingBottom:props.data.status=="0" ? 0 : 30}]}>
+                    </View>}
+                    <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { paddingBottom: props.data.status == "0" ? 0 : 30 }]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Amount
                         </Text>
@@ -86,7 +86,7 @@ const RedeemedDetailsModal = (props) => {
                         </Text>
                     </View>
 
-                    {props.data.status=="0" && <LinearGradient
+                    {props.data.status == "0" && <LinearGradient
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
                         colors={['#8338EC', '#3A86FF']} style={styles.settleBtnTouch}>
@@ -98,7 +98,7 @@ const RedeemedDetailsModal = (props) => {
                                 Move to Settled
                             </Text>
                         </TouchableOpacity>
-                    </LinearGradient> }
+                    </LinearGradient>}
                 </View>
             </View>
         </Modal>

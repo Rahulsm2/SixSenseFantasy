@@ -1,10 +1,11 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { WIDTH } from './Constants';
 import { gstyles } from './GlobalStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
+import LottieView from 'lottie-react-native';
 
 const CouponExpireModal = (props) => {
 
@@ -21,9 +22,8 @@ const CouponExpireModal = (props) => {
             />
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <Image source={require('../../assets/images/time_expire.png')}
-                        style={[gstyles.iconSize(128), gstyles.centerX, gstyles.mt(25), gstyles.mb(15)]}
-                    />
+                    <LottieView source={require('../../assets/gif/animation_time.json')} style={[gstyles.iconSize(228, 228), gstyles.centerX]} autoPlay loop />
+
                     <TouchableOpacity activeOpacity={0.6}
                         onPress={() => { props.setcouponStatus('pending') }}
                         style={{ position: 'absolute', right: 30, top: 30 }}
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
 
     modalView: {
         width: WIDTH - 35,
+
         backgroundColor: '#FFFFFF',
         shadowColor: '#00000066',
         shadowOffset: {
