@@ -85,7 +85,7 @@ const ValCouponComponent = (props) => {
                             width: '100%',
                             alignSelf: 'center',
                         }}
-                        onBarCodeRead={(data) => props.isLoading || props.couponStatus !== 'pending' ? showToast('Something went wrong, please try again later') : props.onBarCodeRead(data)}
+                        onBarCodeRead={(data) => props.isLoading || props.couponStatus !== 'pending' ? {} : props.onBarCodeRead(data)}
                     >
                         <View style={{ flex: 1 }}>
                             <View style={{
@@ -233,7 +233,7 @@ const ValCouponComponent = (props) => {
                                 <TextInput
                                     ref={inputRef}
                                     mode="outlined"
-                                    label="Redeem Amount"
+                                    label="Redeem Amount*"
                                     placeholder="Enter Redeem Amount"
                                     style={styles.inputText}
                                     outlineColor='#0276E5'
@@ -266,14 +266,14 @@ const ValCouponComponent = (props) => {
                                     *Enter redeem amount less than coupon balence amount
                                 </Text>
                             </View>}
+                            <View style={{flexDirection:'row',justifyContent:'space-around',width:WIDTH - 35,alignSelf:'center'}}>
                             <View style={[gstyles.mt(20)]}>
                                 <TextInput
                                     mode="outlined"
-                                    label="Bill Number"
-                                    placeholder="Enter Bill Number"
-                                    style={styles.inputText}
+                                    label="Bill Number*"
+                                    placeholder="Bill Number"
+                                    style={styles.inputText1}
                                     outlineColor='#0276E5'
-                                    keyboardType='number-pad'
                                     maxLength={10}
                                     left={
                                         <TextInput.Icon
@@ -284,7 +284,28 @@ const ValCouponComponent = (props) => {
                                     }
                                     value={props.billAmount}
                                     onChangeText={(text) => { props.setbillAmount(text) }}
+                                    keyboardType='number-pad'
                                 />
+                            </View>
+                            <View style={[gstyles.mt(20)]}>
+                                <TextInput
+                                    mode="outlined"
+                                    label="Table number"
+                                    placeholder="Table number"
+                                    style={styles.inputText1}
+                                    outlineColor='#0276E5'
+                                    maxLength={10}
+                                    left={
+                                        <TextInput.Icon
+                                            icon={'ticket-confirmation-outline'}
+                                            iconColor="#3F3F3F"
+                                            size={22}
+                                        />
+                                    }
+                                    value={props.tableNumber}
+                                    onChangeText={(text) => { props.settableNumber(text) }}
+                                />
+                            </View>
                             </View>
                             <View style={[gstyles.mt(24)]}>
                                 <TextInput
@@ -424,6 +445,16 @@ const styles = StyleSheet.create({
         color: '#000000',
         // marginLeft: 5,
         width: WIDTH - 35,
+        backgroundColor: '#FFFFFF',
+        alignSelf: 'center'
+    },
+
+    inputText1: {
+        fontSize: 16,
+        fontFamily: OpenSans_Medium,
+        color: '#000000',
+        // marginLeft: 5,
+        width: WIDTH/2-25,
         backgroundColor: '#FFFFFF',
         alignSelf: 'center'
     },

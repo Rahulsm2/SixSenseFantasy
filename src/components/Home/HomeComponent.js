@@ -59,7 +59,17 @@ const HomeComponent = (props) => {
                     </Text>
                 </View>
                 <View style={[gstyles.inRowJSB, gstyles.mt(8), gstyles.mx(12), gstyles.mb(10)]}>
-                    <View style={gstyles.inRow}>
+                    
+                    {item.remarks ? <View style={gstyles.inRow}>
+                        <Text style={gstyles.OpenSans_Regular(12, '#000000', gstyles.size(75))}>
+                            Table No.
+                        </Text>
+                        <Text style={gstyles.OpenSans_SemiBold(12, '#000000', gstyles.size(120))}
+                            numberOfLines={1}
+                        >
+                            :   {item.remarks.split("$$")[0]}
+                        </Text>
+                    </View> : <View style={gstyles.inRow}>
                         <Text style={gstyles.OpenSans_Regular(12, '#000000', gstyles.size(75))}>
                             Name
                         </Text>
@@ -68,7 +78,18 @@ const HomeComponent = (props) => {
                         >
                             :   {item.distribute_id} | {item.name}
                         </Text>
-                    </View>
+                    </View>}
+                    {/* {item.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { alignItems: 'flex-start' }]}>
+                        <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
+                            Remarks
+                        </Text>
+                        <Text style={[gstyles.OpenSans_Regular(16, '#000000')]}>
+                            :{'    '}
+                        </Text>
+                        <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'), { maxWidth: 195, paddingRight: 10, textAlign: 'left' }]}>
+                            {item.remarks.split("$$")[1]}
+                        </Text>
+                    </View>} */}
                     {props.userData && props.userData.role=="Biller" ? <Text style={gstyles.OpenSans_Regular(10, '#000000', { ...gstyles.size('40%'), textAlign: 'right' })}
                         numberOfLines={1}
                     >

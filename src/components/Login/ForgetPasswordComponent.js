@@ -136,6 +136,15 @@ const ForgetPasswordComponent = (props) => {
                         </Text>
                     </TouchableOpacity>
                 </LinearGradient>
+                <View style={styles.forgetTextView}>
+                        <TouchableOpacity activeOpacity={0.6}
+                            onPress={() => { props.onClickLoginWithPass() }}
+                            style={[{ alignSelf: 'center' }]}>
+                            <Text style={gstyles.OpenSans_Medium(16, '#3F3F3F')}>
+                                Login with Password
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 <TouchableOpacity onPress={()=>{Linking.openURL('https://ticketsque.com/');}} style={{position:'absolute',bottom:10,alignSelf:'center'}}>
                     <Text>Join as a Business Partner</Text>
                 </TouchableOpacity>

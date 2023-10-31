@@ -141,6 +141,10 @@ const ForgetPasswordContainer = (props) => {
         }
     }
 
+    const onClickLoginWithPass=()=>{
+      navigation.replace('LoginContainer');
+    }
+
     return (
         <ForgetPasswordComponent
             onClickContinue={onClickContinue}
@@ -155,6 +159,7 @@ const ForgetPasswordContainer = (props) => {
             setIsOtpSent={setIsOtpSent}
             onClickSendOTP={onClickSendOTP}
             timer={timer}
+            onClickLoginWithPass={onClickLoginWithPass}
         />
     );
 }

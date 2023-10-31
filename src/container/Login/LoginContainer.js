@@ -67,6 +67,10 @@ const LoginContainer = (props) => {
         }
       };
 
+      const onClickLoginWithOtp=()=>{
+        navigation.replace('ForgetPasswordContainer');
+      }
+
     return (
         <LoginComponent
             onClickLogin={onClickLogin}
@@ -78,6 +82,7 @@ const LoginContainer = (props) => {
             hidePassword={hidePassword}
             setHidePassword={setHidePassword}
             isLoading={isLoading}
+            onClickLoginWithOtp={onClickLoginWithOtp}
         />
     );
 }

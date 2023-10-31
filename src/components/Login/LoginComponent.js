@@ -42,6 +42,7 @@ const LoginComponent = (props) => {
                             keyboardType='number-pad'
                             maxLength={10}
                             value={props.mobileNumber}
+                            autoFocus={true}
                             onChangeText={(text) => {
                                 const re = /^[0-9\b]+$/;
                                 if (text === '' || re.test(text)) {
@@ -90,13 +91,13 @@ const LoginComponent = (props) => {
                         />
                     </View>
                     <View style={styles.forgetTextView}>
-                        <TouchableOpacity activeOpacity={0.6}
+                        {/* <TouchableOpacity activeOpacity={0.6}
                             onPress={() => { props.onClickForget() }}
                             style={[{ alignSelf: 'flex-end' }]}>
                             <Text style={gstyles.OpenSans_Medium(16, '#3F3F3F')}>
                                 Forgot Password?
                             </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
                     </View>
 
                     <LinearGradient
@@ -113,6 +114,15 @@ const LoginComponent = (props) => {
                             </Text>
                         </TouchableOpacity>
                     </LinearGradient>
+                    <View style={styles.forgetTextView}>
+                        <TouchableOpacity activeOpacity={0.6}
+                            onPress={() => { props.onClickLoginWithOtp() }}
+                            style={[{ alignSelf: 'center' }]}>
+                            <Text style={gstyles.OpenSans_Medium(16, '#3F3F3F')}>
+                                Login with password
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
 
                 </View>
                 <LoadingModel loading={props.isLoading} />

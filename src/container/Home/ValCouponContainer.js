@@ -22,6 +22,7 @@ const ValCouponContainer = (props) => {
   const [couponData, setCouponData] = useState('');
   const [redeemAmount, setredeemAmount] = useState('');
   const [billAmount, setbillAmount] = useState('');
+  const [tableNumber, settableNumber] = useState('');
   const [seekPremission, setSeekPremission] = useState(false);
   const [remarks, setremarks] = useState('');
   const refRBSheet = useRef();
@@ -85,6 +86,8 @@ const ValCouponContainer = (props) => {
           showToast(response.message);
           return;
         }
+        console.log("Invalid",response.data);
+        
         setCouponData(response.data)
         var curenttime = moment();
         if (
@@ -111,7 +114,7 @@ const ValCouponContainer = (props) => {
         response.message
           ? showToast(response.message)
           : showToast(
-            'Something went wrong, please try again later'
+            'Invalid Coupon.'
           );
       }
     }
@@ -127,7 +130,7 @@ const ValCouponContainer = (props) => {
       return;
     }
     if (!billAmount.trim()) {
-      message = 'Enter valid Bill ID.';
+      message = 'Enter valid Bill ID or Table number.';
       showToast(message);
       return;
     }
@@ -147,7 +150,7 @@ const ValCouponContainer = (props) => {
     formData.append('coupon_id', couponData.distribute_id);
     formData.append('amount', redeemAmount);
     formData.append('bill_no', billAmount);
-    formData.append('remarks', remarks);
+    formData.append('remarks', tableNumber+"$$"+remarks);
     const response = await postData(
       'api/app/coupon/redeem_coupons',
       formData,
@@ -162,6 +165,7 @@ const ValCouponContainer = (props) => {
         setbillAmount('')
         setredeemAmount('')
         setremarks('')
+        settableNumber('')
         showToast(response.message);
         showToast("Please try again.")
         return;
@@ -173,6 +177,7 @@ const ValCouponContainer = (props) => {
       setcouponStatus('pending')
       setCouponData('');
       setbillAmount('')
+      settableNumber('')
       setredeemAmount('')
       setremarks('')
     } else {
@@ -183,6 +188,7 @@ const ValCouponContainer = (props) => {
         );
       showToast("Please try again.")
       setbillAmount('')
+      settableNumber('')
       setredeemAmount('')
       setremarks('')
       setIsLoading(false)
@@ -231,6 +237,8 @@ const ValCouponContainer = (props) => {
       setredeemAmount={setredeemAmount}
       billAmount={billAmount}
       setbillAmount={setbillAmount}
+      tableNumber={tableNumber}
+      settableNumber={settableNumber}
       remarks={remarks}
       setremarks={setremarks}
       onClickRedeem={onClickRedeem}

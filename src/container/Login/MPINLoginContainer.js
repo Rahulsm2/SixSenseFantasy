@@ -86,7 +86,7 @@ const MPINLoginContainer = (props) => {
                 return false;
             }
             props.updateuser(response.data);
-            return true;
+            return response.data;
         } else {
             showToast(
                 response.message ? response.message : 'Something went wrong, try again',

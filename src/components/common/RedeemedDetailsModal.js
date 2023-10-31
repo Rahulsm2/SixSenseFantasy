@@ -66,13 +66,24 @@ const RedeemedDetailsModal = (props) => {
                     </View>
                     {props.data.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { alignItems: 'flex-start' }]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
+                            Table No.
+                        </Text>
+                        <Text style={[gstyles.OpenSans_Regular(16, '#000000')]}>
+                            :{'    '}
+                        </Text>
+                        <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'), { maxWidth: 195, paddingRight: 10, textAlign: 'left' }]}>
+                            {props.data.remarks.split("$$")[0]}
+                        </Text>
+                    </View>}
+                    {props.data.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { alignItems: 'flex-start' }]}>
+                        <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Remarks
                         </Text>
                         <Text style={[gstyles.OpenSans_Regular(16, '#000000')]}>
                             :{'    '}
                         </Text>
                         <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'), { maxWidth: 195, paddingRight: 10, textAlign: 'left' }]}>
-                            {props.data.remarks}
+                            {props.data.remarks.split("$$")[1]}
                         </Text>
                     </View>}
                     <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { paddingBottom: props.data.status == "0" ? 0 : 30 }]}>
@@ -82,6 +93,16 @@ const RedeemedDetailsModal = (props) => {
                         <Text style={gstyles.OpenSans_Regular(20, '#000000')}>
                             :{'    '}<Text style={gstyles.OpenSans_SemiBold(20, '#0276E5')}>
                                 {'\u20B9'} {props.data.amount_used}
+                            </Text>
+                        </Text>
+                    </View>
+                    <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { paddingBottom: props.data.status == "0" ? 0 : 30 }]}>
+                        <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
+                            Mode of Pyament 
+                        </Text>
+                        <Text style={gstyles.OpenSans_Regular(20, '#000000')}>
+                            :{'    '}<Text style={gstyles.OpenSans_SemiBold(20, '#0276E5')}>
+                                {props.data.paymentMode}
                             </Text>
                         </Text>
                     </View>
