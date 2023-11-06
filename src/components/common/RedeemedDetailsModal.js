@@ -72,7 +72,7 @@ const RedeemedDetailsModal = (props) => {
                             :{'    '}
                         </Text>
                         <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'), { maxWidth: 195, paddingRight: 10, textAlign: 'left' }]}>
-                            {props.data.remarks.split("$$")[0]}
+                            {props.data.remarks.split("$$")[1]}
                         </Text>
                     </View>}
                     {props.data.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { alignItems: 'flex-start' }]}>
@@ -83,7 +83,7 @@ const RedeemedDetailsModal = (props) => {
                             :{'    '}
                         </Text>
                         <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'), { maxWidth: 195, paddingRight: 10, textAlign: 'left' }]}>
-                            {props.data.remarks.split("$$")[1]}
+                            {props.data.remarks.split("$$")[0]}
                         </Text>
                     </View>}
                     <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { paddingBottom: props.data.status == "0" ? 0 : 30 }]}>
@@ -96,7 +96,7 @@ const RedeemedDetailsModal = (props) => {
                             </Text>
                         </Text>
                     </View>
-                    <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { paddingBottom: props.data.status == "0" ? 0 : 30 }]}>
+                    {/* <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { paddingBottom: props.data.status == "0" ? 0 : 30 }]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Mode of Pyament 
                         </Text>
@@ -105,7 +105,7 @@ const RedeemedDetailsModal = (props) => {
                                 {props.data.paymentMode}
                             </Text>
                         </Text>
-                    </View>
+                    </View> */}
 
                     {props.data.status == "0" && <LinearGradient
                         start={{ x: 0, y: 1 }}

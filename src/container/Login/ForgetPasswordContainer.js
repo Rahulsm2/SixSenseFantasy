@@ -80,19 +80,24 @@ const ForgetPasswordContainer = (props) => {
                 showToast(response.message);
                 return;
             }
-            props.updateuser(response.data)
-            const isPersist = await persistToken(response.token.access_token);
-            if(isPersist){
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 0,
-                        routes: [
-                        {
-                            name: 'SetMPINContainer',
-                        },
-                        ],
-                    }),
-                );
+            if(response.data.role=="Biller" || response.data.role=="Cashier" || response.data.role=="Manager"){
+              props.updateuser(response.data)
+              const isPersist = await persistToken(response.token.access_token);
+              if(isPersist){
+                  navigation.dispatch(
+                      CommonActions.reset({
+                          index: 0,
+                          routes: [
+                          {
+                              name: 'SetMPINContainer',
+                          },
+                          ],
+                      }),
+                  );
+              }
+            }else{
+              showToast("No Access");
+              return;
             }
           } else {
             setIsLoading(false)

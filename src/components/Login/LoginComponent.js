@@ -91,13 +91,13 @@ const LoginComponent = (props) => {
                         />
                     </View>
                     <View style={styles.forgetTextView}>
-                        {/* <TouchableOpacity activeOpacity={0.6}
+                        <TouchableOpacity activeOpacity={0.6}
                             onPress={() => { props.onClickForget() }}
                             style={[{ alignSelf: 'flex-end' }]}>
                             <Text style={gstyles.OpenSans_Medium(16, '#3F3F3F')}>
                                 Forgot Password?
                             </Text>
-                        </TouchableOpacity> */}
+                        </TouchableOpacity>
                     </View>
 
                     <LinearGradient
@@ -119,7 +119,7 @@ const LoginComponent = (props) => {
                             onPress={() => { props.onClickLoginWithOtp() }}
                             style={[{ alignSelf: 'center' }]}>
                             <Text style={gstyles.OpenSans_Medium(16, '#3F3F3F')}>
-                                Login with password
+                                Login with OTP
                             </Text>
                         </TouchableOpacity>
                     </View>

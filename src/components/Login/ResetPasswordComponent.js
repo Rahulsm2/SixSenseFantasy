@@ -11,6 +11,7 @@ import { gstyles } from '../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg } from '../../components/common/Constants';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput } from 'react-native-paper';
+import LoadingModel from "../../components/common/Loading"
 
 const ResetPasswordComponent = (props) => {
 
@@ -32,6 +33,79 @@ const ResetPasswordComponent = (props) => {
             </View>
 
             <View style={[gstyles.mt(50), gstyles.centerX]}>
+                    <TextInput
+                        mode="outlined"
+                        label="Mobile Number"
+                        placeholder="Enter Your Mobile Number"
+                        style={{...styles.inputText}}
+                        outlineColor='#8338EC'
+                        keyboardType='number-pad'
+                        maxLength={10}
+                        left={
+                            <TextInput.Icon
+                                icon={'phone'}
+                                iconColor="#3F3F3F"
+                                size={22}
+                                rippleColor='rgba(0,0,0,0)'
+                                disabled={props.isOtpSent}
+                            />
+                        }
+                        right={
+                            <TextInput.Icon
+                                icon={'square-edit-outline'}
+                                iconColor={"#3F3F3F"}
+                                size={22}
+                                disabled={!props.isOtpSent}
+                                onPress={() => {
+                                    props.setIsOtpSent(false)
+                                    props.setOtp('')
+                                }}
+                            />
+                        }
+                        value={props.mobileNumber}
+                        onChangeText={(text) => { props.setMobileNumber(text) }}
+                        disabled={props.isOtpSent}
+                        editable={!props.isOtpSent}
+                        autoFocus={true}
+                    />
+                </View>
+
+                <View style={[gstyles.mt(25), gstyles.centerX]}>
+                    <TextInput
+                        mode="outlined"
+                        label="Enter OTP"
+                        disabled={!props.isOtpSent}
+                        placeholder="Enter OTP"
+                        style={styles.inputText}
+                        outlineColor='#8338EC'
+                        secureTextEntry={props.hideOtp}
+                        keyboardType='number-pad'
+                        maxLength={4}
+                        left={
+                            <TextInput.Icon
+                                icon={'lock'}
+                                iconColor={"#3F3F3F"}
+                                size={22}
+                                disabled={!props.isOtpSent}
+                                rippleColor='rgba(0,0,0,0)'
+                            />
+                        }
+                        right={
+                            <TextInput.Icon
+                                icon={props.hideOtp ? 'eye' : 'eye-off-outline'}
+                                iconColor={"#3F3F3F"}
+                                size={22}
+                                disabled={!props.isOtpSent}
+                                onPress={() => props.setHideOtp(!props.hideOtp)}
+                            />
+                        }
+                        value={props.otp}
+                        editable={props.isOtpSent}
+                        onChangeText={(text) => { props.setOtp(text) }}
+                    />
+                </View>
+
+            <View style={[gstyles.mt(25), gstyles.centerX]}>
                 <TextInput
                     mode="outlined"
                     label="Enter Password"
@@ -42,19 +116,23 @@ const ResetPasswordComponent = (props) => {
                     value={props.password}
                     onChangeText={(value)=>props.setPassword(value)}
                     maxLength={25}
+                    disabled={!props.isOtpSent}
+                    editable={props.isOtpSent}
                     left={
                         <TextInput.Icon
                             icon={'lock'}
                             iconColor="#3F3F3F"
                             size={22}
+                            disabled={!props.isOtpSent}
                         />
                     }
                     right={
                         <TextInput.Icon
-                            icon={props.hidePassword ? 'eye' : 'eye-off-outline'}
+                            icon={props.hidePassword ? 'eye-off-outline' : 'eye'}
                             iconColor="#3F3F3F"
                             size={22}
                             onPress={()=>props.setHidePassword(!props.hidePassword)}
+                            disabled={!props.isOtpSent}
                         />
                     }
                 />
@@ -71,11 +149,14 @@ const ResetPasswordComponent = (props) => {
                     value={props.confPassword}
                     onChangeText={(value)=>props.setConfPassword(value)}
                     maxLength={25}
+                    disabled={!props.isOtpSent}
+                    editable={props.isOtpSent}
                     left={
                         <TextInput.Icon
                             icon={'lock'}
                             iconColor="#3F3F3F"
                             size={22}
+                            disabled={!props.isOtpSent}
                         />
                     }
                 />
@@ -88,15 +169,22 @@ const ResetPasswordComponent = (props) => {
                 <TouchableOpacity
                     activeOpacity={0.6}
                     style={styles.btnTouch}
-                    onPress={()=>{ props.onClickSave() }}
+                    onPress={() => { 
+                        if(props.isOtpSent){
+                            props.onClickSave();
+                        }else {
+                            props.onClickSendOTP() 
+                        }
+                    }}
                 >
                     <Text style={gstyles.OpenSans_SemiBold(20, '#FFFFFF')}>
-                        Save
+                    {props.isOtpSent ? "Reset Password" : "Send OTP"}
                     </Text>
                 </TouchableOpacity>
             </LinearGradient>
 
         </View>
+            <LoadingModel loading={props.isLoading} />
     </>
 );
 }
@@ -127,7 +215,7 @@ gradientTouch: {
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: 20
+    marginTop: 25
 },
 
 btnTouch: {

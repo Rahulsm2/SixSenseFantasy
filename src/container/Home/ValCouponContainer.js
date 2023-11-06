@@ -150,7 +150,7 @@ const ValCouponContainer = (props) => {
     formData.append('coupon_id', couponData.distribute_id);
     formData.append('amount', redeemAmount);
     formData.append('bill_no', billAmount);
-    formData.append('remarks', tableNumber+"$$"+remarks);
+    formData.append('remarks', remarks+"$$"+tableNumber);
     const response = await postData(
       'api/app/coupon/redeem_coupons',
       formData,

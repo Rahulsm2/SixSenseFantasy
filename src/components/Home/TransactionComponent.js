@@ -64,7 +64,7 @@ const TransactionComponent = (props) => {
                         <Text style={gstyles.OpenSans_SemiBold(12, '#000000', gstyles.size(120))}
                             numberOfLines={1}
                         >
-                            :   {item.remarks.split("$$")[0]}
+                            :   {item.remarks.split("$$")[1]}
                         </Text>
                     </View> : <View style={gstyles.inRow}>
                         <Text style={gstyles.OpenSans_Regular(12, '#000000', gstyles.size(75))}>

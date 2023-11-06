@@ -27,7 +27,7 @@ const MPINLoginContainer = (props) => {
             // const isResponce = await getTransactions();
             const isResponce1 = await getProfile();
             const isResponce2 = await getConfigs();
-            if(isResponce1 && isResponce2){
+            if(isResponce1 && isResponce2 && (isResponce1.role=="Biller" || isResponce1.role=="Cashier" || isResponce1.role=="Manager")){
                 setIsLoading(false)
                 navigation.dispatch(
                     CommonActions.reset({
@@ -41,6 +41,8 @@ const MPINLoginContainer = (props) => {
                 );
             }else{
                 setIsLoading(false);
+                showToast("No Access");
+                return;
             }
         }else{
             message = 'Invalid MPIN';
