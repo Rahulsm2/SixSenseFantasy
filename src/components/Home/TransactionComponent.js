@@ -57,7 +57,16 @@ const TransactionComponent = (props) => {
                     </Text>
                 </View>
                 <View style={[gstyles.inRowJSB, gstyles.mt(8), gstyles.mx(12), gstyles.mb(10)]}>
-                    <View style={gstyles.inRow}>
+                {item.remarks ? <View style={gstyles.inRow}>
+                        <Text style={gstyles.OpenSans_Regular(12, '#000000', gstyles.size(75))}>
+                            Table No.
+                        </Text>
+                        <Text style={gstyles.OpenSans_SemiBold(12, '#000000', gstyles.size(120))}
+                            numberOfLines={1}
+                        >
+                            :   {item.remarks.split("$$")[1]}
+                        </Text>
+                    </View> : <View style={gstyles.inRow}>
                         <Text style={gstyles.OpenSans_Regular(12, '#000000', gstyles.size(75))}>
                             Name
                         </Text>
@@ -66,7 +75,7 @@ const TransactionComponent = (props) => {
                         >
                             :   {item.distribute_id} | {item.name}
                         </Text>
-                    </View>
+                    </View>}
                     {props.userData && props.userData.role=="Biller" ? <Text style={gstyles.OpenSans_Regular(10, '#000000', { ...gstyles.size('40%'), textAlign: 'right' })}
                         numberOfLines={1}
                     >
@@ -146,6 +155,15 @@ const TransactionComponent = (props) => {
                     </View>
                 </View>
 
+                <ScrollView showsVerticalScrollIndicator={false} 
+                    refreshControl={
+                        <RefreshControl refreshing={props.isRefreshing} 
+                            onRefresh={()=>{
+                                props.setisRefreshing(true)
+                                props.getTransactions()
+                            }} />
+                    }>
+
                 <View style={styles.searchBoxView}>
                     <View style={gstyles.inRow}>
                         <Ionicons name='ios-search-outline' size={22} color='#3F3F3F' />
@@ -198,22 +216,14 @@ const TransactionComponent = (props) => {
                     </LinearGradient>
                 </View>
 
-                <ScrollView showsVerticalScrollIndicator={false}>
-                    <FlatList
-                        data={props.isBtnSelected == 'settled' ? props.filteredSTransactions && props.filteredSTransactions.length>0 ? props.filteredSTransactions : props.sTransactions : props.filteredUSTransactions && props.filteredUSTransactions.length>0 ? props.filteredUSTransactions : props.usTransactions}
-                        renderItem={_renderRecentTrans}
-                        keyExtractor={item => item.id}
-                        showsVerticalScrollIndicator={false}
-                        scrollEnabled={false}
-                        ListEmptyComponent={_renderNoTrans}
-                        refreshControl={
-                            <RefreshControl refreshing={props.isRefreshing} 
-                                onRefresh={()=>{
-                                    props.setisRefreshing(true)
-                                    props.getTransactions()
-                                }} />
-                        }
-                    />
+                <FlatList
+                    data={props.isBtnSelected == 'settled' ? props.filteredSTransactions && props.filteredSTransactions.length>0 ? props.filteredSTransactions : props.sTransactions : props.filteredUSTransactions && props.filteredUSTransactions.length>0 ? props.filteredUSTransactions : props.usTransactions}
+                    renderItem={_renderRecentTrans}
+                    keyExtractor={item => item.id}
+                    showsVerticalScrollIndicator={false}
+                    scrollEnabled={false}
+                    ListEmptyComponent={_renderNoTrans}
+                />
                 </ScrollView>
 
                 <RBSheet

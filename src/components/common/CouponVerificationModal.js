@@ -1,10 +1,11 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { WIDTH } from './Constants';
 import { gstyles } from './GlobalStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
+import LottieView from 'lottie-react-native';
 
 const CouponVerificationModal = (props) => {
     return (
@@ -20,11 +21,9 @@ const CouponVerificationModal = (props) => {
             />
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <Image source={require('../../assets/images/check.png')}
-                        style={[gstyles.iconSize(128), gstyles.centerX, gstyles.mt(25), gstyles.mb(15)]}
-                    />
+                    <LottieView source={require('../../assets/gif/animation_correct.json')} style={[gstyles.iconSize(140, 140), gstyles.centerX, gstyles.mt(25), gstyles.mb(15)]} autoPlay loop />
                     <TouchableOpacity activeOpacity={0.6}
-                        onPress={()=>{ props.setcouponStatus('pending') }}
+                        onPress={() => { props.setcouponStatus('pending') }}
                         style={{ position: 'absolute', right: 30, top: 30 }}
                     >
                         <AntDesign name='close' size={25} color='#0276E5' />
@@ -70,7 +69,7 @@ const CouponVerificationModal = (props) => {
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
                         colors={['#8338EC', '#3A86FF']} style={styles.settleBtnTouch}>
-                        <TouchableOpacity onPress={()=>{
+                        <TouchableOpacity onPress={() => {
                             props.setcouponStatus('redeem');
                             props.onCliclRedeem()
                         }} activeOpacity={0.6}

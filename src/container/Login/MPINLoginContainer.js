@@ -24,10 +24,10 @@ const MPINLoginContainer = (props) => {
         }
         if(cmpin==mpin){
             setIsLoading(true);
-            const isResponce = await getTransactions();
+            // const isResponce = await getTransactions();
             const isResponce1 = await getProfile();
             const isResponce2 = await getConfigs();
-            if(isResponce && isResponce1){
+            if(isResponce1 && isResponce2 && (isResponce1.role=="Biller" || isResponce1.role=="Cashier" || isResponce1.role=="Manager")){
                 setIsLoading(false)
                 navigation.dispatch(
                     CommonActions.reset({
@@ -41,6 +41,8 @@ const MPINLoginContainer = (props) => {
                 );
             }else{
                 setIsLoading(false);
+                showToast("No Access");
+                return;
             }
         }else{
             message = 'Invalid MPIN';
@@ -86,7 +88,7 @@ const MPINLoginContainer = (props) => {
                 return false;
             }
             props.updateuser(response.data);
-            return true;
+            return response.data;
         } else {
             showToast(
                 response.message ? response.message : 'Something went wrong, try again',

@@ -74,7 +74,7 @@ const ProfileComponent = (props) => {
                         </Text>
                     </View>
 
-                    <TouchableOpacity onPress={() => showToast("Coming soon..!")} activeOpacity={1}
+                    <TouchableOpacity onPress={() => props.onClickChangeMpin()} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(50), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,
@@ -84,7 +84,7 @@ const ProfileComponent = (props) => {
                             <MaterialCommunityIcons name='account-lock' color='#000' size={22} />
                         </View>
                         <Text style={gstyles.OpenSans_SemiBold(14, '#000', gstyles.ms(15))}>
-                            Change Password
+                            Change MPIN
                         </Text>
                     </TouchableOpacity>
                     {/* <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} /> */}
@@ -132,7 +132,7 @@ const ProfileComponent = (props) => {
                     {/* <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} /> */}
 
                     <Text style={gstyles.OpenSans_SemiBold(12, '#0276E5', { opacity: 0.2, marginTop: 25 })}>
-                        Version 1.0.1
+                        Version 1.0.4
                     </Text>
 
 

@@ -11,6 +11,7 @@ import { gstyles } from '../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg, OpenSans_SemiBold } from '../../components/common/Constants';
 import LinearGradient from 'react-native-linear-gradient';
 import { TextInput } from 'react-native-paper';
+import LoadingModel from "../../components/common/Loading"
 
 const SetMPINComponent = (props) => {
 
@@ -59,6 +60,7 @@ const SetMPINComponent = (props) => {
                                 onPress={() => props.setHideMpin(!props.hideMpin)}
                             />
                         }
+                        autoFocus={true}
                     />
                 </View>
 
@@ -108,6 +110,7 @@ const SetMPINComponent = (props) => {
                 </LinearGradient>
 
             </View>
+            <LoadingModel loading={props.isLoading}/>
         </>
     );
 }

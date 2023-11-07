@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useRef} from 'react';
 import {
     View,
     StatusBar,
@@ -14,6 +14,8 @@ import { TextInput } from 'react-native-paper';
 import LoadingModel from "../../components/common/Loading"
 
 const ForgetPasswordComponent = (props) => {
+
+    let otpTextInput = useRef(null);
 
     return (
         <>
@@ -37,7 +39,7 @@ const ForgetPasswordComponent = (props) => {
                         mode="outlined"
                         label="Mobile Number"
                         placeholder="Enter Your Mobile Number"
-                        style={styles.inputText}
+                        style={{...styles.inputText}}
                         outlineColor='#8338EC'
                         keyboardType='number-pad'
                         maxLength={10}
@@ -47,6 +49,7 @@ const ForgetPasswordComponent = (props) => {
                                 iconColor="#3F3F3F"
                                 size={22}
                                 rippleColor='rgba(0,0,0,0)'
+                                disabled={props.isOtpSent}
                             />
                         }
                         right={
@@ -63,7 +66,9 @@ const ForgetPasswordComponent = (props) => {
                         }
                         value={props.mobileNumber}
                         onChangeText={(text) => { props.setMobileNumber(text) }}
+                        disabled={props.isOtpSent}
                         editable={!props.isOtpSent}
+                        autoFocus={true}
                     />
                 </View>
 
@@ -97,12 +102,13 @@ const ForgetPasswordComponent = (props) => {
                             />
                         }
                         value={props.otp}
+                        editable={props.isOtpSent}
                         onChangeText={(text) => { props.setOtp(text) }}
                     />
                 </View>
 
                 <View style={styles.forgetTextView}>
-                    <TouchableOpacity onPress={() => props.onClickSendOTP()} disabled={!props.isOtpSent || props.timer > 1} activeOpacity={0.6}
+                    <TouchableOpacity onPress={() => {props.onClickSendOTP()}} disabled={!props.isOtpSent || props.timer > 1} activeOpacity={0.6}
                         style={[{ alignSelf: 'flex-end' }]}>
                         <Text style={gstyles.OpenSans_Medium(16, props.isOtpSent ? "#3F3F3F" : "#3F3F3F40")}>
                             {props.timer != 0 ? props.timer + "s" : null} <Text style={gstyles.OpenSans_Medium(16, props.timer < 1 ? "#3F3F3F" : "#3F3F3F40")}>Resend OTP?</Text>
@@ -117,13 +123,28 @@ const ForgetPasswordComponent = (props) => {
                     <TouchableOpacity
                         activeOpacity={0.6}
                         style={styles.btnTouch}
-                        onPress={() => { props.isOtpSent ? props.onClickContinue() : props.onClickSendOTP() }}
+                        onPress={() => { 
+                            if(props.isOtpSent){
+                                props.onClickContinue();
+                            }else {
+                                props.onClickSendOTP() 
+                            }
+                        }}
                     >
                         <Text style={gstyles.OpenSans_SemiBold(20, '#FFFFFF')}>
                             {props.isOtpSent ? "Verify OTP" : "Send OTP"}
                         </Text>
                     </TouchableOpacity>
                 </LinearGradient>
+                <View style={styles.forgetTextView}>
+                        <TouchableOpacity activeOpacity={0.6}
+                            onPress={() => { props.onClickLoginWithPass() }}
+                            style={[{ alignSelf: 'center' }]}>
+                            <Text style={gstyles.OpenSans_Medium(16, '#3F3F3F')}>
+                                Login with Password
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 <TouchableOpacity onPress={()=>{Linking.openURL('https://ticketsque.com/');}} style={{position:'absolute',bottom:10,alignSelf:'center'}}>
                     <Text>Join as a Business Partner</Text>
                 </TouchableOpacity>
