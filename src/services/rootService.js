@@ -32,6 +32,7 @@ export const postData = async (url, requestData=null, token = null) => {
 };
 
 export const getData = async (url, requestData = {}, token = null) => {
+  
   const apiUri = `${BASE_URI}${url}`;
   if (token) {
     axios.defaults.headers.common = {

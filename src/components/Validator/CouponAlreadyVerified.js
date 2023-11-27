@@ -1,12 +1,13 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { WIDTH } from './Constants';
-import { gstyles } from './GlobalStyles';
+import { WIDTH } from '../common/Constants';
+import { gstyles } from '../common/GlobalStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
+import LottieView from 'lottie-react-native';
 
-const CouponExpireModal = (props) => {
+const CouponAlreadyVerified = (props) => {
 
     return (
         <Modal
@@ -21,9 +22,8 @@ const CouponExpireModal = (props) => {
             />
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
-                    <Image source={require('../../assets/images/time_expire.png')}
-                        style={[gstyles.iconSize(128), gstyles.centerX, gstyles.mt(25), gstyles.mb(15)]}
-                    />
+
+                    <LottieView source={require('../../assets/gif/animation_warn.json')} style={[gstyles.iconSize(228, 228), gstyles.centerX]} autoPlay loop />
                     <TouchableOpacity activeOpacity={0.6}
                         onPress={() => { props.setcouponStatus('pending') }}
                         style={{ position: 'absolute', right: 30, top: 30 }}
@@ -31,39 +31,56 @@ const CouponExpireModal = (props) => {
                         <AntDesign name='close' size={25} color='#0276E5' />
                     </TouchableOpacity>
                     <Text style={gstyles.OpenSans_SemiBold(20, '#FF0000', gstyles.centerX)}>
-                        Coupon Expired
+                        {props.couponData.type=='coupon' ? "Coupon Already Verified" : "Ticket Already Verified"}
                     </Text>
-                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(20)]}>
+                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(25)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
-                            Coupon ID
+                            {props.couponData.type=='coupon' ? "Coupon ID" : "Ticket ID"}
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#000000')}>#{props.couponData.id}</Text>
+                            :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#000000')}>{props.couponData.type=='coupon' ? props.couponData.id : props.couponData.ticket_tracking_id}</Text>
                         </Text>
                     </View>
-                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
+                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(20), gstyles.mb(props.couponData.type=='coupon' ? 0 : 40)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
-                            Created at
+                            Total Entries
+                        </Text>
+                        <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                            :{'    '}<Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                            {props.couponData.type=='coupon' ? 2*Number(props.couponData.couple_count)+Number(props.couponData.ladies_count)+
+                            Number(props.couponData.stag_count) : props.couponData.total_ppl}{' People'}
+                            </Text>
+                        </Text>
+                    </View>
+                    {/* <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
+                        <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
+                            Verified at
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
                             :{'    '}{moment(props.couponData.created_at).format('DD/MM/YY,   hh: mm A')}
                         </Text>
-                    </View>
-                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14), gstyles.mb(50)]}>
+                        <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                            :{'    '}02/02/23, 05:35 PM
+                        </Text>
+                    </View> */}
+                    {props.couponData.type=='coupon' && <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14), gstyles.mb(80)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Valid till
                         </Text>
-                        <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                        {/*<Text style={gstyles.OpenSans_Regular(16, '#000000')}>
                             :{'    '}{moment(props.couponData.expiry_time).format('DD/MM/YY,   hh: mm A')}
+                        </Text>*/}
+                        <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                            :{'    '}{moment(props.couponData.expiry_time).format("DD/MM/YY,  hh:mm A")}
                         </Text>
-                    </View>
+                    </View> }
                 </View>
             </View>
         </Modal>
     );
 }
 
-export default CouponExpireModal;
+export default CouponAlreadyVerified;
 
 const styles = StyleSheet.create({
 

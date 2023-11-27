@@ -1,17 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, Text, StatusBar } from 'react-native';
 import { app_Bg } from '../components/common/Constants';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginContainer from '../container/Login/LoginContainer';
-import ForgetPasswordContainer from '../container/Login/ForgetPasswordContainer';
-import MPINLoginContainer from '../container/Login/MPINLoginContainer';
-import ResetPasswordContainer from '../container/Login/ResetPasswordContainer';
-import SetMPINContainer from '../container/Login/SetMPINContainer';
-import HomeContainer from '../container/Home/HomeContainer';
-import TabNavigation from './TabNavigation';
-import TransactionContainer from '../container/Home/TransactionContainer';
-import EditProfileContainer from '../container/Profile/EditProfileContainer';
+import LoginContainer from '../container/Common/Login/LoginContainer';
+import ForgetPasswordContainer from '../container/Common/Login/ForgetPasswordContainer';
+import MPINLoginContainer from '../container/Common/Login/MPINLoginContainer';
+import ResetPasswordContainer from '../container/Common/Login/ResetPasswordContainer';
+import SetMPINContainer from '../container/Common/Login/SetMPINContainer';
+import HomeContainer from '../container/Validator/HomeContainer';
+import ValidatorTabNavigation from './ValidatorTabNavigation';
+import ChangeMpinContainer from '../container/Common/Profile/ChangeMpinContainer';
+import RedeemerTabNavigation from './RedeemerTabNavigation';
+import TransactionContainer from '../container/Redeemer/TransactionContainer';
+// import EditProfileContainer from '../container/Profile/EditProfileContainer';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,10 +34,12 @@ const Navigation = (props) => {
         <Stack.Screen name="MPINLoginContainer" component={MPINLoginContainer} />
         <Stack.Screen name="ResetPasswordContainer" component={ResetPasswordContainer} />
         <Stack.Screen name="SetMPINContainer" component={SetMPINContainer} />
+        <Stack.Screen name="RedeemerTabNavigation" component={RedeemerTabNavigation} />
+        <Stack.Screen name="ValidatorTabNavigation" component={ValidatorTabNavigation} />
         <Stack.Screen name="HomeContainer" component={HomeContainer} />
-        <Stack.Screen name="TabNavigation" component={TabNavigation} />
         <Stack.Screen name="TransactionContainer" component={TransactionContainer} />
-        <Stack.Screen name="EditProfileContainer" component={EditProfileContainer} />
+        <Stack.Screen name='ChangeMpinContainer' component={ChangeMpinContainer} />
+        {/* <Stack.Screen name="EditProfileContainer" component={EditProfileContainer} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

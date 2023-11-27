@@ -1,6 +1,6 @@
 const initialState = {
     userData:null,
-    appConfigs:null
+    appConfigs:null,
 }
 const userreducer = (state=initialState, action) => {
     switch(action.type){

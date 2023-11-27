@@ -25,7 +25,7 @@ const Main = () => {
             }, 2000);
         }else{
             setTimeout(() => {
-                setRoute('ForgetPasswordContainer');   //ForgetPasswordContainer
+                setRoute('ForgetPasswordContainer');
             }, 2000);
         }
     }

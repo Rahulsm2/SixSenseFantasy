@@ -4,7 +4,9 @@ const initialState = {
     totalAmount:0,
     saffsList:[],
     selectedFilter:'all',
-    filteredStaffsList:[]
+    filteredStaffsList:[],
+    validationsTrasactions:[],
+    totalvalidationsEntries:0
 }
 const transactionsreducer = (state=initialState, action) => {
     switch(action.type){
@@ -25,6 +27,12 @@ const transactionsreducer = (state=initialState, action) => {
             break;
         case 'UPDATE_FILTERED_STAFF':
             return{...state,filteredStaffsList:action.payload.filteredStaffsList}
+            break;
+        case 'UPDATE_VALIDATED_TRANSACTIONS':
+            return{...state,validationsTrasactions:action.payload.validationsTrasactions}
+            break;
+        case 'UPDATE_TOTAL_ENTRIES':
+            return{...state,totalvalidationsEntries:action.payload.totalvalidationsEntries}
             break;
         default:
             return state;
