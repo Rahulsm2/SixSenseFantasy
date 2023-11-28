@@ -34,13 +34,19 @@ const MPINLoginContainer = (props) => {
                 // if(isResponce1.role=="Manager") {
                 //     rootingName = "ManagerHomeComponent";
                 // } else 
-                if (isResponce1.role ==  "Biller" || isResponce1.role == "Cashier" || isResponce1.role == "Manager" ) {
-                    rootingName = "RedeemerTabNavigation";
-                } else if (isResponce1.role == "Validator" ) {
+                // if (isResponce1.role ==  "Biller" || isResponce1.role == "Cashier" || isResponce1.role == "Manager" ) {
+                //     rootingName = "RedeemerTabNavigation";
+                // } else if (isResponce1.role == "Validator" ) {
+                //     rootingName = "ValidatorTabNavigation";
+                // } else {
+                //     // rootingName = "DistributorTabNavigation";
+                //     showToast("Access denied.")
+                // }
+                if (isResponce1.role == "Validator" ) {
                     rootingName = "ValidatorTabNavigation";
                 } else {
-                    // rootingName = "DistributorTabNavigation";
-                    showToast("Access denied.")
+                    rootingName = "RedeemerTabNavigation";
+                    // showToast("Access denied.")
                 }
                 setIsLoading(false)
                 {rootingName && (Platform.OS === 'android' ? (navigation.dispatch(

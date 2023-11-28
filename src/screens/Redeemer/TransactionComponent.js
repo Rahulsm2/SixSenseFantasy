@@ -16,13 +16,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import RedeemedDetailsModal from '../../components/common/RedeemedDetailsModal';
+import RedeemedDetailsModal from '../../components/Redeemer/RedeemedDetailsModal';
 import RBSheet from "react-native-raw-bottom-sheet";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from 'moment';
 import LoadingModel from "../../components/common/Loading"
-import PopMenuModal from '../../components/common/PopMenuModal';
+import PopMenuModal from '../../components/Redeemer/PopMenuModal';
 
 const TransactionComponent = (props) => {
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity } from 'react-native';
-import { WIDTH } from './Constants';
-import { gstyles } from './GlobalStyles';
+import { WIDTH } from '../common/Constants';
+import { gstyles } from '../common/GlobalStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';

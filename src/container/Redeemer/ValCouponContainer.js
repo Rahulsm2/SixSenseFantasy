@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ValCouponComponent from '../../screens/Redeemer/ValCouponComponent';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
-import { postData } from '../../services/rootService';
+import { postData,getData } from '../../services/rootService';
 import { getToken } from '../../services/persistData';
 import { showToast } from '../../components/common/ShowToast';
 import moment from 'moment';
@@ -26,6 +26,7 @@ const ValCouponContainer = (props) => {
   const [seekPremission, setSeekPremission] = useState(false);
   const [remarks, setremarks] = useState('');
   const refRBSheet = useRef();
+  const freeDrinksRefRBSheet = useRef();
 
   const onClickBack = () => {
     navigation.goBack();
@@ -51,6 +52,32 @@ const ValCouponContainer = (props) => {
       setSeekPremission(true);
     }
   }, [seekPremission]);
+
+  useEffect(() => {
+      console.log("props.freeDrinks",props.freeDrinks);
+      if(props.freeDrinks && props.freeDrinks.length<=0){
+          getFreeDrinks();
+      }
+  }, []);
+
+  const getFreeDrinks = async () => {
+      setIsLoading(true);
+      const token = await getToken();
+      const response = await getData('api/app/coupon/freedrink_name',null, token);
+      if (response.statusCode == 200) {
+          setIsLoading(false);
+          if (response.errors) {
+              showToast(response.message);
+              return;
+          }
+          props.updatesFreeDrinks(response.data);
+      } else{
+          setIsLoading(false);
+          showToast(
+              response.message ? response.message : 'Something went wrong, try again',
+          );
+      }
+  }
 
 
   exceptionOnBarcodeRead = () => {
@@ -246,6 +273,8 @@ const ValCouponContainer = (props) => {
       seekPremission={seekPremission}
       setSeekPremission={setSeekPremission}
       exceptionOnBarcodeRead={exceptionOnBarcodeRead}
+      freeDrinksRefRBSheet={freeDrinksRefRBSheet}
+      freeDrinks={props.freeDrinks}
     />
   );
 }
@@ -254,13 +283,15 @@ const ValCouponContainer = (props) => {
 const mapStateToProps = state => ({
   sTransactions: state.transactionsreducer.sTransactions,
   usTransactions: state.transactionsreducer.usTransactions,
-  totalAmount: state.transactionsreducer.totalAmount
+  totalAmount: state.transactionsreducer.totalAmount,
+  freeDrinks: state.transactionsreducer.freeDrinks
 });
 
 const mapDispatchToProps = dispatch => ({
   updatesTransactions: (sTransactions) => dispatch({ type: 'UPDATE_S_TRANSACTIONS', payload: { sTransactions: sTransactions } }),
   updateusTransactions: (usTransactions) => dispatch({ type: 'UPDATE_US_TRANSACTIONS', payload: { usTransactions: usTransactions } }),
-  updateTotalAmount: (totalAmount) => dispatch({ type: 'UPDATE_TOTAL_AMOUNT', payload: { totalAmount: totalAmount } })
+  updateTotalAmount: (totalAmount) => dispatch({ type: 'UPDATE_TOTAL_AMOUNT', payload: { totalAmount: totalAmount } }),
+  updatesFreeDrinks: (freeDrinks) => dispatch({ type: 'UPDATE_FREE_DRINKS', payload: { freeDrinks: freeDrinks } })
 });
 
 

@@ -50,7 +50,7 @@ const HomeContainer = (props) => {
             setisRefreshing(false);
             let count=0
             for (let i = 0; i < response.data.length; i++) {
-                count=count+response.data[i].type_counts.Couple + response.data[i].type_counts.Ladies + response.data[i].type_counts.Single;
+                count=count+(2*response.data[i].type_counts.Couple) + response.data[i].type_counts.Ladies + response.data[i].type_counts.Single;
             }
             props.updateTotalEntries(count);
             props.updateTransactions(response.data)

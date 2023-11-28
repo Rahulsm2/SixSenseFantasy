@@ -15,13 +15,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icons from 'react-native-vector-icons/Ionicons';
 import { RNCamera } from 'react-native-camera';
 import LoadingModel from "../../components/common/Loading"
-import CouponVerificationModal from "../../components/common/CouponVerificationModal"
+import CouponVerificationModal from "../../components/Redeemer/CouponVerificationModal"
 import { showToast } from "../../components/common/ShowToast"
-import CouponExpireModal from "../../components/common/CouponExpireModal"
+import CouponExpireModal from "../../components/Redeemer/CouponExpireModal"
 import RBSheet from "react-native-raw-bottom-sheet";
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Modal, TextInput } from 'react-native-paper';
+import BalanceDrinksModal from "../../components/Redeemer/BalanceDrinksModal"
 
 const ValCouponComponent = (props) => {
     const { height, width } = Dimensions.get('window');
@@ -37,7 +38,11 @@ const ValCouponComponent = (props) => {
         props.setbillAmount('');
         props.setremarks('');
         props.setcouponStatus('redeem')
-        props.refRBSheet.current.open()
+        if(props.couponData.event_type=="free_drink"){
+            props.freeDrinksRefRBSheet.current.open();
+        }else{
+            props.refRBSheet.current.open();
+        }
     }
 
     useEffect(() => {
@@ -158,16 +163,23 @@ const ValCouponComponent = (props) => {
                     </RNCamera>
                 </View>
                 <LoadingModel loading={props.isLoading} />
+
                 <CouponExpireModal
                     visible={props.couponStatus == 'expired'}
                     setcouponStatus={props.setcouponStatus}
                     couponData={props.couponData} />
+
                 <CouponVerificationModal
                     isVisible={props.couponStatus == 'verified'}
                     setcouponStatus={props.setcouponStatus}
                     couponData={props.couponData}
                     onCliclRedeem={onCliclRedeem} />
 
+                <BalanceDrinksModal
+                    freeDrinksRefRBSheet= {props.freeDrinksRefRBSheet}
+                    freeDrinks={props.freeDrinks}
+                    couponData={props.couponData}
+                    setcouponStatus={(val)=>props.setcouponStatus(val)} />
 
                 <RBSheet
                     ref={props.refRBSheet}

@@ -101,6 +101,7 @@ const ValCouponContainer = (props) => {
         ) {
           console.log("Before", couponStatus)
           setcouponStatus('entry_verified')
+          getTransactions();
           console.log("Before", couponStatus)
         } else if (curenttime.isBefore(moment(response.data.start_time))) {
           // setcouponStatus('aboutToStart')
@@ -118,28 +119,27 @@ const ValCouponContainer = (props) => {
 
   const getTransactions = async () => {
     const token = await getToken();
-    let formData = new FormData();
-    formData.append('staff_id', '');
-    const response = await postData('api/app/coupon/transaction_settled', formData, token);
+    const response = await getData('api/app/coupon/validator_transactions', {}, token);
     if (response.statusCode == 200) {
-      if (response.errors) {
-        showToast(response.message);
-        return;
-      }
-      let allTransaction = response.settled_data.concat(response.notsettled_data);
-      let totalAmount = 0
-      for (let i = 0; i < allTransaction.length; i++) {
-        totalAmount = totalAmount + Number(allTransaction[i].amount_used);
-      }
-      props.updateTotalAmount(totalAmount);
-      props.updatesTransactions(response.settled_data.reverse());
-      props.updateusTransactions(response.notsettled_data.reverse());
+        if (response.errors) {
+            showToast(response.message);
+            setIsLoading(false);
+            return;
+        }
+        setIsLoading(false);
+        let count=0
+        for (let i = 0; i < response.data.length; i++) {
+            count=count+(2*response.data[i].type_counts.Couple) + response.data[i].type_counts.Ladies + response.data[i].type_counts.Single;
+        }
+        props.updateTotalEntries(count);
+        props.updateTransactions(response.data)
     } else {
-      showToast(
-        response.message ? response.message : 'Something went wrong, try again',
-      );
+        setIsLoading(false);
+        showToast(
+            response.message ? response.message : 'Session might expired, please login again.'
+        );
     }
-  }
+}
 
   return (
     <ValCouponComponent
@@ -168,7 +168,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   updatesTransactions: (sTransactions) => dispatch({ type: 'UPDATE_S_TRANSACTIONS', payload: { sTransactions: sTransactions } }),
   updateusTransactions: (usTransactions) => dispatch({ type: 'UPDATE_US_TRANSACTIONS', payload: { usTransactions: usTransactions } }),
-  updateTotalAmount: (totalAmount) => dispatch({ type: 'UPDATE_TOTAL_AMOUNT', payload: { totalAmount: totalAmount } })
+  updateTotalAmount: (totalAmount) => dispatch({ type: 'UPDATE_TOTAL_AMOUNT', payload: { totalAmount: totalAmount } }),
+  updateTransactions: (validationsTrasactions) => dispatch({ type: 'UPDATE_VALIDATED_TRANSACTIONS', payload: { validationsTrasactions: validationsTrasactions } }),
+  updateTotalEntries: (totalvalidationsEntries) => dispatch({ type: 'UPDATE_TOTAL_ENTRIES', payload: { totalvalidationsEntries: totalvalidationsEntries } }),
 });
 
 

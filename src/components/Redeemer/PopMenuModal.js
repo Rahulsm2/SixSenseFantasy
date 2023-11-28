@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import { WIDTH } from './Constants';
-import { gstyles } from './GlobalStyles';
+import { WIDTH } from '../common/Constants';
+import { gstyles } from '../common/GlobalStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const PopMenuModal = (props) => {

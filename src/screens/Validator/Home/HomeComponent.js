@@ -116,13 +116,13 @@ const HomeComponent = (props) => {
                         </Text>
                     </View>
                     <FlatList
-                        data={props.transactions}
+                        data={props.transactions.reverse()}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <CouponItem
                                 data={item}
                                 couponId={item.id}
-                                entries={item.type_counts.Couple + item.type_counts.Ladies + item.type_counts.Single}
+                                entries={2*item.type_counts.Couple + item.type_counts.Ladies + item.type_counts.Single}
                                 verifiedTime={moment(item.created_at).format("DD MMM YY | hh:mm A")}
                                 customer={item.name}
                             />
