@@ -127,7 +127,7 @@ const TransactionContainer = (props) => {
         const searchResult = props.usTransactions.filter(function (item) {
           return ( item['bill_no'].toString().includes(query) || 
           item["id"].toString().includes(query) || 
-          item["id"].toString().includes(query) || 
+          item["amount_used"].toString().includes(query) || 
           item["distribute_id"].toString().includes(query) ||
           item["name"].toString().includes(query) ||
           item["first_name"].toString().includes(query)

@@ -30,7 +30,7 @@ const HomeContainer = (props) => {
 
     useEffect(() => {
         // setIsLoading(true);
-        // getTransactions();
+        getTransactions();
         inAppUpdates.checkNeedsUpdate().then((result) => {
             console.log(result);
             if (result.shouldUpdate) {
@@ -84,7 +84,7 @@ const HomeContainer = (props) => {
             showToast(
                 response.message ? response.message : 'Session might expired, please login again.'
             );
-            onClickForget();
+            // onClickForget();
         }
     }
 

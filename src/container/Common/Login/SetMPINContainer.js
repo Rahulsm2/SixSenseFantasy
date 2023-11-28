@@ -34,7 +34,7 @@ const SetMPINContainer = (props) => {
             // if(isResponce1.role=="Manager") {
             //     rootingName = "ManagerHomeComponent";
             // } else 
-            if (isResponce1.role == isResponce1.role == "Biller" || isResponce1.role == "Cashier" ) {
+            if (isResponce1.role == "Biller" || isResponce1.role == "Cashier" || isResponce1.role == "Manager" ) {
                 rootingName = "RedeemerTabNavigation";
             } else if (isResponce1.role == "Validator" ) {
                 rootingName = "ValidatorTabNavigation";

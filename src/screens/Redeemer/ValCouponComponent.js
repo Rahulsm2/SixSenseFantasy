@@ -1,12 +1,12 @@
-import React,{useRef,useEffect} from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
     View,
     StatusBar,
     Text,
     StyleSheet,
     TouchableOpacity,
-    Image,Dimensions,ScrollView,
-    PermissionsAndroid
+    Image, Dimensions, ScrollView,
+    PermissionsAndroid, KeyboardAvoidingView
 } from 'react-native';
 import { gstyles } from '../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg } from '../../components/common/Constants';
@@ -16,7 +16,7 @@ import Icons from 'react-native-vector-icons/Ionicons';
 import { RNCamera } from 'react-native-camera';
 import LoadingModel from "../../components/common/Loading"
 import CouponVerificationModal from "../../components/common/CouponVerificationModal"
-import {showToast} from "../../components/common/ShowToast"
+import { showToast } from "../../components/common/ShowToast"
 import CouponExpireModal from "../../components/common/CouponExpireModal"
 import RBSheet from "react-native-raw-bottom-sheet";
 import Feather from 'react-native-vector-icons/Feather';
@@ -26,13 +26,13 @@ import { Modal, TextInput } from 'react-native-paper';
 const ValCouponComponent = (props) => {
     const { height, width } = Dimensions.get('window');
     const QR_BOX_SIZE = 250;
-    const verticalHeight = (height-120-QR_BOX_SIZE)/2;
+    const verticalHeight = (height - 120 - QR_BOX_SIZE) / 2;
     const verticalWidth = width;
     const horizontalHeight = QR_BOX_SIZE;
-    const horizontalWidth = (width-QR_BOX_SIZE)/2;
+    const horizontalWidth = (width - QR_BOX_SIZE) / 2;
     const inputRef = useRef()
 
-    const onCliclRedeem=()=>{
+    const onCliclRedeem = () => {
         props.setredeemAmount('');
         props.setbillAmount('');
         props.setremarks('');
@@ -40,12 +40,12 @@ const ValCouponComponent = (props) => {
         props.refRBSheet.current.open()
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         console.log(inputRef)
-        if(inputRef.current){
+        if (inputRef.current) {
             inputRef.current?.forceFocus()
         }
-    },[inputRef,props.couponStatus])
+    }, [inputRef, props.couponStatus])
     return (
         <>
             <StatusBar
@@ -72,12 +72,9 @@ const ValCouponComponent = (props) => {
                     <RNCamera
                         mirrorImage={false}
                         captureAudio={false}
-                        barcodeFinderVisible={true}
-                        barcodeFinderWidth={280}
-                        barcodeFinderHeight={220}
-                        barcodeFinderBorderColor="white"
-                        barcodeFinderBorderWidth={2}
-                        defaultTouchToFocus
+                        defaultTouchToFocus={true}
+                        defaultOnFocusComponent={true}
+                        aspect={1}
                         barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
                         flashMode={props.isFlash == true ?
                             RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
@@ -88,39 +85,38 @@ const ValCouponComponent = (props) => {
                             width: '100%',
                             alignSelf: 'center',
                         }}
-                        onBarCodeRead={(data)=>props.isLoading || props.couponStatus!=='pending' ? {} : props.onBarCodeRead(data)}
-                        
+                        onBarCodeRead={(data) => props.isLoading || props.couponStatus !== 'pending' ? {} : props.onBarCodeRead(data)}
                     >
-                        <View style={{flex: 1}}>
+                        <View style={{ flex: 1 }}>
                             <View style={{
                                 width: verticalWidth,
                                 height: verticalHeight,
                                 backgroundColor: "rgba(0,0,0,0.5)"
-                            }}/>
+                            }} />
 
-                            <View style={{height: QR_BOX_SIZE, flexDirection: "row"}}>
+                            <View style={{ height: QR_BOX_SIZE, flexDirection: "row" }}>
                                 <View style={{
                                     width: horizontalWidth,
-                                    height: horizontalHeight+1,
+                                    height: horizontalHeight + 1,
                                     backgroundColor: "rgba(0,0,0,0.5)"
-                                }}/>
-                                <View style={{width: QR_BOX_SIZE, height: QR_BOX_SIZE}}>
-                                <Image
-                            source={require('../../assets/images/scan_gif.gif')}
-                            style={gstyles.iconSize(QR_BOX_SIZE)}
-                        />
-                                    </View>
+                                }} />
+                                <View style={{ width: QR_BOX_SIZE, height: QR_BOX_SIZE }}>
+                                    <Image
+                                        source={require('../../assets/images/scan_gif.gif')}
+                                        style={gstyles.iconSize(QR_BOX_SIZE)}
+                                    />
+                                </View>
                                 <View style={{
                                     width: horizontalWidth,
-                                    height: horizontalHeight+1,
+                                    height: horizontalHeight + 1,
                                     backgroundColor: "rgba(0,0,0,0.5)"
-                                }}/>
+                                }} />
                             </View>
                             <View style={{
                                 width: verticalWidth,
                                 height: verticalHeight,
                                 backgroundColor: "rgba(0,0,0,0.5)"
-                            }}/>
+                            }} />
                         </View>
                         <View
                             style={{
@@ -158,18 +154,20 @@ const ValCouponComponent = (props) => {
                                 />
                             </TouchableOpacity>
                         </View>
+
                     </RNCamera>
                 </View>
-                <LoadingModel loading={props.isLoading}/>
-                <CouponExpireModal 
-                    visible={props.couponStatus=='expired'} 
+                <LoadingModel loading={props.isLoading} />
+                <CouponExpireModal
+                    visible={props.couponStatus == 'expired'}
                     setcouponStatus={props.setcouponStatus}
-                    couponData={props.couponData}/>
-                <CouponVerificationModal 
-                    isVisible={props.couponStatus=='verified'} 
+                    couponData={props.couponData} />
+                <CouponVerificationModal
+                    isVisible={props.couponStatus == 'verified'}
                     setcouponStatus={props.setcouponStatus}
                     couponData={props.couponData}
-                    onCliclRedeem={onCliclRedeem}/>
+                    onCliclRedeem={onCliclRedeem} />
+
 
                 <RBSheet
                     ref={props.refRBSheet}
@@ -178,7 +176,8 @@ const ValCouponComponent = (props) => {
                     animationType={'slide'}
                     openDuration={250}
                     onClose={() => {
-                        props.setcouponStatus('pending')}}
+                        props.setcouponStatus('pending')
+                    }}
                     customStyles={{
                         wrapper: {
                             backgroundColor: 'rgba(0,0,0,0.5)'
@@ -196,161 +195,190 @@ const ValCouponComponent = (props) => {
                         }
                     }}
                 >
-                    <ScrollView keyboardShouldPersistTaps={'handled'} showsVerticalScrollIndicator={false}>
-                        <View style={[gstyles.centerX, gstyles.mt(15), gstyles.mb(25)]}>
-                            <Text style={gstyles.OpenSans_SemiBold(20, '#0276E5')}>
-                                Redeem Coupon
-                            </Text>
-                        </View>
-                        <TouchableOpacity activeOpacity={0.6}
-                            style={{ position: 'absolute', right: 25, top: 15 }}
-                            onPress={() => {props.refRBSheet.current.close()
-                            props.setcouponStatus('pending')}}
-                        >
-                            <AntDesign name='close' size={25} color='#0276E5' />
-                        </TouchableOpacity>
-                        <View style={[gstyles.inRowJSB, gstyles.px(16)]}>
-                            <View style={[gstyles.inRow, gstyles.mt(20)]}>
-                                <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                                    Coupon ID
-                                </Text>
-                                <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                                    :{'  '}<Text style={gstyles.OpenSans_Regular(16, '#000000')}>{props.couponData.id}</Text>
+                    <KeyboardAvoidingView behavior="padding">
+                        <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+                            <View style={[gstyles.centerX, gstyles.mt(15), gstyles.mb(25)]}>
+                                <Text style={gstyles.OpenSans_SemiBold(20, '#0276E5')}>
+                                    Redeem Coupon
                                 </Text>
                             </View>
-                            <View style={[gstyles.inRow, gstyles.mt(20)]}>
-                                <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                                    Balance
-                                </Text>
-                                <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                                    :{'  '}<Text style={gstyles.OpenSans_Bold(16, '#0276E5')}>{'\u20B9'} {props.couponData.amount}</Text>
-                                </Text>
+                            <TouchableOpacity activeOpacity={0.6}
+                                style={{ position: 'absolute', right: 25, top: 15 }}
+                                onPress={() => {
+                                    props.refRBSheet.current.close()
+                                    props.setcouponStatus('pending')
+                                }}
+                            >
+                                <AntDesign name='close' size={25} color='#0276E5' />
+                            </TouchableOpacity>
+                            <View style={[gstyles.inRowJSB, gstyles.px(16)]}>
+                                <View style={[gstyles.inRow, gstyles.mt(20)]}>
+                                    <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                                        Coupon ID
+                                    </Text>
+                                    <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                                        :{'  '}<Text style={gstyles.OpenSans_Regular(16, '#000000')}>{props.couponData.id}</Text>
+                                    </Text>
+                                </View>
+                                <View style={[gstyles.inRow, gstyles.mt(20)]}>
+                                    <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                                        Balance
+                                    </Text>
+                                    <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                                        :{'  '}<Text style={gstyles.OpenSans_Bold(16, '#0276E5')}>{'\u20B9'} {props.couponData.amount}</Text>
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
-                        <View style={[gstyles.mt(25)]}>
-                            <TextInput
-                                ref={inputRef}
-                                mode="outlined"
-                                label="Redeem Amount"
-                                placeholder="Enter Redeem Amount"
-                                style={styles.inputText}
-                                outlineColor='#0276E5'
-                                keyboardType='number-pad'
-                                maxLength={5}
-                                left={
-                                    <TextInput.Icon
-                                        icon={'currency-inr'}
-                                        iconColor="#3F3F3F"
-                                        size={22}
-                                    />
-                                }
-                                value={props.redeemAmount}
-                                onChangeText={(text)=>{
-                                    const re = /^[0-9\b]+$/;
-                                    if (text === '' || re.test(text)) {
-                                        props.setredeemAmount(text)}}
-                                     }
-                            />
-                        </View>
-                        {/* <View style={{ width: WIDTH - 35, alignSelf: 'center' }}>
+                            <View style={[gstyles.mt(25)]}>
+                                <TextInput
+                                    ref={inputRef}
+                                    mode="outlined"
+                                    label="Redeem Amount*"
+                                    placeholder="Enter Redeem Amount"
+                                    style={styles.inputText}
+                                    outlineColor='#0276E5'
+                                    keyboardType='number-pad'
+                                    maxLength={5}
+                                    left={
+                                        <TextInput.Icon
+                                            icon={'currency-inr'}
+                                            iconColor="#3F3F3F"
+                                            size={22}
+                                        />
+                                    }
+                                    value={props.redeemAmount}
+                                    onChangeText={(text) => {
+                                        const re = /^[0-9\b]+$/;
+                                        if (text === '' || re.test(text)) {
+                                            props.setredeemAmount(text)
+                                        }
+                                    }
+                                    }
+                                />
+                            </View>
+                            {/* <View style={{ width: WIDTH - 35, alignSelf: 'center' }}>
                             <Text style={gstyles.OpenSans_Regular(14, '#FF0000', gstyles.mt(5))}>
                                 *Bill exceeds Coupon amount, Collect Rs. 500 in cash
                             </Text>
                         </View> */}
-                        {props.redeemAmount>props.couponData.amount && <View style={{ width: WIDTH - 35, alignSelf: 'center' }}>
-                            <Text style={gstyles.OpenSans_Regular(12, '#FF0000', gstyles.mt(2))}>
-                                *Enter redeem amount less than coupon balence amount
-                            </Text>
-                        </View> }
-                        <View style={[gstyles.mt(20)]}>
-                            <TextInput
-                                mode="outlined"
-                                label="Bill Number"
-                                placeholder="Enter Bill Number"
-                                style={styles.inputText}
-                                outlineColor='#0276E5'
-                                keyboardType='number-pad'
-                                maxLength={10}
-                                left={
-                                    <TextInput.Icon
-                                        icon={'ticket-confirmation-outline'}
-                                        iconColor="#3F3F3F"
-                                        size={22}
-                                    />
-                                }
-                                value={props.billAmount}
-                                onChangeText={(text)=>{props.setbillAmount(text)}}
-                            />
-                        </View>
-                        <View style={[gstyles.mt(24)]}>
-                            <TextInput
-                                mode="outlined"
-                                label="Remarks"
-                                placeholder="Enter Remarks"
-                                style={styles.inputText}
-                                maxLength={250}
-                                outlineColor='#0276E5'
-                                left={
-                                    <TextInput.Icon
-                                        icon={'note-text'}
-                                        iconColor="#3F3F3F"
-                                        size={22}
-                                    />
-                                }
-                                value={props.remarks}
-                                onChangeText={(text)=>{props.setremarks(text)}}
-                            />
-                        </View>
+                            {props.redeemAmount > props.couponData.amount && <View style={{ width: WIDTH - 35, alignSelf: 'center' }}>
+                                <Text style={gstyles.OpenSans_Regular(12, '#FF0000', gstyles.mt(2))}>
+                                    *Enter redeem amount less than coupon balence amount
+                                </Text>
+                            </View>}
+                            <View style={{flexDirection:'row',justifyContent:'space-around',width:WIDTH - 35,alignSelf:'center'}}>
+                            <View style={[gstyles.mt(20)]}>
+                                <TextInput
+                                    mode="outlined"
+                                    label="Bill Number*"
+                                    placeholder="Bill Number"
+                                    style={styles.inputText1}
+                                    outlineColor='#0276E5'
+                                    maxLength={10}
+                                    left={
+                                        <TextInput.Icon
+                                            icon={'ticket-confirmation-outline'}
+                                            iconColor="#3F3F3F"
+                                            size={22}
+                                        />
+                                    }
+                                    value={props.billAmount}
+                                    onChangeText={(text) => { props.setbillAmount(text) }}
+                                    keyboardType='number-pad'
+                                />
+                            </View>
+                            <View style={[gstyles.mt(20)]}>
+                                <TextInput
+                                    mode="outlined"
+                                    label="Table number"
+                                    placeholder="Table number"
+                                    style={styles.inputText1}
+                                    outlineColor='#0276E5'
+                                    maxLength={10}
+                                    left={
+                                        <TextInput.Icon
+                                            icon={'ticket-confirmation-outline'}
+                                            iconColor="#3F3F3F"
+                                            size={22}
+                                        />
+                                    }
+                                    value={props.tableNumber}
+                                    onChangeText={(text) => { props.settableNumber(text) }}
+                                />
+                            </View>
+                            </View>
+                            <View style={[gstyles.mt(24)]}>
+                                <TextInput
+                                    mode="outlined"
+                                    label="Remarks"
+                                    placeholder="Enter Remarks"
+                                    style={styles.inputText}
+                                    maxLength={250}
+                                    outlineColor='#0276E5'
+                                    left={
+                                        <TextInput.Icon
+                                            icon={'note-text'}
+                                            iconColor="#3F3F3F"
+                                            size={22}
+                                        />
+                                    }
+                                    value={props.remarks}
+                                    onChangeText={(text) => { props.setremarks(text) }}
+                                />
+                            </View>
 
-                        <View style={[gstyles.inRowJSB, gstyles.centerX, { width: WIDTH - 35, marginTop: 24, marginBottom: 25 }]}>
-                            <LinearGradient
-                                start={{ x: 0, y: 1 }}
-                                end={{ x: 1, y: 1 }}
-                                colors={['#FFFFFF', '#FFFFFF']} style={[styles.settleBtnTouch, { height: 50 }]}>
-                                <TouchableOpacity activeOpacity={0.6}
-                                    style={[styles.btnTouch, styles.unSettleBtnTouch, { height: 50 }]}
-                                    onPress={()=>showToast("Coming soon..!")}
-                                >
-                                    <Text style={gstyles.OpenSans_Bold(20, '#0276E5')}>
-                                        Scan Bill
-                                    </Text>
-                                </TouchableOpacity>
-                            </LinearGradient>
+                            <View style={[gstyles.inRowJSB, gstyles.centerX, { width: WIDTH - 35, marginTop: 24, marginBottom: 25 }]}>
+                                <LinearGradient
+                                    start={{ x: 0, y: 1 }}
+                                    end={{ x: 1, y: 1 }}
+                                    colors={['#FFFFFF', '#FFFFFF']} style={[styles.settleBtnTouch, { height: 50 }]}>
+                                    <TouchableOpacity activeOpacity={0.6}
+                                        style={[styles.btnTouch, styles.unSettleBtnTouch, { height: 50 }]}
+                                        onPress={() => showToast("Coming soon..!")}
+                                    >
+                                        <Text style={gstyles.OpenSans_Bold(20, '#0276E5')}>
+                                            Scan Bill
+                                        </Text>
+                                    </TouchableOpacity>
+                                </LinearGradient>
 
-                            <LinearGradient
-                                start={{ x: 0, y: 1 }}
-                                end={{ x: 1, y: 1 }}
-                                colors={['#8338EC', '#3A86FF']} style={[styles.settleBtnTouch, { height: 50 }]}
-                            >
-                                <TouchableOpacity onPress={()=>{props.onClickRedeem()}} activeOpacity={0.6}
-                                    style={[styles.btnTouch, { height: 50 }]}
+                                <LinearGradient
+                                    start={{ x: 0, y: 1 }}
+                                    end={{ x: 1, y: 1 }}
+                                    colors={['#8338EC', '#3A86FF']} style={[styles.settleBtnTouch, { height: 50 }]}
                                 >
-                                    <Text style={gstyles.OpenSans_Bold(20, '#FFFFFF')}>
-                                        Redeem
-                                    </Text>
-                                </TouchableOpacity>
-                            </LinearGradient>
-                        </View>
-                    </ScrollView>
+                                    <TouchableOpacity onPress={() => { props.onClickRedeem() }} activeOpacity={0.6}
+                                        style={[styles.btnTouch, { height: 50 }]}
+                                    >
+                                        <Text style={gstyles.OpenSans_Bold(20, '#FFFFFF')}>
+                                            Redeem
+                                        </Text>
+                                    </TouchableOpacity>
+                                </LinearGradient>
+                            </View>
+                        </ScrollView>
+                    </KeyboardAvoidingView>
                 </RBSheet>
                 <Modal
                     transparent
                     visible={props.seekPremission}
                     animationType="fade">
-                    <View style={{backgroundColor:'#fff',padding:10,alignItems:'center',justifyContent:'center'}}>
+                    <View style={{ backgroundColor: '#fff', padding: 10, alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity onPress={
-                            async ()=> {
-                            const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA)
-                            if(granted == PermissionsAndroid.RESULTS.GRANTED){
-                                props.setSeekPremission(false);
-                            }
-                        }}>
-                        <Text>seekPremission</Text>
+                            async () => {
+                                const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA)
+                                if (granted == PermissionsAndroid.RESULTS.GRANTED) {
+                                    props.setSeekPremission(false);
+                                }
+                            }}>
+                            <Text>seekPremission</Text>
                         </TouchableOpacity>
                     </View>
                 </Modal>
-            </View>
+            </View >
         </>
+
+
     );
 }
 
@@ -417,6 +445,16 @@ const styles = StyleSheet.create({
         color: '#000000',
         // marginLeft: 5,
         width: WIDTH - 35,
+        backgroundColor: '#FFFFFF',
+        alignSelf: 'center'
+    },
+
+    inputText1: {
+        fontSize: 16,
+        fontFamily: OpenSans_Medium,
+        color: '#000000',
+        // marginLeft: 5,
+        width: WIDTH/2-25,
         backgroundColor: '#FFFFFF',
         alignSelf: 'center'
     },
