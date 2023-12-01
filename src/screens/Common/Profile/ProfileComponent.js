@@ -154,10 +154,8 @@ const ProfileComponent = (props) => {
                     {/* <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} /> */}
 
                     <Text style={gstyles.OpenSans_SemiBold(12, '#0276E5', { opacity: 0.2, marginTop: 25 })}>
-                    Version 1.0.4
+                    Version 1.0.5
                     </Text>
-
-                    
 
 
                     {/* <View style={[styles.inputBoxView, gstyles.mt(30)]}>

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ValCouponComponent from '../../screens/Validator/Home/ValCouponComponent';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
-import { postData} from '../../services/rootService';
+import { postData, getData} from '../../services/rootService';
 import { getToken } from '../../services/persistData';
 import { showToast } from '../../components/common/ShowToast';
 import moment from 'moment';
@@ -100,8 +100,8 @@ const ValCouponContainer = (props) => {
           )
         ) {
           console.log("Before", couponStatus)
-          setcouponStatus('entry_verified')
           getTransactions();
+          setcouponStatus('entry_verified')
           console.log("Before", couponStatus)
         } else if (curenttime.isBefore(moment(response.data.start_time))) {
           // setcouponStatus('aboutToStart')

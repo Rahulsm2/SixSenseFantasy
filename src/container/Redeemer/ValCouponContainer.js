@@ -177,7 +177,8 @@ const ValCouponContainer = (props) => {
     formData.append('coupon_id', couponData.distribute_id);
     formData.append('amount', redeemAmount);
     formData.append('bill_no', billAmount);
-    formData.append('remarks', remarks+"$$"+tableNumber);
+    let remarkss=remarks+ tableNumber ? "$$"+tableNumber : ""
+    formData.append('remarks', remarkss);
     const response = await postData(
       'api/app/coupon/redeem_coupons',
       formData,
@@ -224,6 +225,62 @@ const ValCouponContainer = (props) => {
       console.log("Something", couponData, couponStatus);
     }
   }
+  
+  const onClickRedeemFreeDrinks = async (freeDrinkss,totaladdedfreeDrinks) => {
+    if (isLoading) {
+      return;
+    }
+    const token = await getToken();
+    let selectedCounts='[';
+    for (let i = 0; i < freeDrinkss.length; i++) {
+      if(freeDrinkss[i].count>=1){
+        // selectedCounts.push(freeDrinkss[i].count.toString())
+        selectedCounts=selectedCounts+"\""+freeDrinkss[i].count+"\""+",";
+      }
+    }
+    let selectedDrinkIds='[';
+    for (let i = 0; i < freeDrinkss.length; i++) {
+      if(freeDrinkss[i].count>=1){
+        // selectedDrinkIds.push(freeDrinkss[i].id.toString())
+        selectedDrinkIds=selectedDrinkIds+"\""+freeDrinkss[i].id+"\""+",";
+      }
+    }
+    selectedDrinkIds=selectedDrinkIds.slice(0,-1)+']';
+    selectedCounts=selectedCounts.slice(0,-1)+']';
+    console.log(selectedCounts);
+    console.log(selectedDrinkIds);
+    
+    setIsLoading(true);
+    let formData = new FormData();
+    formData.append('coupon_id', couponData.distribute_id);
+    formData.append('amount', selectedCounts);
+    formData.append('drink_id', selectedDrinkIds);
+    const response = await postData(
+      'api/app/coupon/redeem_freedrink',
+      formData,
+      token,
+    );
+
+    if (response.statusCode == 200) {
+      setIsLoading(false)
+      if (response.errors) {
+        showToast(response.message);
+        return;
+      }
+      freeDrinksRefRBSheet.current.close();
+      showToast("Redeem successfull.")
+      navigation.navigate('HomeContainer');
+      getTransactions();
+      setcouponStatus('pending')
+    }else {
+      setIsLoading(false)
+      response.message
+        ? showToast(response.message)
+        : showToast(
+          'Something went wrong, please try again later'
+        );
+    }
+  }
 
   const getTransactions = async () => {
     const token = await getToken();
@@ -240,9 +297,21 @@ const ValCouponContainer = (props) => {
       for (let i = 0; i < allTransaction.length; i++) {
         totalAmount = totalAmount + Number(allTransaction[i].amount_used);
       }
+      let freedrinksdata=response.freedrink_data;
+      for (let i = 0; i < freedrinksdata.length; i++) {
+          let freedrinkInfo = freedrinksdata[i].freedrink_info ? freedrinksdata[i].freedrink_info : [];
+          let drinks="";
+          for (let j = 0; j < freedrinkInfo.length; j++) {
+              let data=freedrinkInfo[j].split(":");
+              drinks=drinks+" "+data[0]+"("+data[1]+")"+",";
+          }
+          freedrinksdata[i].drinkslist=drinks.slice(0,-1);
+      }
+      console.log("freedrinksdata",freedrinksdata);
       props.updateTotalAmount(totalAmount);
       props.updatesTransactions(response.settled_data.reverse());
       props.updateusTransactions(response.notsettled_data.reverse());
+      props.updateFreeDrinkTransactions(freedrinksdata.reverse());
     } else {
       showToast(
         response.message ? response.message : 'Something went wrong, try again',
@@ -275,6 +344,7 @@ const ValCouponContainer = (props) => {
       exceptionOnBarcodeRead={exceptionOnBarcodeRead}
       freeDrinksRefRBSheet={freeDrinksRefRBSheet}
       freeDrinks={props.freeDrinks}
+      onClickRedeemFreeDrinks={onClickRedeemFreeDrinks}
     />
   );
 }
@@ -284,14 +354,16 @@ const mapStateToProps = state => ({
   sTransactions: state.transactionsreducer.sTransactions,
   usTransactions: state.transactionsreducer.usTransactions,
   totalAmount: state.transactionsreducer.totalAmount,
-  freeDrinks: state.transactionsreducer.freeDrinks
+  freeDrinks: state.transactionsreducer.freeDrinks,
+  freeDrinkTransactions: state.transactionsreducer.freeDrinkTransactions
 });
 
 const mapDispatchToProps = dispatch => ({
   updatesTransactions: (sTransactions) => dispatch({ type: 'UPDATE_S_TRANSACTIONS', payload: { sTransactions: sTransactions } }),
   updateusTransactions: (usTransactions) => dispatch({ type: 'UPDATE_US_TRANSACTIONS', payload: { usTransactions: usTransactions } }),
   updateTotalAmount: (totalAmount) => dispatch({ type: 'UPDATE_TOTAL_AMOUNT', payload: { totalAmount: totalAmount } }),
-  updatesFreeDrinks: (freeDrinks) => dispatch({ type: 'UPDATE_FREE_DRINKS', payload: { freeDrinks: freeDrinks } })
+  updatesFreeDrinks: (freeDrinks) => dispatch({ type: 'UPDATE_FREE_DRINKS', payload: { freeDrinks: freeDrinks } }),
+  updateFreeDrinkTransactions:(freeDrinkTransactions) => dispatch({type: 'UPDATE_FREE_DRINK_TRANSACTIONS', payload: {freeDrinkTransactions:freeDrinkTransactions}}),
 });
 
 

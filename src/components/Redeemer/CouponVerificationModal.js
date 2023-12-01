@@ -56,7 +56,7 @@ const CouponVerificationModal = (props) => {
                         {'  '}:{'    '}{moment(props.couponData.expiry_time).format('DD/MM/YY,   hh: mm A')}
                         </Text>
                     </View>
-                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
+                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14),{marginBottom:props.couponData.freedrink_balance>0 || props.couponData.amount>0 ? 0 :20}]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Balance {props.couponData.event_type=="free_drink" ? "Drinks" : ""}
                         </Text>
@@ -66,6 +66,7 @@ const CouponVerificationModal = (props) => {
                             </Text>
                         </Text>
                     </View>
+                    {(props.couponData.freedrink_balance>0 || props.couponData.amount>0) &&
                     <LinearGradient
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
@@ -80,7 +81,7 @@ const CouponVerificationModal = (props) => {
                                 Redeem
                             </Text>
                         </TouchableOpacity>
-                    </LinearGradient>
+                    </LinearGradient> }
                 </View>
             </View>
         </Modal>

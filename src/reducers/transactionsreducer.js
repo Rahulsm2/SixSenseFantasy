@@ -7,7 +7,8 @@ const initialState = {
     filteredStaffsList:[],
     validationsTrasactions:[],
     totalvalidationsEntries:0,
-    freeDrinks:[]
+    freeDrinks:[],
+    freeDrinkTransactions:[]
 }
 const transactionsreducer = (state=initialState, action) => {
     switch(action.type){
@@ -37,6 +38,9 @@ const transactionsreducer = (state=initialState, action) => {
             break;
         case 'UPDATE_FREE_DRINKS':
             return{...state,freeDrinks:action.payload.freeDrinks}
+            break;
+        case 'UPDATE_FREE_DRINK_TRANSACTIONS':
+            return{...state,freeDrinkTransactions:action.payload.freeDrinkTransactions}
             break;
         default:
             return state;

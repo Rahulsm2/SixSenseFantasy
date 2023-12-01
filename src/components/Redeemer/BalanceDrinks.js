@@ -7,24 +7,26 @@ import { OpenSans_Medium, WIDTH, app_Bg, HEIGHT } from '../common/Constants';
 const BalanceDrinks = ({ data, onChange , disable}) => {
     return (
         data.count>0  ? (
-        <View style={{ flexDirection: 'column',marginLeft:20, marginTop:15, marginRight:35, marginBottom:15 }}>
-            <Text style={[gstyles.OpenSans_SemiBold(19, '#000'), { top: 5, textAlign: 'center', marginLeft:5 }, gstyles.size(72)]}>{data.name}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+        <View style={{ width:WIDTH/3, alignItems:'center',justifyContent:'flex-start',height:100}}>
+            <Text numberOfLines={2} style={[gstyles.OpenSans_Bold(17, '#000'), { textAlign: 'center',maxWidth:WIDTH/3-10}]}>{data.name}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' , top:4}}>
                 <TouchableOpacity onPress={()=>onChange("decrease")}>
                     <AntDesign name="minuscircle" size={20} color="red" />
                 </TouchableOpacity>
                 <Text style={[ gstyles.OpenSans_SemiBold(25, '#3A86FF'), {paddingHorizontal: 15} ]}>{data.count}</Text>
-                <TouchableOpacity onPress={()=>onChange("increase")}>
-                    <AntDesign name="pluscircle" size={20} color="green" />
+                <TouchableOpacity disabled={disable} onPress={()=>onChange("increase")}>
+                    <AntDesign name="pluscircle" size={20} color={disable ? "lightgrey" : "green"} />
                 </TouchableOpacity>
             </View>
         </View> ) : 
-        (<TouchableOpacity onPress={()=>onChange("increase")} style={{ flexDirection: 'column', marginLeft:20, marginTop:15, marginRight:35, marginBottom:15, 
-        }}>
-            <Text style={[gstyles.OpenSans_SemiBold(19, 'lightgrey'), { top: 5, textAlign: 'center', marginLeft:5 }]}>{data.name}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
+        (<View style={{ width:WIDTH/3,alignItems:'center',justifyContent:'flex-start',height:100}}>
+            <Text numberOfLines={2} style={[gstyles.OpenSans_SemiBold(17, disable ? "lightgrey" : '#000'), { textAlign: 'center',maxWidth:WIDTH/3-15}]}>{data.name}</Text>
+            <View style={{ alignItems: 'center' ,opacity:disable ? 0.3 : 1}}>
+                <TouchableOpacity disabled={disable} onPress={()=>onChange("increase")} style={{paddingHorizontal:17,paddingVertical:3,borderColor:'#3A86FF',borderWidth:1,borderRadius:4,top:10}}>
+                <Text style={[ gstyles.OpenSans_SemiBold(12, '#3A86FF')]}>Add</Text>
+                </TouchableOpacity>
             </View>
-        </TouchableOpacity>)
+        </View>)
     );
 };
 

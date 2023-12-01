@@ -7,9 +7,7 @@ import {CommonActions} from '@react-navigation/native';
 import { removeMpin, removeToken,getToken } from '../../services/persistData';
 import { showToast } from '../../components/common/ShowToast';
 import SpInAppUpdates, {
-    NeedsUpdateResponse,
-    IAUUpdateKind,
-    StartUpdateOptions,
+    IAUUpdateKind
   } from 'sp-react-native-in-app-updates';
 
 const inAppUpdates = new SpInAppUpdates(false); //isDebug
@@ -65,19 +63,32 @@ const HomeContainer = (props) => {
                 return;
             }
             let allTransaction= response.settled_data.concat(response.notsettled_data);
-            let totalAmount=0
+            let totalAmount=0;
             for (let i = 0; i < allTransaction.length; i++) {
                 totalAmount=totalAmount+Number(allTransaction[i].amount_used);
             }
+            let freedrinksdata=response.freedrink_data;
+            for (let i = 0; i < freedrinksdata.length; i++) {
+                let freedrinkInfo = freedrinksdata[i].freedrink_info ? freedrinksdata[i].freedrink_info : [];
+                let drinks="";
+                for (let j = 0; j < freedrinkInfo.length; j++) {
+                    let data=freedrinkInfo[j].split(":");
+                    drinks=drinks+" "+data[0]+"("+data[1]+")"+",";
+                }
+                freedrinksdata[i].drinkslist=drinks.slice(0,-1);
+            }
+            
+            console.log(freedrinksdata);
             // setTotalAmount(totalAmount)
             // setSTransactions(response.settled_data.reverse())
             // setUsTransactions(response.notsettled_data.reverse())
             props.updateTotalAmount(totalAmount);
             props.updatesTransactions(response.settled_data.reverse());
             props.updateusTransactions(response.notsettled_data.reverse());
+            props.updateFreeDrinkTransactions(freedrinksdata.reverse());
+            console.log(totalAmount,allTransaction);
             setIsLoading(false);
             setisRefreshing(false)
-            console.log(allTransaction);
         } else {
             setIsLoading(false);
             setisRefreshing(false)
@@ -167,6 +178,7 @@ const HomeContainer = (props) => {
         <HomeComponent
             sTransactions={props.sTransactions}
             usTransactions={props.usTransactions}
+            freeDrinkTransactions={props.freeDrinkTransactions}
             isModal={isModal}
             setIsModal={setIsModal}
             onClickViewAll={onClickViewAll}
@@ -198,6 +210,7 @@ const mapStateToProps = state => ({
     totalAmount: state.transactionsreducer.totalAmount,
     selectedFilter: state.transactionsreducer.selectedFilter,
     saffsList: state.transactionsreducer.saffsList,
+    freeDrinkTransactions: state.transactionsreducer.freeDrinkTransactions
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -206,7 +219,9 @@ const mapDispatchToProps = dispatch => ({
     updateusTransactions:(usTransactions) => dispatch({type: 'UPDATE_US_TRANSACTIONS', payload: {usTransactions:usTransactions}}),
     updateTotalAmount:(totalAmount) => dispatch({type: 'UPDATE_TOTAL_AMOUNT', payload: {totalAmount:totalAmount}}),
     updateStaffsList:(saffsList) => dispatch({type: 'UPDATE_STFFS_LIST', payload: {saffsList:saffsList}}),
-    updateSelectedFilter:(selectedFilter) => dispatch({type: 'UPDATE_SELECTED_FILTER', payload: {selectedFilter:selectedFilter}})
+    updateSelectedFilter:(selectedFilter) => dispatch({type: 'UPDATE_SELECTED_FILTER', payload: {selectedFilter:selectedFilter}}),
+    updateFreeDrinkTransactions:(freeDrinkTransactions) => dispatch({type: 'UPDATE_FREE_DRINK_TRANSACTIONS', payload: {freeDrinkTransactions:freeDrinkTransactions}}),
+    
 });
 
 

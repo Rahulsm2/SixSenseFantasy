@@ -25,6 +25,7 @@ const BalanceDrinksModal = (props) => {
     const [totaladdedfreeDrinks, settotaladdedfreeDrinks] = useState(0);
 
     useEffect(() => {
+        console.log("jhgfjk",props.freeDrinks && props.freeDrinks.length > 0);
         if (props.freeDrinks && props.freeDrinks.length > 0) {
             let data = props.freeDrinks;
             for (let i = 0; i < data.length; i++) {
@@ -32,7 +33,7 @@ const BalanceDrinksModal = (props) => {
             }
             setfreeDrinkss(data);
         }
-    }, []);
+    }, [props.freeDrinks,props.couponData]);
 
 
     const onChangeDrinksCountChange = (type, item, index) => {
@@ -76,11 +77,12 @@ const BalanceDrinksModal = (props) => {
                     container: {
                         borderTopLeftRadius: 24,
                         borderTopRightRadius: 24,
-                        height: HEIGHT * 0.7
+                        height: 'auto',
+                        maxHeight : HEIGHT * 0.7,
                     }
                 }}
             >
-
+            <View>
                 <View style={[gstyles.centerX, gstyles.mt(15), gstyles.mb(25)]}>
                     <Text style={gstyles.OpenSans_SemiBold(20, '#0276E5')}>
                         Redeem Coupon
@@ -88,7 +90,10 @@ const BalanceDrinksModal = (props) => {
                 </View>
                 <TouchableOpacity activeOpacity={0.6}
                     style={{ position: 'absolute', right: 25, top: 15 }}
-
+                    onPress={()=>{
+                        props.freeDrinksRefRBSheet.current.close()
+                        props.setcouponStatus('pending');
+                    }}
                 >
                     <AntDesign name='close' size={25} color='#0276E5' />
                 </TouchableOpacity>
@@ -114,10 +119,11 @@ const BalanceDrinksModal = (props) => {
                                 disable={totaladdedfreeDrinks == props.couponData.freedrink_balance}
                             />
                         )}
+                        contentContainerStyle={{marginVertical:5}}
                     />
                 </View>
 
-                <View style={[gstyles.centerX, { width: WIDTH - 35, top:HEIGHT*0.17, marginRight: 5, flexDirection: 'row' }]}>
+                <View style={[gstyles.centerX, { width: WIDTH - 35, marginRight: 5, flexDirection: 'row' }]}>
                     <View style={[styles.settleBtnTouch, { height: 50 }]}>
 
                         <Text style={gstyles.OpenSans_Bold(16, '#0276E5')}>
@@ -128,9 +134,9 @@ const BalanceDrinksModal = (props) => {
                     <LinearGradient
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
-                        colors={['#8338EC', '#3A86FF']} style={[styles.settleBtnTouch, { height: 50, marginLeft: 5 }]}
+                        colors={['#8338EC', '#3A86FF']} style={[styles.settleBtnTouch, { height: 50, marginLeft: 5,opacity:totaladdedfreeDrinks==0 ? 0.6 : 1}]}
                     >
-                        <TouchableOpacity activeOpacity={0.6}
+                        <TouchableOpacity disabled={totaladdedfreeDrinks==0} activeOpacity={0.6} onPress={()=>{props.onClickRedeemFreeDrinks(freeDrinkss,totaladdedfreeDrinks)}}
                             style={[styles.btnTouch, { height: 50 }]}
                         >
                             <Text style={gstyles.OpenSans_Bold(20, '#FFFFFF')}>
@@ -138,6 +144,7 @@ const BalanceDrinksModal = (props) => {
                             </Text>
                         </TouchableOpacity>
                     </LinearGradient>
+                </View>
                 </View>
 
             </RBSheet>

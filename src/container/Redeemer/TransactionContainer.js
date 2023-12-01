@@ -83,21 +83,13 @@ const TransactionContainer = (props) => {
         }else if(selectedFilter=="self"){
             formData.append('staff_id', ""+props.userData.id);
         }else{
-            let data=props.saffsList;
-            let id="";
-            for (let i = 0; i < data.length; i++) {
-                if(data[i].selected){
-                    let val= i==0 ? "" : ",";
-                    id=id+val+data[i].staff_id;
-                }
-            }
-            console.log(id);
-            formData.append('staff_id', id);
+            formData.append('staff_id', '');
         }
         const response = await postData('api/app/coupon/transaction_settled',formData, token);
         if (response.statusCode == 200) {
             if (response.errors) {
                 showToast(response.message);
+                setIsLoading(false);
                 return;
             }
             let allTransaction= response.settled_data.concat(response.notsettled_data);
@@ -105,15 +97,34 @@ const TransactionContainer = (props) => {
             for (let i = 0; i < allTransaction.length; i++) {
                 totalAmount=totalAmount+Number(allTransaction[i].amount_used);
             }
+            let freedrinksdata=response.freedrink_data;
+            for (let i = 0; i < freedrinksdata.length; i++) {
+                let freedrinkInfo = freedrinksdata[i].freedrink_info ? freedrinksdata[i].freedrink_info : [];
+                let drinks="";
+                for (let j = 0; j < freedrinkInfo.length; j++) {
+                    let data=freedrinkInfo[j].split(":");
+                    drinks=drinks+" "+data[0]+"("+data[1]+")"+",";
+                }
+                freedrinksdata[i].drinkslist=drinks.slice(0,-1);
+            }
+            // setTotalAmount(totalAmount)
+            // setSTransactions(response.settled_data.reverse())
+            // setUsTransactions(response.notsettled_data.reverse())
             props.updateTotalAmount(totalAmount);
             props.updatesTransactions(response.settled_data.reverse());
             props.updateusTransactions(response.notsettled_data.reverse());
+            props.updateFreeDrinkTransactions(freedrinksdata.reverse());
+            
+            setIsLoading(false);
             setisRefreshing(false)
+            console.log(allTransaction);
         } else {
+            setIsLoading(false);
             setisRefreshing(false)
             showToast(
-                response.message ? response.message : 'Something went wrong, try again',
+                response.message ? response.message : 'Session might expired, please login again.'
             );
+            // onClickForget();
         }
     }
 
@@ -283,6 +294,7 @@ const TransactionContainer = (props) => {
             setSelectedFilter={setSelectedFilter}
             onChangeFilterData={onChangeFilterData}
             onChangeStaffList={onChangeStaffList}
+            freeDrinkTransactions={props.freeDrinkTransactions}
         />
     );
 }
@@ -295,7 +307,8 @@ const mapStateToProps = state => ({
     usTransactions: state.transactionsreducer.usTransactions,
     totalAmount: state.transactionsreducer.totalAmount,
     saffsList: state.transactionsreducer.saffsList,
-    selectedFilter: state.transactionsreducer.selectedFilter
+    selectedFilter: state.transactionsreducer.selectedFilter,
+    freeDrinkTransactions: state.transactionsreducer.freeDrinkTransactions
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -304,7 +317,8 @@ const mapDispatchToProps = dispatch => ({
     updateusTransactions:(usTransactions) => dispatch({type: 'UPDATE_US_TRANSACTIONS', payload: {usTransactions:usTransactions}}),
     updateTotalAmount:(totalAmount) => dispatch({type: 'UPDATE_TOTAL_AMOUNT', payload: {totalAmount:totalAmount}}),
     updateStaffsList:(saffsList) => dispatch({type: 'UPDATE_STFFS_LIST', payload: {saffsList:saffsList}}),
-    updateSelectedFilter:(selectedFilter) => dispatch({type: 'UPDATE_SELECTED_FILTER', payload: {selectedFilter:selectedFilter}})
+    updateSelectedFilter:(selectedFilter) => dispatch({type: 'UPDATE_SELECTED_FILTER', payload: {selectedFilter:selectedFilter}}),
+    updateFreeDrinkTransactions:(freeDrinkTransactions) => dispatch({type: 'UPDATE_FREE_DRINK_TRANSACTIONS', payload: {freeDrinkTransactions:freeDrinkTransactions}}),
 });
 
 

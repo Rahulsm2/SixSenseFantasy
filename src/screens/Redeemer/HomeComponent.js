@@ -16,18 +16,30 @@ import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RedeemedDetailsModal from '../../components/Redeemer/RedeemedDetailsModal';
 import PopMenuModal from '../../components/Redeemer/PopMenuModal';
-import RBSheet from "react-native-raw-bottom-sheet";
-import Feather from 'react-native-vector-icons/Feather';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import { TextInput } from 'react-native-paper';
-import LoadingModel from "../../components/common/Loading"
+import LoadingModel from "../../components/common/Loading";
+import TransactionCard from "../../components/Redeemer/TransactionCard"
+import TransactionCardFreeDrinks from "../../components/Redeemer/TransactionCardFreeDrinks"
 import moment from 'moment';
 
 const HomeComponent = (props) => {
 
-    const [selectedLanguage, setSelectedLanguage] = useState();
-
     const _renderRecentTrans = ({item,index}) => {
+        return item.event_type=="free_drink" ?
+                <TransactionCardFreeDrinks 
+                    data={item}
+                    setIsDetailModal={props.setIsDetailModal}
+                    isDetailModal={props.isDetailModal}
+                    userData={props.userData}
+                /> :
+                <TransactionCard
+                    data={item}
+                    setIsDetailModal={props.setIsDetailModal}
+                    isDetailModal={props.isDetailModal}
+                    userData={props.userData}
+                /> 
+    }
+
+    const _renderRecentTranss = ({item,index}) => {
         return (
             <TouchableOpacity onPress={() => { props.setIsDetailModal({visible:!props.isDetailModal.visible,data:item}) }}
                 style={styles.transCardView}>
@@ -112,7 +124,7 @@ const HomeComponent = (props) => {
         );
     }
 
-    const arrayLength = props.isBtnSelected == 'settled' ? props.sTransactions.length : props.usTransactions.length
+    const arrayLength = props.isBtnSelected == 'settled' ? props.sTransactions.length :  props.isBtnSelected=="unSettled" ? props.usTransactions.length : props.freeDrinkTransactions.length
     return (
         <>
             <StatusBar
@@ -184,12 +196,12 @@ const HomeComponent = (props) => {
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
                         colors={props.isBtnSelected == 'unSettled' ? ['#8338EC', '#3A86FF'] : ['#FFFFFF', '#FFFFFF']}
-                        style={styles.settleBtnTouch}>
+                        style={{...styles.settleBtnTouch, width: props.freeDrinkTransactions && props.freeDrinkTransactions.length>0 ? WIDTH/3-16 : WIDTH/2-20}}>
                         <TouchableOpacity activeOpacity={0.6}
                             style={props.isBtnSelected == 'unSettled' ? styles.btnTouch : [styles.btnTouch, styles.unSettleBtnTouch]}
                             onPress={() => { props.setIsBtnSelected('unSettled') }}
                         >
-                            <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'unSettled' ? '#FFFFFF' : '#0276E5')}>
+                            <Text style={gstyles.OpenSans_Medium(15, props.isBtnSelected == 'unSettled' ? '#FFFFFF' : '#0276E5')}>
                                 Unsettled ({props.usTransactions.length})
                             </Text>
                         </TouchableOpacity>
@@ -199,17 +211,32 @@ const HomeComponent = (props) => {
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
                         colors={props.isBtnSelected == 'settled' ? ['#8338EC', '#3A86FF'] : ['#FFFFFF', '#FFFFFF']}
-                        style={styles.settleBtnTouch}
-                    >
+                        style={{...styles.settleBtnTouch, width: props.freeDrinkTransactions && props.freeDrinkTransactions.length>0 ? WIDTH/3-16 : WIDTH/2-20}}>
                         <TouchableOpacity activeOpacity={0.6}
                             style={props.isBtnSelected == 'settled' ? styles.btnTouch : [styles.btnTouch, styles.unSettleBtnTouch]}
                             onPress={() => { props.setIsBtnSelected('settled') }}
                         >
-                            <Text style={gstyles.OpenSans_Medium(16, props.isBtnSelected == 'settled' ? '#FFFFFF' : '#0276E5')}>
+                            <Text style={gstyles.OpenSans_Medium(15, props.isBtnSelected == 'settled' ? '#FFFFFF' : '#0276E5')}>
                                 Settled ({props.sTransactions.length})
                             </Text>
                         </TouchableOpacity>
                     </LinearGradient>
+                    
+                   {props.freeDrinkTransactions && props.freeDrinkTransactions.length>0 &&
+                    <LinearGradient
+                        start={{ x: 0, y: 1 }}
+                        end={{ x: 1, y: 1 }}
+                        colors={props.isBtnSelected == 'drinks' ? ['#8338EC', '#3A86FF'] : ['#FFFFFF', '#FFFFFF']}
+                        style={{...styles.settleBtnTouch, width: props.freeDrinkTransactions && props.freeDrinkTransactions.length>0 ? WIDTH/3-16 : WIDTH/2-16}}>
+                        <TouchableOpacity activeOpacity={0.6}
+                            style={props.isBtnSelected == 'drinks' ? styles.btnTouch : [styles.btnTouch, styles.unSettleBtnTouch]}
+                            onPress={() => { props.setIsBtnSelected('drinks') }}
+                        >
+                            <Text style={gstyles.OpenSans_Medium(15, props.isBtnSelected == 'drinks' ? '#FFFFFF' : '#0276E5')}>
+                                Drinks ({props.freeDrinkTransactions.length})
+                            </Text>
+                        </TouchableOpacity>
+                    </LinearGradient> }
                 </View>
 
                 {arrayLength>0 && <View style={[gstyles.mt(15), gstyles.inRowJSB, { width: WIDTH - 35 }, gstyles.centerX]}>
@@ -227,7 +254,7 @@ const HomeComponent = (props) => {
 
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <FlatList
-                        data={props.isBtnSelected == 'settled' ? props.sTransactions.slice(0,4) : props.usTransactions.slice(0,4)}
+                        data={props.isBtnSelected == 'settled' ? props.sTransactions.slice(0,4) : props.isBtnSelected=="unSettled" ? props.usTransactions.slice(0,4) : props.freeDrinkTransactions.slice(0,4)}
                         renderItem={_renderRecentTrans}
                         keyExtractor={item => item.id}
                         showsVerticalScrollIndicator={false}
@@ -283,7 +310,6 @@ const styles = StyleSheet.create({
     },
 
     settleBtnTouch: {
-        width: '49.9%',
         height: 42,
         borderRadius: 4,
         ...gstyles.centerXY

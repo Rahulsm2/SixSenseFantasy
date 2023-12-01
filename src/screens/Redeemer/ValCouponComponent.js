@@ -179,7 +179,8 @@ const ValCouponComponent = (props) => {
                     freeDrinksRefRBSheet= {props.freeDrinksRefRBSheet}
                     freeDrinks={props.freeDrinks}
                     couponData={props.couponData}
-                    setcouponStatus={(val)=>props.setcouponStatus(val)} />
+                    setcouponStatus={(val)=>props.setcouponStatus(val)}
+                    onClickRedeemFreeDrinks={(freeDrinkss,totaladdedfreeDrinks)=>props.onClickRedeemFreeDrinks(freeDrinkss,totaladdedfreeDrinks)} />
 
                 <RBSheet
                     ref={props.refRBSheet}
