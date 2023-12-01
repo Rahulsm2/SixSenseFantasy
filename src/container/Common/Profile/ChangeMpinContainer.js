@@ -32,23 +32,34 @@ const ChangeMpinContainer = (props) => {
         if (isResponce1 && isResponce2) {
             console.log("isResponce1", isResponce1);
             let rootingName = "";
-            if (isResponce1.role == "Validator" || isResponce1.role=="Manager"||  isResponce1.role == "Biller" || isResponce1.role == "Cashier" || isResponce1.role == "Receptionist" ) {
+            // if(isResponce1.role=="Manager") {
+            //     rootingName = "ManagerHomeComponent";
+            // } else 
+            // if (isResponce1.role ==  "Biller" || isResponce1.role == "Cashier" || isResponce1.role == "Manager" ) {
+            //     rootingName = "RedeemerTabNavigation";
+            // } else if (isResponce1.role == "Validator" ) {
+            //     rootingName = "ValidatorTabNavigation";
+            // } else {
+            //     // rootingName = "DistributorTabNavigation";
+            //     showToast("Access denied.")
+            // }
+            if (isResponce1.role == "Validator" ) {
                 rootingName = "ValidatorTabNavigation";
             } else {
-                // rootingName = "DistributorTabNavigation";
-                showToast("Access denied.")
+                rootingName = "RedeemerTabNavigation";
+                // showToast("Access denied.")
             }
             setIsLoading(false)
-            {Platform.OS === 'android' ? (navigation.dispatch(
+            {rootingName && (Platform.OS === 'android' ? (navigation.dispatch(
                 CommonActions.reset({
                     index: 0,
                     routes: [
                         {
-                            name: rootingName
+                            name: rootingName,
                         },
                     ],
                 }),
-            )) : (navigation.navigate(rootingName)) }
+            )) : (navigation.navigate(rootingName)) )}
         } else {
             setIsLoading(false);
         }

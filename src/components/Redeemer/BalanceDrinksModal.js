@@ -123,9 +123,8 @@ const BalanceDrinksModal = (props) => {
                     />
                 </View>
 
-                <View style={[gstyles.centerX, { width: WIDTH - 35, marginRight: 5, flexDirection: 'row' }]}>
-                    <View style={[styles.settleBtnTouch, { height: 50 }]}>
-
+                <View style={[gstyles.centerX, { width: WIDTH - 35, bottom:20, marginRight: 5, flexDirection: 'row' }]}>
+                    <View style={[styles.settleBtnTouch, { height: 50, marginBottom:20 }]}>
                         <Text style={gstyles.OpenSans_Bold(16, '#0276E5')}>
                             Drinks Added : {totaladdedfreeDrinks}
                         </Text>
@@ -134,7 +133,7 @@ const BalanceDrinksModal = (props) => {
                     <LinearGradient
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
-                        colors={['#8338EC', '#3A86FF']} style={[styles.settleBtnTouch, { height: 50, marginLeft: 5,opacity:totaladdedfreeDrinks==0 ? 0.6 : 1}]}
+                        colors={['#8338EC', '#3A86FF']} style={[styles.settleBtnTouch, { height: 50,marginBottom:20, marginLeft: 5,opacity:totaladdedfreeDrinks==0 ? 0.6 : 1}]}
                     >
                         <TouchableOpacity disabled={totaladdedfreeDrinks==0} activeOpacity={0.6} onPress={()=>{props.onClickRedeemFreeDrinks(freeDrinkss,totaladdedfreeDrinks)}}
                             style={[styles.btnTouch, { height: 50 }]}
