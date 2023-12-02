@@ -31,11 +31,11 @@ const CouponVerified = (props) => {
                         <AntDesign name='close' size={25} color='#0276E5' />
                     </TouchableOpacity>
                     <Text style={[gstyles.OpenSans_Bold(20, '#0276E5', gstyles.centerX), gstyles.mt(30)]}>
-                        Coupon Verified
+                    Ticket Verified
                     </Text>
                     <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(20)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
-                            Coupon ID
+                        Ticket ID
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
                             :{'    '}<Text style={gstyles.OpenSans_SemiBold(16, '#000000')}>{props.couponData.id}</Text>

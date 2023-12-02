@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeContainer from '../container/Validator/HomeContainer';
-// import HomeComponent from '../screens/Validator/Home/HomeComponent';
+import HomeContainer from '../container/Validator/Home/HomeContainer';
+import HomeComponent from '../screens/Validator/Home/HomeComponent';
 import ProfileContainer from '../container/Common/Profile/ProfileContainer';
 import { gstyles } from '../components/common/GlobalStyles';
-import ValCouponContainer from '../container/Validator/ValCouponContainer';
+import ValCouponContainer from '../container/Validator/Home/ValCouponContainer';
 
 const Tab = createBottomTabNavigator();
 
@@ -84,7 +84,7 @@ const TabBarComponent = ({ state, descriptors, navigation }) => {
         <Text style={currentRouteName == 'ValCouponContainer' ? [gstyles.OpenSans_Bold(12, '#0276E5', gstyles.mt(7))] :
           [gstyles.OpenSans_Medium(12, '#3F3F3F', gstyles.mt(7))]
         }>
-          Validate Coupon
+          Validate
         </Text>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.6}

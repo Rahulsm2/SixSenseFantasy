@@ -20,10 +20,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
 
-
 const ProfileComponent = (props) => {
     const navigation=useNavigation();
     const platform = Platform.OS =='ios';
+    console.log(props.nodeUserData.partner.parent.mobile)
     return (
         <>
             <StatusBar
@@ -63,25 +63,29 @@ const ProfileComponent = (props) => {
                     </ImageBackground> */}
                     
                     <View style={styles.profImg}>
-                        <Text style={gstyles.OpenSans_SemiBold(38, '#000000')}>{props.userData && props.userData.first_name[0]}{props.userData && props.userData.last_name[0]}</Text>
+                        {/* <Text style={gstyles.OpenSans_SemiBold(38, '#000000')}>{props.nodeUserData && props.nodeUserData.partner.name[0]}{props.nodeUserData && props.props.nodeUserData.partner.name[1]}</Text> */}
+                        <Text style={gstyles.OpenSans_SemiBold(38, '#000000')}>
+                                {props.nodeUserData && props.nodeUserData.partner && props.nodeUserData.partner.name && props.nodeUserData.partner.name.length >= 2 ? props.nodeUserData.partner.name[0] + props.nodeUserData.partner.name[1] : ''}
+</Text>
+
                     </View>
 
                     <View style={[gstyles.mt(15), gstyles.centerXY, { width: WIDTH - 90 }]}>
                         <Text numberOfLines={1}
                             style={gstyles.OpenSans_SemiBold(16, '#000000')}>
-                            {props.userData && props.userData.first_name} {props.userData && props.userData.last_name}
+                            {props.nodeUserData && props.nodeUserData.partner.name} 
                         </Text>
                         <Text numberOfLines={1}
                             style={gstyles.OpenSans_Medium(12, '#000000', gstyles.mt(5))}>
-                            {props.userData && props.userData.phone}
+                            {props.nodeUserData && props.nodeUserData.partner.mobile}
                         </Text>
                         <Text numberOfLines={1}
                             style={gstyles.OpenSans_Medium(12, '#000000')}>
-                            {props.userData && props.userData.email}
+                            {props.nodeUserData && props.nodeUserData.partner.email}
                         </Text>
                     </View>
 
-                    <TouchableOpacity onPress={() => {navigation.navigate('ChangeMpinContainer')}} activeOpacity={1}
+                    <TouchableOpacity onPress={() => props.onClickChangeMpin()} activeOpacity={1}
                         style={[gstyles.inRow, gstyles.mt(50), { alignSelf: 'center', width: WIDTH - 35 }]}>
                         <View style={{
                             width: 40, alignSelf: 'center', ...gstyles.inRow,
@@ -154,8 +158,10 @@ const ProfileComponent = (props) => {
                     {/* <View style={{ width: WIDTH - 35, height: 0.6, backgroundColor: '#0276E526', marginVertical: 0 }} /> */}
 
                     <Text style={gstyles.OpenSans_SemiBold(12, '#0276E5', { opacity: 0.2, marginTop: 25 })}>
-                    Version 1.0.5
+                    Version 2.0.1
                     </Text>
+
+                    
 
 
                     {/* <View style={[styles.inputBoxView, gstyles.mt(30)]}>

@@ -5,8 +5,7 @@ import {
     Image,
     Text,
     StyleSheet,
-    TouchableOpacity,
-    Platform
+    TouchableOpacity
 } from 'react-native';
 import { gstyles } from '../../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg, OpenSans_SemiBold, HEIGHT } from '../../../components/common/Constants';
@@ -16,9 +15,9 @@ import LoadingModel from "../../../components/common/Loading"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useNavigation } from '@react-navigation/native';
 
-const ChangeMpinComponent = (props) => {
-    const navigation=useNavigation();
 
+const ChangeMpinComponent = (props) => {
+    const navigation = useNavigation();
     return (
         <>
 
@@ -28,7 +27,7 @@ const ChangeMpinComponent = (props) => {
                 barStyle="dark-content"
             />
             <View style={[gstyles.container(app_Bg)]}>
-                <TouchableOpacity onPress={()=>{navigation.goBack()}} style={ Platform.OS=='android' ? styles.floatButtonAndroid : styles.floatButton} >
+            <TouchableOpacity onPress={()=>{navigation.goBack()}} style={ Platform.OS=='android' ? styles.floatButtonAndroid : styles.floatButton} >
                     <MaterialCommunityIcons name='keyboard-backspace' size={25} color='#3F3F3F' />
                 </TouchableOpacity>
                 <View style={[gstyles.mt(25), gstyles.centerXY]}>
@@ -36,7 +35,7 @@ const ChangeMpinComponent = (props) => {
                         style={gstyles.iconSize(107, 86)}
                     />
                     <Text style={gstyles.OpenSans_SemiBold(20, '#000000', gstyles.mt(25))}>
-                       Change MPIN
+                        Change MPIN
                     </Text>
                 </View>
 
@@ -117,7 +116,7 @@ const ChangeMpinComponent = (props) => {
                 </LinearGradient>
 
             </View>
-            <LoadingModel loading={props.isLoading}/>
+            <LoadingModel loading={props.isLoading} />
         </>
     );
 }
@@ -164,35 +163,35 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center'
     },
-    floatButton:{
-        width: 40, 
-        height: 40, 
-        borderRadius: 100, 
-        backgroundColor: 'white', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        shadowColor: '#000000', 
+    floatButton: {
+        width: 40,
+        height: 40,
+        borderRadius: 100,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#000000',
         elevation: 5,
         shadowColor: '#0276E526',
-        shadowOffset: {width: 0, height: 1},
+        shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 3,
         shadowRadius: 3,
-        marginTop:HEIGHT*0.07,
-        marginLeft:WIDTH*0.05
-  
+        marginTop: HEIGHT * 0.07,
+        marginLeft: WIDTH * 0.05
+
     },
-    floatButtonAndroid:{
-        width: 40, 
-        height: 40, 
-        borderRadius: 100, 
-        backgroundColor: 'white', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        shadowColor: '#000000', 
+    floatButtonAndroid: {
+        width: 40,
+        height: 40,
+        borderRadius: 100,
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: 'black',
         elevation: 5,
         shadowRadius: 3,
-        marginTop:HEIGHT*0.07,
-        marginLeft:WIDTH*0.05
+        marginTop: HEIGHT * 0.07,
+        marginLeft: WIDTH * 0.05
     }
 
 });

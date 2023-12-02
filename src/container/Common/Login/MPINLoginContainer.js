@@ -6,7 +6,7 @@ import { CommonActions } from '@react-navigation/native';
 import { showToast } from '../../../components/common/ShowToast';
 import { connect } from 'react-redux';
 import { getData, postData } from '../../../services/rootService';
-import { getToken } from '../../../services/persistData';
+import { getToken,getNodeToken,getNodeUser } from '../../../services/persistData';
 import { Platform } from 'react-native';
 
 const MPINLoginContainer = (props) => {
@@ -23,113 +23,25 @@ const MPINLoginContainer = (props) => {
             showToast(message);
             return;
         }
-        // if(cmpin==mpin){
+        const nodeUser = await getNodeUser();
+        const nodeToken = await getNodeToken();
+        if(cmpin==mpin && nodeToken && nodeUser){
+            console.log(nodeUser);
+            props.updatenodeuser(JSON.parse(nodeUser))
             setIsLoading(true);
-            // const isResponce = await getTransactions();
-            const isResponce1 = await getProfile();
-            const isResponce2 = await getConfigs();
-            if (isResponce1 && isResponce2) {
-                console.log("isResponce1", isResponce1);
-                let rootingName = "";
-                // if(isResponce1.role=="Manager") {
-                //     rootingName = "ManagerHomeComponent";
-                // } else 
-                // if (isResponce1.role ==  "Biller" || isResponce1.role == "Cashier" || isResponce1.role == "Manager" ) {
-                //     rootingName = "RedeemerTabNavigation";
-                // } else if (isResponce1.role == "Validator" ) {
-                //     rootingName = "ValidatorTabNavigation";
-                // } else {
-                //     // rootingName = "DistributorTabNavigation";
-                //     showToast("Access denied.")
-                // }
-                if (isResponce1.role == "Validator" ) {
-                    rootingName = "ValidatorTabNavigation";
-                } else {
-                    rootingName = "RedeemerTabNavigation";
-                    // showToast("Access denied.")
-                }
-                setIsLoading(false)
-                {rootingName && (Platform.OS === 'android' ? (navigation.dispatch(
-                    CommonActions.reset({
-                        index: 0,
-                        routes: [
-                            {
-                                name: rootingName,
-                            },
-                        ],
-                    }),
-                )) : (navigation.navigate(rootingName)) )}
-            } else {
-                setIsLoading(false);
-            }
-            // }else{
-            //     message = 'Invalid MPIN';
-            //     showToast(message);
-            //     return;
-            // }
-        }
-
-    const getTransactions = async () => {
-        const token = await getToken();
-        let formData = new FormData();
-        formData.append('staff_id', '');
-        const response = await postData('api/app/coupon/transaction_settled', formData, token);
-        if (response.statusCode == 200) {
-            if (response.errors) {
-                showToast(response.message);
-                return false;
-            }
-            let allTransaction = response.settled_data.concat(response.notsettled_data);
-            let totalAmount = 0
-            for (let i = 0; i < allTransaction.length; i++) {
-                totalAmount = totalAmount + Number(allTransaction[i].amount_used);
-            }
-            props.updateTotalAmount(totalAmount);
-            props.updatesTransactions(response.settled_data.reverse());
-            props.updateusTransactions(response.notsettled_data.reverse());
-            return response.data;
-        } else {
-            onClickForget();
-            showToast(
-                response.message ? response.message : 'Something went wrong, try again',
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: 'ValidatorTabNavigation',
+                        },
+                    ],
+                }),
             );
-            return false;
         }
-    }
-
-    const getProfile = async () => {
-        const token = await getToken();
-        const response = await getData('api/app/coupon/user_profile', null, token);
-        if (response.statusCode == 200) {
-            if (response.errors) {
-                showToast(response.message);
-                return false;
-            }
-            props.updateuser(response.data);
-            return response.data;
-        } else {
-            showToast(
-                response.message ? response.message : 'Something went wrong, try again',
-            );
-            return false;
-        }
-    }
-
-    const getConfigs = async () => {
-        const token = await getToken();
-        const response = await getData('api/app/appconfig', null, token);
-        if (response.statusCode == 200) {
-            if (response.errors) {
-                showToast(response.message);
-                return false;
-            }
-            props.updateconfigs(response.data);
-            return true;
-        } else {
-            showToast(
-                response.message ? response.message : 'Something went wrong, try again',
-            );
-            return false;
+        else{
+            showToast('Incorrect MPIN')
         }
     }
 
@@ -168,7 +80,8 @@ const mapStateToProps = state => ({
     userData: state.userreducer.userData,
     sTransactions: state.transactionsreducer.sTransactions,
     usTransactions: state.transactionsreducer.usTransactions,
-    totalAmount: state.transactionsreducer.totalAmount
+    totalAmount: state.transactionsreducer.totalAmount,
+    nodeUserData: state.userreducer.nodeUserData
 });
 
 
@@ -177,7 +90,9 @@ const mapDispatchToProps = dispatch => ({
     updatesTransactions: (sTransactions) => dispatch({ type: 'UPDATE_S_TRANSACTIONS', payload: { sTransactions: sTransactions } }),
     updateusTransactions: (usTransactions) => dispatch({ type: 'UPDATE_US_TRANSACTIONS', payload: { usTransactions: usTransactions } }),
     updateTotalAmount: (totalAmount) => dispatch({ type: 'UPDATE_TOTAL_AMOUNT', payload: { totalAmount: totalAmount } }),
-    updateconfigs: (appConfigs) => dispatch({ type: 'UPDATE_APP_CONFIGS', payload: { appConfigs: appConfigs } })
+    updateconfigs: (appConfigs) => dispatch({ type: 'UPDATE_APP_CONFIGS', payload: { appConfigs: appConfigs } }),
+    updatenodeuser: (nodeUserData) => dispatch({ type: 'UPDATE_NODE_USERDATA', payload: { nodeUserData: nodeUserData } })
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MPINLoginContainer)

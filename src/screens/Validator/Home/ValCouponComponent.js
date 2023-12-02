@@ -17,11 +17,18 @@ import Icons from 'react-native-vector-icons/Ionicons';
 import { RNCamera } from 'react-native-camera';
 
 import LoadingModel from "../../../components/common/Loading"
+import CouponVerificationModal from "../../../components/Redeemer/CouponVerificationModal"
+import { showToast } from "../../../components/common/ShowToast"
+import CouponExpireModal from "../../../components/Redeemer/CouponExpireModal"
 import CouponExpiredModal from "../../../components/Validator/CouponExpiredModal"
+import RBSheet from "react-native-raw-bottom-sheet";
+import Feather from 'react-native-vector-icons/Feather';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Modal, TextInput } from 'react-native-paper';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import CouponAlreadyVerified from '../../../components/Validator/CouponAlreadyVerified';
-import CouponVerified from '../../../components/Validator/CouponVerified'
+// import CouponVerified from '../../../components/Validator/CouponVerified'
+import CouponVerified2 from '../../../components/Validator/CouponVerified2'
 
 const ValCouponComponent = (props) => {
     const { height, width } = Dimensions.get('window');
@@ -144,21 +151,31 @@ const ValCouponComponent = (props) => {
                     </RNCamera>
                 </View>
                 <LoadingModel loading={props.isLoading} />
-                <CouponVerified
+
+                {/* <CouponVerified
                     isVisible={props.couponStatus == 'entry_verified'}
                     setcouponStatus={props.setcouponStatus}
-                    couponData={props.couponData}
-                    onCliclContinue={props.onCliclContinue} />
+                    qrData={props.qrData}
+                    onCliclContinue={props.onCliclContinue} /> */}
+
+                <CouponVerified2
+                    isVisible={props.couponStatus == 'entry_verified2'}
+                    setcouponStatus={props.setcouponStatus}
+                    qrData={props.qrData}
+                    onCliclContinue={props.onCliclContinue}
+                    updateInputValue={props.updateInputValue}
+                    isChangeData={props.isChangeData}
+                    onCliclRedeem={props.onCliclRedeem} />
 
                 <CouponExpiredModal
                     visible={props.couponStatus == 'coupon_expired'}
                     setcouponStatus={props.setcouponStatus}
-                    couponData={props.couponData} />
+                    couponData={props.qrData} />
 
                 <CouponAlreadyVerified
                     visible={props.couponStatus == 'Already_Verified'}
                     setcouponStatus={props.setcouponStatus}
-                    couponData={props.couponData} />
+                    couponData={props.qrData} />
 
                 <Modal
                     transparent

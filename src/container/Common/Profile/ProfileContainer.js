@@ -3,7 +3,7 @@ import ProfileComponent from '../../../screens/Common/Profile/ProfileComponent';
 import { useNavigation } from '@react-navigation/core';
 import { Alert, Share, Linking } from 'react-native'
 import { connect } from 'react-redux';
-import { removeMpin, removeToken } from '../../../services/persistData';
+import { removeMpin, removeToken, removeNodeToken } from '../../../services/persistData';
 import { CommonActions } from '@react-navigation/native';
 import { showToast } from '../../../components/common/ShowToast';
 
@@ -19,7 +19,7 @@ const ProfileContainer = (props) => {
         navigation.navigate('EditProfileContainer');
     }
 
-    const onClickChangeMpin = () => {
+    onClickChangeMpin = () => {
         navigation.navigate('ChangeMpinContainer');
     }
 
@@ -48,7 +48,8 @@ const ProfileContainer = (props) => {
     const loggingOut = async () => {
         const token = await removeToken();
         const mpin = await removeMpin();
-        if (token && mpin) {
+        const nodetoke = await removeNodeToken();
+        if (token && mpin && nodetoke) {
             props.logoutData();
             {Platform.OS === 'android' ? (navigation.dispatch(
                 CommonActions.reset({
@@ -73,13 +74,13 @@ const ProfileContainer = (props) => {
     }
 
     const onClickContact = () => {
-        let data = props.appConfigs;
-        let phonedata = props.appConfigs;
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].config_name == "contact_us") {
-                phonedata = data[i].version;
-            }
-        }
+        // let data = props.appConfigs;
+        let phonedata = props.nodeUserData.partner.parent.mobile;
+        // for (let i = 0; i < data.length; i++) {
+        //     if (data[i].config_name == "contact_us") {
+        //         phonedata = data[i].version;
+        //     }
+        // }
         Linking.openURL('tel:' + phonedata);
     }
 
@@ -88,7 +89,7 @@ const ProfileContainer = (props) => {
             onClickBack={onClickBack}
             onClickEditProf={onClickEditProf}
             onClickLogout={onClickLogout}
-            userData={props.userData}
+            nodeUserData={props.nodeUserData}
             onClickShareApp={onClickShareApp}
             onClickContact={onClickContact}
             onClickChangeMpin={onClickChangeMpin}
@@ -98,12 +99,14 @@ const ProfileContainer = (props) => {
 
 // export default ProfileContainer;
 const mapStateToProps = state => ({
-    userData: state.userreducer.userData,
-    appConfigs: state.userreducer.appConfigs
+    // userData: state.userreducer.userData,
+    appConfigs: state.userreducer.appConfigs,
+    nodeUserData: state.userreducer.nodeUserData
 });
 
 
 const mapDispatchToProps = dispatch => ({
+    updatenodeuser: (nodeUserData) => dispatch({ type: 'UPDATE_NODE_USERDATA', payload: { nodeUserData: nodeUserData } }),
     logoutData: () => dispatch({ type: 'USER_LOGGED_OUT' })
 });
 

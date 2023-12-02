@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Splash from './Splash';
 import Navigation from './navigation/Navigation';
-import {getMpin,getToken} from './services/persistData';
+import {getMpin,getNodeToken} from './services/persistData';
 import { connect } from 'react-redux';
 
 const Main = () => {
@@ -13,19 +13,19 @@ const Main = () => {
     }, []);
 
     const changeRoute = async () => {
-        const token = await getToken();
+        const nodeToken = await getNodeToken();
         const mpin = await getMpin();
-        if(token && mpin){
+        if(nodeToken && mpin){
             setTimeout(() => {
                 setRoute('MPINLoginContainer');
             }, 2000);
-        }else if (token && !mpin){
+        }else if (nodeToken && !mpin){
             setTimeout(() => {
                 setRoute('SetMPINContainer');
             }, 2000);
         }else{
             setTimeout(() => {
-                setRoute('ForgetPasswordContainer');
+                setRoute('ForgetPasswordContainer');   //ForgetPasswordContainer
             }, 2000);
         }
     }

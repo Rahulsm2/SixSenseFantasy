@@ -136,7 +136,7 @@ const ForgetPasswordComponent = (props) => {
                         </Text>
                     </TouchableOpacity>
                 </LinearGradient>
-                <View style={styles.forgetTextView}>
+                {/* <View style={styles.forgetTextView}>
                         <TouchableOpacity activeOpacity={0.6}
                             onPress={() => { props.onClickLoginWithPass() }}
                             style={[{ alignSelf: 'center' }]}>
@@ -144,7 +144,7 @@ const ForgetPasswordComponent = (props) => {
                                 Login with Password
                             </Text>
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
                 
             </View>
             <LoadingModel loading={props.isLoading} />

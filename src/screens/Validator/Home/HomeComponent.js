@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import {
     View,
     StatusBar,
@@ -19,14 +19,14 @@ import moment from 'moment';
 
 const HomeComponent = (props) => {
     const platform = Platform.OS =='ios';
-
+    console.log(props.nodeUserData.partner.name)
     const CouponItem = ({ data, couponId, entries, verifiedTime,customer }) => {
         return (
             <TouchableOpacity style={styles.Entries} >
                 <View style={[gstyles.mx(10), gstyles.mt(7), gstyles.mb(15), { flexDirection: 'column' }]}>
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
                         <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>
-                            {'Coupon ID       '}
+                            {'Ticket ID       '}
                         </Text>
                         <Text style={gstyles.OpenSans_Bold(14, '#000000')}>{'  :  '}{couponId}</Text>
                     </View>
@@ -81,7 +81,7 @@ const HomeComponent = (props) => {
                         <Text style={gstyles.OpenSans_SemiBold(18, '#000000', { ...gstyles.ms(10), width: '75%' })}
                             numberOfLines={1}
                         >
-                            Welcome, {props.userData ? props.userData.first_name : "User"}
+                            Welcome, {props.nodeUserData ? props.nodeUserData.partner.name : "User"}
                         </Text>
                     </View>
                 </View>
@@ -116,15 +116,15 @@ const HomeComponent = (props) => {
                         </Text>
                     </View>
                     <FlatList
-                        data={props.transactions.reverse()}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => (
+                        data={props.transactions}
+                        keyExtractor={(item,index) => item.ticket_tracking_id+index}
+                        renderItem={({ item, index}) => (
                             <CouponItem
                                 data={item}
-                                couponId={item.id}
-                                entries={2*item.type_counts.Couple + item.type_counts.Ladies + item.type_counts.Single}
-                                verifiedTime={moment(item.created_at).format("DD MMM YY | hh:mm A")}
-                                customer={item.name}
+                                couponId={item.ticket_tracking_id}
+                                entries={item.total_people}
+                                verifiedTime={moment(item.timestamp).format("DD MMM YY | hh:mm A")}
+                                customer={item.customer_name}
                             />
                         )}
                         ListEmptyComponent={_renderNoTrans}

@@ -42,10 +42,10 @@ const PopMenuModal = (props) => {
                                 props.setSelectedFilter('self')
                                 props.setIsPopMenu(false) }}
                         >
-                        <View style={[styles.iconBg, { backgroundColor: props.selectedFilter=='self' ? '#8338EC' : '#fff' }]}>
+                        <View style={[styles.iconBg, { backgroundColor: props.selectedFilter=='self' ? '#0276E5C' : '#fff' }]}>
                                 <MaterialCommunityIcons name={props.selectedFilter=='self' ? 'check-all': 'check'} size={12} color={props.selectedFilter=='self' ? '#fff' : '#000'} />
                             </View>
-                            <Text style={gstyles.OpenSans_SemiBold(14, props.selectedFilter=='self' ? '#8338EC' : '#000', gstyles.ms(15))}>
+                            <Text style={gstyles.OpenSans_SemiBold(14, props.selectedFilter=='self' ? '#0276E5' : '#000', gstyles.ms(15))}>
                                 Self  Transactions
                             </Text>
                         </TouchableOpacity>

@@ -32,17 +32,17 @@ const RedeemedDetailsModal = (props) => {
                     >
                         <AntDesign name='close' size={25} color='#0276E5' />
                     </TouchableOpacity>
-                    {props.data.event_type!='free_drink'&& <View style={[gstyles.inRow, gstyles.ms(40)]}>
+                    <View style={[gstyles.inRow, gstyles.ms(40)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Bill No.
                         </Text>
                         <Text style={gstyles.OpenSans_Bold(16, '#000000')}>
                             :{'    '}{props.data.bill_no}
                         </Text>
-                    </View> }
+                    </View>
                     <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
-                            Coupon Id
+                        Ticket Id
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
                             :{'    '}#{props.data.id}
@@ -52,7 +52,7 @@ const RedeemedDetailsModal = (props) => {
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Name
                         </Text>
-                        <Text numberOfLines={1} style={[gstyles.OpenSans_Regular(16, '#000000'),{maxWidth:195}]}>
+                        <Text numberOfLines={1} style={[gstyles.OpenSans_Regular(16, '#000000'), { maxWidth: 195 }]}>
                             :{'    '}{props.data.distribute_id} | {props.data.name}
                         </Text>
                     </View>
@@ -64,18 +64,29 @@ const RedeemedDetailsModal = (props) => {
                             :{'    '}{moment(props.data.created_at).format("DD/MM/YY,  hh:mm A")}
                         </Text>
                     </View>
-                    {props.data.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14),{alignItems:'flex-start'}]}>
+                    {props.data.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { alignItems: 'flex-start' }]}>
+                        <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
+                            Table No.
+                        </Text>
+                        <Text style={[gstyles.OpenSans_Regular(16, '#000000')]}>
+                            :{'    '}
+                        </Text>
+                        <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'), { maxWidth: 195, paddingRight: 10, textAlign: 'left' }]}>
+                        {props.data.remarks.split("$$")[1]}
+                        </Text>
+                    </View>}
+                    {props.data.remarks && <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { alignItems: 'flex-start' }]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Remarks
                         </Text>
                         <Text style={[gstyles.OpenSans_Regular(16, '#000000')]}>
                             :{'    '}
                         </Text>
-                        <Text numberOfLines={3} style={[gstyles.OpenSans_Regular(16, '#000000'),{maxWidth:195,textAlign:'left'}]}>
-                            {props.data.remarks}
+                        <Text numberOfLines={3} ellipsizeMode="tail" style={[gstyles.OpenSans_Regular(16, '#000000'), { maxWidth: 185, textAlign: 'left', paddingRight: 20 }]}>
+                        {props.data.remarks.split("$$")[0]}
                         </Text>
-                    </View> }
-                    {props.data.event_type!='free_drink'&& <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14) , {paddingBottom:props.data.status=="0" ? 0 : 30}]}>
+                    </View>}
+                    <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { paddingBottom: props.data.status == "0" ? 0 : 30 }]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Amount
                         </Text>
@@ -84,32 +95,19 @@ const RedeemedDetailsModal = (props) => {
                                 {'\u20B9'} {props.data.amount_used}
                             </Text>
                         </Text>
-                    </View> }
-                    {props.data.event_type=='free_drink'&& 
-                        <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14) , {paddingBottom:props.data.status=="0" ? 0 : 30}]}>
+                    </View>
+                    {/* <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14), { paddingBottom: props.data.status == "0" ? 0 : 30 }]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
-                            Redeemed Drinks
+                            Mode of Payment 
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(20, '#000000')}>
                             :{'    '}<Text style={gstyles.OpenSans_SemiBold(20, '#0276E5')}>
-                                {props.data.freedrinksUsed}
+                                {props.data.paymentMode}
                             </Text>
                         </Text>
-                    </View> }
-                    {props.data.event_type=='free_drink'&& 
-                        <View style={[gstyles.inRow, gstyles.ms(40), gstyles.mt(14) , {paddingBottom:props.data.event_type!=='free_drink'&& props.data.status=="0" ? 0 : 30}]}>
-                        <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
-                            Drinks
-                        </Text>
-                        <Text style={[gstyles.OpenSans_Regular(16, '#000000'),{maxWidth:195,textAlign:'left'}]}>
-                            :{'    '}
-                        </Text>
-                        <Text style={[gstyles.OpenSans_Regular(16, '#000000'),{maxWidth:190,textAlign:'left'}]}>
-                            {props.data.drinkslist}
-                        </Text>
-                    </View> }
+                    </View>*/}
 
-                    {props.data.event_type!=='free_drink'&& props.data.status=="0" && <LinearGradient
+                    {props.data.status == "0" && <LinearGradient
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
                         colors={['#8338EC', '#3A86FF']} style={styles.settleBtnTouch}>
@@ -121,7 +119,7 @@ const RedeemedDetailsModal = (props) => {
                                 Move to Settled
                             </Text>
                         </TouchableOpacity>
-                    </LinearGradient> }
+                    </LinearGradient>}
                 </View>
             </View>
         </Modal>
