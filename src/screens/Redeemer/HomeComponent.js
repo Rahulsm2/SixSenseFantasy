@@ -7,6 +7,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     FlatList,
+    Platform,
     ScrollView,
     RefreshControl
 } from 'react-native';
@@ -22,6 +23,8 @@ import TransactionCardFreeDrinks from "../../components/Redeemer/TransactionCard
 import moment from 'moment';
 
 const HomeComponent = (props) => {
+
+    const platform = Platform.OS =='ios';
 
     const _renderRecentTrans = ({item,index}) => {
         return item.event_type=="free_drink" ?
@@ -133,7 +136,7 @@ const HomeComponent = (props) => {
                 barStyle="dark-content"
             />
             <View style={[gstyles.container(app_Bg)]}>
-                <View style={styles.header}>
+            <View style={[styles.header, (platform ? { paddingTop: 30 } : null )]}>
                     <View style={[gstyles.inRow, { alignItems: 'center' }]}>
                         <Image source={require('../../assets/images/login_logo.png')}
                             style={{ width: 34, height: 27 }}

@@ -61,13 +61,21 @@ const TabBarComponent = ({ state, descriptors, navigation }) => {
           navigation.navigate('ValCouponContainer');
         }}>
 
-        <View style={tabStyles.scanImgView}>
+        { Platform.OS==='ios' ? (<View style={tabStyles.scanImgView}>
+          <Image source={require('../assets/images/qrcode-scan.png')}
+            style={currentRouteName == 'ValCouponContainer' ? [gstyles.iconSize(28), { tintColor: '#0276E5' }] :
+              [gstyles.iconSize(28), { tintColor: '#3F3F3F' }]
+            }
+          />
+        </View>) :(
+        <View style={tabStyles.scanImgViewAndroid}>
           <Image source={require('../assets/images/qrcode-scan.png')}
             style={currentRouteName == 'ValCouponContainer' ? [gstyles.iconSize(28), { tintColor: '#0276E5' }] :
               [gstyles.iconSize(28), { tintColor: '#3F3F3F' }]
             }
           />
         </View>
+        )}
 
         <View
           style={[gstyles.iconSize(27)]}
@@ -123,9 +131,25 @@ const tabStyles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 100,
     ...gstyles.centerXY,
-    elevation: 7,
+    elevation: 10,
     position: 'absolute',
-    bottom: 35
-  }
+    bottom: 40,
+    shadowColor: '#0276E526',
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 3,
+    shadowRadius: 3
+  },
+  
+  scanImgViewAndroid: {
+    width: 64,
+    height: 64,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 100,
+    ...gstyles.centerXY,
+    elevation: 10,
+    position: 'absolute',
+    bottom: 40,
+    shadowColor: '#000',
+  },
 
 });

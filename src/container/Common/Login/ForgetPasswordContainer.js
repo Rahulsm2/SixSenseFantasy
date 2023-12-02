@@ -6,6 +6,7 @@ import { persistToken } from '../../../services/persistData';
 import { postData} from '../../../services/rootService';
 import { CommonActions } from '@react-navigation/native';
 import { connect } from 'react-redux';
+import { Platform } from 'react-native';
 
 const ForgetPasswordContainer = (props) => {
     
@@ -83,7 +84,7 @@ const ForgetPasswordContainer = (props) => {
             if(response.data.role=="Biller" || response.data.role=="Cashier" || response.data.role=="Manager" || response.data.role=="Validator"){
               props.updateuser(response.data)
               const isPersist = await persistToken(response.token.access_token);
-              if(isPersist){
+              if(isPersist){ Platform.OS=='android' ?
                   navigation.dispatch(
                       CommonActions.reset({
                           index: 0,
@@ -93,7 +94,7 @@ const ForgetPasswordContainer = (props) => {
                           },
                           ],
                       }),
-                  );
+                  ) : navigation.navigate('SetMPINContainer')
               }
             }else{
               showToast("No Access");
