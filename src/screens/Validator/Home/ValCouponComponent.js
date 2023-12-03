@@ -19,7 +19,6 @@ import { RNCamera } from 'react-native-camera';
 import LoadingModel from "../../../components/common/Loading"
 import CouponVerificationModal from "../../../components/Redeemer/CouponVerificationModal"
 import { showToast } from "../../../components/common/ShowToast"
-import CouponExpireModal from "../../../components/Redeemer/CouponExpireModal"
 import CouponExpiredModal from "../../../components/Validator/CouponExpiredModal"
 import RBSheet from "react-native-raw-bottom-sheet";
 import Feather from 'react-native-vector-icons/Feather';

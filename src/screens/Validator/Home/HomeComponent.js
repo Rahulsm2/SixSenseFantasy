@@ -19,14 +19,13 @@ import moment from 'moment';
 
 const HomeComponent = (props) => {
     const platform = Platform.OS =='ios';
-    console.log(props.nodeUserData.partner.name)
     const CouponItem = ({ data, couponId, entries, verifiedTime,customer }) => {
         return (
             <TouchableOpacity style={styles.Entries} >
                 <View style={[gstyles.mx(10), gstyles.mt(7), gstyles.mb(15), { flexDirection: 'column' }]}>
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
                         <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>
-                            {'Ticket ID       '}
+                            {'Ticket ID          '}
                         </Text>
                         <Text style={gstyles.OpenSans_Bold(14, '#000000')}>{'  :  '}{couponId}</Text>
                     </View>

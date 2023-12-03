@@ -23,7 +23,6 @@ import { useNavigation } from '@react-navigation/native';
 const ProfileComponent = (props) => {
     const navigation=useNavigation();
     const platform = Platform.OS =='ios';
-    console.log(props.nodeUserData.partner.parent.mobile)
     return (
         <>
             <StatusBar

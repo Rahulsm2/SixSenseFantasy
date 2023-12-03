@@ -23,7 +23,7 @@ const CouponVerified2 = (props) => {
                     {item.package_data.package_map.package.name} <Text style={gstyles.OpenSans_SemiBold(14, '#000')}>( {item.package_data.package_map.package.pax} People )</Text>
                 </Text>
                 <Text style={gstyles.OpenSans_SemiBold(14, '#3A86FF', gstyles.size('100%'))}>
-                    Balence : <Text style={gstyles.OpenSans_SemiBold(12, '#000')}>{item.balance} People </Text>
+                    Balance : <Text style={gstyles.OpenSans_SemiBold(12, '#000')}>{item.balance} People </Text>
                 </Text>
                 </View>
                 <View style={gstyles.inRow}>

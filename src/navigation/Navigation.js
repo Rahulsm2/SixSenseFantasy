@@ -11,6 +11,7 @@ import SetMPINContainer from '../container/Common/Login/SetMPINContainer';
 import EditProfileContainer from '../container/Common/Profile/EditProfileContainer';
 import ValidatorTabNavigation from '../navigation/ValidatorTabNavigation';
 import ChangeMpinContainer from '../container/Common/Profile/ChangeMpinContainer';
+
 const Stack = createNativeStackNavigator();
 
 const Navigation = (props) => {

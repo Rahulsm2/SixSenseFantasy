@@ -151,12 +151,27 @@ const ValCouponContainer = (props) => {
         }
         completedata.totalAddedCount = totalBalence;
 
-        console.log("totalBalence", totalBalence);
+        console.log("totalBalance", totalBalence);
         setqrData(completedata);
+        var curenttime = moment();
         if (totalBalence == 0) {
           setcouponStatus('Already_Verified')
-        } else {
+        } else if (
+          curenttime.isBetween(
+            moment(response1.tickets_data[0].package_data.ticket_param.valid_from),
+            moment(response1.tickets_data[0].package_data.ticket_param.valid_till),
+          )
+        ) {
           setcouponStatus("entry_verified2")
+        } else if(curenttime.isBefore(moment(response1.tickets_data[0].package_data.ticket_param.valid_from))){
+          showToast('Event Yet to Start')
+          setcouponStatus('pending')
+          
+        } else if (curenttime.isAfter(moment(response1.tickets_data[0].package_data.ticket_param.valid_till))){
+          setcouponStatus('coupon_expired')
+          console.log('Coupon Expired')
+          showToast('Invalid Ticket')
+          
         }
         setTimeout(() => {
           setIsLoading(false);
