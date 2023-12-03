@@ -14,7 +14,7 @@ import { TextInput } from 'react-native-paper';
 import LoadingModel from "../../../components/common/Loading"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useNavigation } from '@react-navigation/native';
-
+import { Platform } from 'react-native-macos';
 
 const ChangeMpinComponent = (props) => {
     const navigation = useNavigation();
