@@ -10,13 +10,13 @@ import LottieView from 'lottie-react-native';
 
 const CouponExpiredModal = (props) => {
     const navigation= useNavigation();
-    console.log("modal",props.couponData)
     return (
         <Modal
             transparent
             visible={props.visible}
             animationType="fade"
-            onRequestClose={() => { props.setcouponStatus('pending') }}>
+            onRequestClose={() => { props.setcouponStatus('pending') 
+            navigation.navigate('HomeContainer') }}>
             <StatusBar
                 backgroundColor={'rgba(0,0,0,0.5)'}
                 barStyle="light-content"
@@ -40,25 +40,25 @@ const CouponExpiredModal = (props) => {
                         Ticket ID
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#000000')}>#{props.couponData.ticket_tracking_id}</Text>
+                            :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#000000')}>#{props.qrData.ticket_tracking_id}</Text>
                         </Text>
                     </View>
-                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
+                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14), gstyles.mb(40)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Created at
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}{moment(props.couponData.ticket_created_at).format('DD/MM/YY,   hh: mm A')}
+                            :{'    '}{moment(props.qrData.ticket_created_at).format('DD/MM/YY,   hh: mm A')}
                         </Text>
                     </View>
-                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14), gstyles.mb(50)]}>
+                    {/* <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14), gstyles.mb(50)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Valid till
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}{moment(props.couponData.tickets_data[0].package_data.ticket_param.valid_till).format('DD/MM/YY,   hh: mm A')}
+                            :{'    '}{props.expired}
                         </Text>
-                    </View>
+                    </View> */}
                 </View>
             </View>
         </Modal>

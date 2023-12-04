@@ -22,6 +22,7 @@ const ValCouponContainer = (props) => {
   const [isChangeData, setIsChangeData] = useState(false);
   const [seekPremission, setSeekPremission] = useState(false);
   const inputRef = useRef()
+  
 
   {
     Platform.OS === 'android' ? useEffect(() => {
@@ -92,6 +93,7 @@ const ValCouponContainer = (props) => {
 
         console.log("onClickRedeem Response", response);
         if (response.statusCode == 200) {
+          showToast('Ticket Successfully Verified');
           setIsLoading(false);
           getTransactions();
           navigation.navigate("HomeContainer");
@@ -136,6 +138,7 @@ const ValCouponContainer = (props) => {
         );
 
         console.log("response1.tickets_data", response1.tickets_data);
+        
       }
 
       if (nodeToken && response1.statusCode == 200) {
@@ -156,7 +159,9 @@ const ValCouponContainer = (props) => {
         var curenttime = moment();
         if (totalBalence == 0) {
           setcouponStatus('Already_Verified')
-        } else if (
+        } 
+        else if (totalBalence > 0) {
+         if (
           curenttime.isBetween(
             moment(response1.tickets_data[0].package_data.ticket_param.valid_from),
             moment(response1.tickets_data[0].package_data.ticket_param.valid_till),
@@ -165,14 +170,20 @@ const ValCouponContainer = (props) => {
           setcouponStatus("entry_verified2")
         } else if(curenttime.isBefore(moment(response1.tickets_data[0].package_data.ticket_param.valid_from))){
           showToast('Event Yet to Start')
+          navigation.navigate('HomeContainer')
           setcouponStatus('pending')
           
-        } else if (curenttime.isAfter(moment(response1.tickets_data[0].package_data.ticket_param.valid_till))){
+        } else {
           setcouponStatus('coupon_expired')
-          console.log('Coupon Expired')
-          showToast('Invalid Ticket')
-          
         }
+          }
+        }
+        else {
+          showToast('Invalid Ticket')
+          navigation.navigate('HomeContainer')
+          setcouponStatus('pending')
+        }
+        
         setTimeout(() => {
           setIsLoading(false);
         }, 2000);
@@ -186,7 +197,6 @@ const ValCouponContainer = (props) => {
             'Invalid Ticket'
           );
       }
-    }
   };
 
   const getTransactions = async () => {
@@ -215,6 +225,7 @@ const ValCouponContainer = (props) => {
       );
     }
   }
+  
 
   return (
     <ValCouponComponent

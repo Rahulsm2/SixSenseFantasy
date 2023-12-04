@@ -19,10 +19,10 @@ const CouponVerified2 = (props) => {
         return item.balance==0 ? null : (
             <View style={[{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, gstyles.ms(30), gstyles.mt(20)]}>
                <View>
-                <Text style={gstyles.OpenSans_SemiBold(20, '#3A86FF', gstyles.size('100%'))}>
+                <Text style={[gstyles.OpenSans_SemiBold(20, '#3A86FF'), {maxWidth:WIDTH*0.5}]}>
                     {item.package_data.package_map.package.name} <Text style={gstyles.OpenSans_SemiBold(14, '#000')}>( {item.package_data.package_map.package.pax} People )</Text>
                 </Text>
-                <Text style={gstyles.OpenSans_SemiBold(14, '#3A86FF', gstyles.size('100%'))}>
+                <Text style={[gstyles.OpenSans_SemiBold(14, '#3A86FF'), {maxWidth:WIDTH*0.5}]}>
                     Balance : <Text style={gstyles.OpenSans_SemiBold(12, '#000')}>{item.balance} People </Text>
                 </Text>
                 </View>

@@ -12,21 +12,13 @@ import {
 import { gstyles } from '../../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg, HEIGHT } from '../../../components/common/Constants';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import LinearGradient from 'react-native-linear-gradient';
 import Icons from 'react-native-vector-icons/Ionicons';
 import { RNCamera } from 'react-native-camera';
-
 import LoadingModel from "../../../components/common/Loading"
-import CouponVerificationModal from "../../../components/Redeemer/CouponVerificationModal"
-import { showToast } from "../../../components/common/ShowToast"
 import CouponExpiredModal from "../../../components/Validator/CouponExpiredModal"
-import RBSheet from "react-native-raw-bottom-sheet";
-import Feather from 'react-native-vector-icons/Feather';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Modal, TextInput } from 'react-native-paper';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import CouponAlreadyVerified from '../../../components/Validator/CouponAlreadyVerified';
-// import CouponVerified from '../../../components/Validator/CouponVerified'
 import CouponVerified2 from '../../../components/Validator/CouponVerified2'
 
 const ValCouponComponent = (props) => {
@@ -150,6 +142,7 @@ const ValCouponComponent = (props) => {
                     </RNCamera>
                 </View>
                 <LoadingModel loading={props.isLoading} />
+                
 
                 {/* <CouponVerified
                     isVisible={props.couponStatus == 'entry_verified'}
@@ -169,7 +162,7 @@ const ValCouponComponent = (props) => {
                 <CouponExpiredModal
                     visible={props.couponStatus == 'coupon_expired'}
                     setcouponStatus={props.setcouponStatus}
-                    couponData={props.qrData} />
+                    qrData={props.qrData} />
 
                 <CouponAlreadyVerified
                     visible={props.couponStatus == 'Already_Verified'}
