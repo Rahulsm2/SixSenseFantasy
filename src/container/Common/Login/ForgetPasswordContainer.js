@@ -93,7 +93,7 @@ const ForgetPasswordContainer = (props) => {
       response.message
         ? showToast(response.message)
         : showToast(
-          'Something went wrong, please try again later'
+          'Invalid OTP!!!'
         );
     }
   }
