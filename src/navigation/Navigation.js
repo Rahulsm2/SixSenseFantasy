@@ -11,6 +11,7 @@ import SetMPINContainer from '../container/Common/Login/SetMPINContainer';
 import EditProfileContainer from '../container/Common/Profile/EditProfileContainer';
 import ValidatorTabNavigation from '../navigation/ValidatorTabNavigation';
 import ChangeMpinContainer from '../container/Common/Profile/ChangeMpinContainer';
+import TransactionContainer from '../container/Validator/Home/TransactionContainer';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ const Navigation = (props) => {
 
         {/* Validators Screens */}
         <Stack.Screen name="ValidatorTabNavigation" component={ValidatorTabNavigation} />
+        <Stack.Screen name="TransactionContainer" component={TransactionContainer} />
         <Stack.Screen name='ChangeMpinContainer' component={ChangeMpinContainer} />
       </Stack.Navigator>
     </NavigationContainer>

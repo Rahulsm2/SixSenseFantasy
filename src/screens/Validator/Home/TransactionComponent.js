@@ -9,19 +9,19 @@ import {
     FlatList,
     ScrollView,
     RefreshControl,
-    Platform
+    Platform,
+    TextInput
 } from 'react-native';
 import { gstyles } from '../../../components/common/GlobalStyles';
 import { HEIGHT, OpenSans_Medium, WIDTH, app_Bg } from '../../../components/common/Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import LoadingModel from "../../../components/common/Loading"
 import moment from 'moment';
-import { useNavigation } from '@react-navigation/native';
 
-const HomeComponent = (props) => {
-    const navigation = useNavigation();
-    const platform = Platform.OS == 'ios';
-    const CouponItem = ({ data, couponId, entries, verifiedTime, customer, eventName }) => {
+const TransactionComponent = (props) => {
+    const platform = Platform.OS =='ios';
+    const CouponItem = ({ data, couponId, entries, verifiedTime,customer, eventName }) => {
         return (
             <TouchableOpacity style={styles.Entries} >
                 <View style={[gstyles.mx(10), gstyles.mt(7), gstyles.mb(15), { flexDirection: 'column' }]}>
@@ -41,18 +41,18 @@ const HomeComponent = (props) => {
                         <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>Guest Name     :</Text>
                         <Text style={gstyles.OpenSans_SemiBold(14, '#000000')}>{'  '}{(customer)}</Text>
                     </View>
-
+    
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
                         <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>No. of Entries   :</Text>
-                        <Text style={gstyles.OpenSans_Bold(14, '#000000')}>{'  '}{entries} </Text>
+                        <Text style={gstyles.OpenSans_Bold(14, '#000000')}>{'  '}{entries} </Text>  
                     </View>
-
+    
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
                         <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>Verified Time   :</Text>
                         <Text style={gstyles.OpenSans_SemiBold(14, '#000000')}>{'  '}{(verifiedTime)}</Text>
                     </View>
-
-
+                    
+                    
                 </View>
             </TouchableOpacity>
         );
@@ -60,7 +60,7 @@ const HomeComponent = (props) => {
 
     const _renderNoTrans = () => {
         return (
-            <View style={[gstyles.centerXY, { marginTop: '25%' }]}>
+            <View style={[gstyles.centerXY, { marginTop:'25%' }]}>
                 <Image source={require('../../../assets/images/no_trans.png')}
                     style={[gstyles.iconSize(WIDTH / 1.8), { opacity: 0.7 }]}
                 />
@@ -71,7 +71,6 @@ const HomeComponent = (props) => {
         );
     }
 
-    const arrayLength = props.transactions.length
     return (
         <>
             <StatusBar
@@ -80,63 +79,69 @@ const HomeComponent = (props) => {
                 barStyle="dark-content"
             />
             <View style={[gstyles.container(app_Bg)]}>
-                <View style={[styles.header, (platform ? { paddingTop: HEIGHT * 0.04 } : null)]}>
+            <View style={[styles.header, (platform ? { paddingTop: 50 } : null )]}>
                     <View style={[gstyles.inRow, { alignItems: 'center' }]}>
-                        <Image source={require('../../../assets/images/login_logo.png')}
-                            style={{ width: 34, height: 27 }}
-                        />
-                        <Text style={gstyles.OpenSans_SemiBold(18, '#000000', { ...gstyles.ms(10), width: '75%' })}
+                        <TouchableOpacity activeOpacity={0.6}
+                            onPress={() => { props.onClickBack() }}
+                        >
+                            <MaterialIcons name='arrow-back' size={25} color='#3F3F3F' />
+                        </TouchableOpacity>
+                        <Text style={gstyles.OpenSans_SemiBold(18, '#000000', gstyles.ms(15))}
                             numberOfLines={1}
                         >
-                            Welcome, {props.nodeUserData ? props.nodeUserData.partner.name : "User"}
+                            Transactions
                         </Text>
-                        <TouchableOpacity activeOpacity={0.6}
-                            onPress={() => { navigation.navigate('TransactionContainer') }} style={{ left: WIDTH * 0.1 }}
-                        >
-                            <Ionicons name='ios-search-outline' size={22} color='#3F3F3F' />
-                        </TouchableOpacity>
                     </View>
                 </View>
 
-                <ScrollView refreshControl={
-                    <RefreshControl refreshing={props.isRefreshing}
-                        onRefresh={() => {
-                            props.setisRefreshing(true)
-                            props.getTransactions()
-                        }} />
-                }>
-                    <View style={styles.totalRedeemCard}>
+                <ScrollView showsVerticalScrollIndicator={false} 
+                    refreshControl={
+                        <RefreshControl refreshing={props.isRefreshing} 
+                            onRefresh={()=>{
+                                props.setisRefreshing(true)
+                                props.getTransactions()
+                            }} />
+                    }>
+
+                <View style={styles.searchBoxView}>
+                    <View style={gstyles.inRow}>
+                        <Ionicons name='ios-search-outline' size={22} color='#3F3F3F' />
+                        <TextInput
+                            placeholder='Search'
+                            placeholderTextColor={'#3F3F3F'}
+                            style={styles.inputSearchText}
+                            value={props.searchQuery}
+                            onChangeText={(val)=>props.onSearch(val)}
+                        />
+                    </View>
+                    {props.userData && props.userData.role=="Biller" ? 
+                    <TouchableOpacity activeOpacity={0.6}
+                        onPress={() =>  props.getStaffs()}
+                    >
+                        <FontAwesome name='filter' size={22} color='#3F3F3F' />
+                    </TouchableOpacity> : null }
+                </View>
+                    {/* <View style={styles.totalRedeemCard}>
                         <View style={[gstyles.inRowJSB, gstyles.mx(10), gstyles.mt(15)]}>
 
                             <Text style={gstyles.OpenSans_Bold(15, '#000000')}>
                                 Total Entries
                             </Text>
 
+                            
                         </View>
                         <View style={[gstyles.mt(10), gstyles.mx(10), gstyles.mb(15)]}>
                             <Text style={gstyles.OpenSans_SemiBold(30, '#0276E5')}>
                                 {props.totalEntries}
                             </Text>
                         </View>
-                    </View>
+                    </View> */}
 
-                    {arrayLength > 0 && <View style={[gstyles.mt(15), gstyles.mb(10), gstyles.inRowJSB, { width: WIDTH - 35 }, gstyles.centerX]}>
-                        <Text style={gstyles.OpenSans_Bold(15, '#000000')}>
-                            Latest Entries
-                        </Text>
-                        {arrayLength > 4 && <TouchableOpacity activeOpacity={0.6}
-                            onPress={() => { navigation.navigate('TransactionContainer') }}
-                        >
-                            <Text style={gstyles.OpenSans_Bold(13, '#0276E5')}>
-                                View All
-                            </Text>
-                        </TouchableOpacity>}
-                    </View>}
 
                     <FlatList
-                        data={props.transactions.slice(0, 4)}
-                        keyExtractor={(item, index) => item.ticket_tracking_id + index}
-                        renderItem={({ item, index }) => (
+                        data={ props.filteredSTransactions.length>0 ? props.filteredSTransactions : props.transactions }
+                        keyExtractor={(item,index) => item.ticket_tracking_id+index}
+                        renderItem={({ item, index}) => (
                             <CouponItem
                                 data={item}
                                 couponId={item.ticket_tracking_id}
@@ -149,12 +154,13 @@ const HomeComponent = (props) => {
                     />
                 </ScrollView>
             </View>
-            <LoadingModel loading={props.isLoading} />
+            
+            <LoadingModel loading={props.isLoading}/>
         </>
     );
 }
 
-export default HomeComponent;
+export default TransactionComponent;
 
 const styles = StyleSheet.create({
 
@@ -169,6 +175,21 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         elevation: 3,
     },
+    searchBoxView: {
+        width: WIDTH - 35,
+        alignSelf: 'center',
+        height: 50,
+        backgroundColor: '#FFFFFF',
+        marginTop: 10,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: '#0276E5',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16,
+        marginBottom: 15
+    },
 
     totalRedeemCard: {
         width: WIDTH - 35,
@@ -179,6 +200,13 @@ const styles = StyleSheet.create({
         borderColor: '#0276E51A',
         marginTop: 15,
         marginBottom: 5
+    },
+    inputSearchText: {
+        fontFamily: OpenSans_Medium,
+        fontSize: 16,
+        color: '#000000',
+        marginLeft: 12,
+        width: '85%'
     },
     Entries: {
         width: WIDTH - 35,

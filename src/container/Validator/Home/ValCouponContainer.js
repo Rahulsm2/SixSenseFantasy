@@ -110,17 +110,21 @@ const ValCouponContainer = (props) => {
   };
 
   const updateInputValue = (index, value) => {
-    let completedata = qrData;
-    let ticketsData = completedata.tickets_data;
+    let completedata = { ...qrData };
+    let ticketsData = [...completedata.tickets_data];
     ticketsData[index].inputValue = value;
-    completedata.tickets_data = ticketsData;
     let totalAddedCount = 0;
     for (let i = 0; i < ticketsData.length; i++) {
       totalAddedCount = totalAddedCount + ticketsData[i].inputValue;
     }
-    completedata.totalAddedCount = totalAddedCount;
+    completedata = {
+      ...completedata,
+      tickets_data: ticketsData,
+      totalAddedCount: totalAddedCount,
+  };
     setqrData(completedata);
     setIsChangeData(!isChangeData);
+    console.log("updated", qrData)
   }
 
 
@@ -137,12 +141,14 @@ const ValCouponContainer = (props) => {
           { 'user': props.nodeUserData ? props.nodeUserData.user : "" }
         );
 
-        console.log("response1.tickets_data", response1.tickets_data);
+        props.updateusTransactions(response1)
+
+        console.log("response1.tickets_data", response1.event_name);
         
       }
 
       if (nodeToken && response1.statusCode == 200) {
-        console.log("response1.tickets_data", response1);
+        // console.log("response1.tickets_data", response1);
         let totalBalence = 0;
         let completedata = response1;
         let ticketdata = response1.tickets_data
@@ -153,8 +159,6 @@ const ValCouponContainer = (props) => {
           ticketdata[i] = data;
         }
         completedata.totalAddedCount = totalBalence;
-
-        console.log("totalBalance", totalBalence);
         setqrData(completedata);
         var curenttime = moment();
         if (totalBalence == 0) {

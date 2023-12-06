@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity, Image, FlatList } from 'react-native';
-import { HEIGHT, WIDTH } from '../common/Constants';
+import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity, Image, FlatList} from 'react-native';
+import { HEIGHT, OpenSans_Bold, WIDTH } from '../common/Constants';
+import { TextInput } from 'react-native-paper';
 import { gstyles } from '../common/GlobalStyles';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -10,48 +11,67 @@ import moment from 'moment';
 
 
 const CouponVerified2 = (props) => {
+    const initialPax = Array.isArray(props.qrData?.tickets_data) ? Array(props.qrData.tickets_data.length).fill(0) : [];
 
+    const [pax, setPax] = useState(initialPax);
+
+    const setPaxValue = (index, value) => {
+        const updatedPax = [...pax];
+        updatedPax[index] = value;
+        setPax(updatedPax);
+    };
     if (!props.qrData || !Array.isArray(props.qrData.tickets_data)) {
         return null;
     }
 
     const _renderPackage = ({ item, index }) => {
-        return item.balance==0 ? null : (
+        return item.balance == 0 ? null : (
             <View style={[{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, gstyles.ms(30), gstyles.mt(20)]}>
-               <View>
-                <Text style={[gstyles.OpenSans_SemiBold(20, '#3A86FF'), {maxWidth:WIDTH*0.5}]}>
-                    {item.package_data.package_map.package.name} <Text style={gstyles.OpenSans_SemiBold(14, '#000')}>( {item.package_data.package_map.package.pax} People )</Text>
-                </Text>
-                <Text style={[gstyles.OpenSans_SemiBold(14, '#3A86FF'), {maxWidth:WIDTH*0.5}]}>
-                    Balance : <Text style={gstyles.OpenSans_SemiBold(12, '#000')}>{item.balance} People </Text>
-                </Text>
+                <View>
+                    <Text style={[gstyles.OpenSans_SemiBold(20, '#3A86FF'), { maxWidth: WIDTH * 0.5 }]}>
+                        {item.package_data.package_map.package.name} <Text style={gstyles.OpenSans_SemiBold(14, '#000')}>( {item.package_data.package_map.package.pax} People )</Text>
+                    </Text>
+                    <Text style={[gstyles.OpenSans_SemiBold(14, '#3A86FF'), { maxWidth: WIDTH * 0.5 }]}>
+                        Balances : <Text style={gstyles.OpenSans_SemiBold(12, '#000')}>{item.balance} People </Text>
+                    </Text>
                 </View>
                 <View style={gstyles.inRow}>
                     <LinearGradient
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
                         colors={['#8338EC', '#3A86FF']}
-                        style={{ borderRadius: 100 ,opacity: item.inputValue==0 ? 0.4 : 1, padding:3.5}}
+                        style={{ borderRadius: 100, opacity: item.inputValue == 0 ? 0.4 : 1, padding: 3.5 }}
                     >
-                        <TouchableOpacity disabled={item.inputValue==0} onPress={() => props.updateInputValue(index,item.inputValue-1)}>
+                        <TouchableOpacity disabled={item.inputValue == 0} onPress={() => props.updateInputValue(index, item.inputValue - 1)}>
                             <Entypo name="minus" size={18} color="#FFFFFF" />
                         </TouchableOpacity>
                     </LinearGradient>
-                    <Text style={[gstyles.OpenSans_Bold(24, '#0276E5'), gstyles.me(10), gstyles.ms(10)]}>{item.inputValue}</Text>
+                    <TextInput
+                        placeholder={`${item.inputValue}`}
+                        value={(pax[index] !== undefined) ? pax[index].toString() : ''}
+                        onChangeText={(text) => {
+                            const parsedText = parseInt(text) || 0;
+                            const newValue = Math.min(parsedText, item.balance);
+                            setPaxValue(index, newValue);
+                            props.updateInputValue(index, newValue);
+                        }}
+                        keyboardType='numeric'
+                        style={{...styles.inputText}}
+                        placeholderTextColor="#0276E5" 
+                    />
                     <LinearGradient
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
                         colors={['#8338EC', '#3A86FF']}
-                        style={{ borderRadius: 100, marginRight: 40 ,opacity:item.inputValue==item.balance ? 0.4 : 1, padding:3.5 }}
+                        style={{ borderRadius: 100, marginRight: 40, opacity: item.inputValue == item.balance ? 0.4 : 1, padding: 3.5 }}
                     >
-                        <TouchableOpacity disabled={item.inputValue==item.balance} onPress={() => props.updateInputValue(index,item.inputValue+1)}>
+                        <TouchableOpacity disabled={item.inputValue == item.balance} onPress={() => props.updateInputValue(index, item.inputValue + 1)}>
                             <Entypo name="plus" size={18} color="#FFFFFF" />
                         </TouchableOpacity>
                     </LinearGradient>
                 </View>
             </View>
         );
-
     };
     return (
         <Modal
@@ -111,13 +131,14 @@ const CouponVerified2 = (props) => {
                     <LinearGradient
                         start={{ x: 0, y: 1 }}
                         end={{ x: 1, y: 1 }}
-                        colors={['#8338EC', '#3A86FF']} style={{...styles.settleBtnTouch,opacity:props.qrData.totalAddedCount<=0 ? 0.4:1}}>
-                        <TouchableOpacity 
-                        disabled={props.qrData.totalAddedCount<=0}
-                        onPress={() => {
-                            props.setcouponStatus('redeem');
-                            props.onCliclRedeem();
-                        }} activeOpacity={0.6}
+                        colors={['#8338EC', '#3A86FF']} style={{ ...styles.settleBtnTouch, opacity: props.qrData.totalAddedCount <= 0 ? 0.4 : 1 }}>
+                        <TouchableOpacity
+                            disabled={props.qrData.totalAddedCount <= 0}
+                            onPress={() => {
+                                props.setcouponStatus('redeem');
+                                setPax('');
+                                props.onCliclRedeem();
+                            }} activeOpacity={0.6}
                             style={styles.btnTouch}
                         >
                             <Text style={gstyles.OpenSans_Bold(20, '#FFFFFF')}>
@@ -140,6 +161,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0,0,0,0.5)'
+    },
+    inputText: {
+        fontSize: 24,
+        fontFamily: OpenSans_Bold,
+        color: '#0276E5',
+        backgroundColor: 'transparent',
+        borderWidth:0
     },
 
     modalView: {

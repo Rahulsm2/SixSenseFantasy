@@ -1,31 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import HomeComponent from '../../../screens/Validator/Home/HomeComponent';
+import React, { useState, useRef } from 'react';
+import TransactionComponent from '../../../screens/Validator/Home/TransactionComponent';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
-import { getData, getNodeData, postData } from '../../../services/rootService';
-import { getNodeToken,removeNodeToken,removeMpin,removeToken } from '../../../services/persistData';
+import { getData, postData } from '../../../services/rootService';
+import { getToken } from '../../../services/persistData';
 import { showToast } from '../../../components/common/ShowToast';
-import { CommonActions } from '@react-navigation/native';
 
-const HomeContainer = (props) => {
-    
+const TransactionContainer = (props) => {
+
     const navigation = useNavigation();
-
-    const [isLoading, setIsLoading] = useState(false);
+    const [isBtnSelected, setIsBtnSelected] = useState('unSettled');
     const [isRefreshing, setisRefreshing] = useState(false);
-    
-    useEffect(() => {
-        setIsLoading(true);
-        getTransactions();
-        return () => { };
-    }, []);
-
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredSTransactions, setFilterdSTransactions] = useState([]);
+    const [filteredUSTransactions, setFilterdUSTransactions] = useState([]);
+    const [filteredFreeDrinkTransactions, setFilterdFreeDrinkTransactions] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const refRBSheet = useRef();
+    const [isPopMenu, setIsPopMenu] = useState(false);
 
     const getTransactions = async () => {
         const nodeToken = await getNodeToken();
-        const response = await getNodeData(`service/tickets_service/v1/tickets/action/user/${props.nodeUserData?.user}`, {}, nodeToken, 
-        { 'user': props.nodeUserData ? props.nodeUserData.user : "" });
-        console.log("getnodedata", response,response.statusCode)
+        const response = await getNodeData(`service/tickets_service/v1/tickets/action/user/${props.nodeUserData?.user}`, {}, nodeToken,
+            { 'user': props.nodeUserData ? props.nodeUserData.user : "" });
+        console.log("getnodedata", response, response.statusCode)
         if (response.statusCode == 200) {
             if (response.errors) {
                 showToast(response.message);
@@ -36,10 +34,10 @@ const HomeContainer = (props) => {
             setisRefreshing(false);
             props.updateTransactions(response._payload);
             console.log('response', response)
-            let data=response._payload;
-            let totalCount=0;
+            let data = response._payload;
+            let totalCount = 0;
             for (let i = 0; i < data.length; i++) {
-                totalCount=totalCount+data[i].total_people;
+                totalCount = totalCount + data[i].total_people;
             }
             props.updateTotalEntries(totalCount);
         } else {
@@ -48,34 +46,40 @@ const HomeContainer = (props) => {
             showToast(
                 response.message ? response.message : 'Session might expired, please login again.'
             );
-            if(response=="Unauthorized request"){
+            if (response == "Unauthorized request") {
                 loggingOut();
             }
         }
     }
 
-    const loggingOut = async () => {
-        const token = await removeToken();
-        const mpin = await removeMpin();
-        const nodetoke = await removeNodeToken();
-        if (token && mpin && nodetoke) {
-            props.logoutData();
-            {Platform.OS === 'android' ? (navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        {
-                            name: 'ForgetPasswordContainer',
-                        },
-                    ],
-                }),
-            )) : (navigation.navigate('ForgetPasswordContainer')) 
-            }
-        }
+    const onClickBack = () => {
+        navigation.goBack();
     }
 
+    const onSearch = query => {
+        setSearchQuery(query);
+        console.log("onsearch", query);
+        const searchResult = props.validationsTrasactions.filter(function (item) {
+            return (item["ticket_tracking_id"].toString().includes(query) ||
+                item["total_people"].toString().includes(query) ||
+                item["customer_name"].toString().includes(query)
+            )
+        });
+        setFilterdSTransactions(searchResult);
+        if (searchQuery.length < query.length && query.length >= 3 && searchResult.length <= 0) {
+            showToast("No result found..");
+        }
+    };
+
     return (
-        <HomeComponent
+        <TransactionComponent
+            onClickBack={onClickBack}
+            searchQuery={searchQuery}
+            onSearch={onSearch}
+            filteredSTransactions={filteredSTransactions}
+            filteredFreeDrinkTransactions={filteredFreeDrinkTransactions}
+            refRBSheet={refRBSheet}
+            isPopMenu={isPopMenu}
             isRefreshing={isRefreshing}
             setisRefreshing={setisRefreshing}
             transactions={props.validationsTrasactions}
@@ -88,14 +92,15 @@ const HomeContainer = (props) => {
     );
 }
 
-// export default HomeContainer;
+// export default TransactionContainer;
+
 const mapStateToProps = state => ({
     userData: state.userreducer.userData,
     selectedFilter: state.transactionsreducer.selectedFilter,
     saffsList: state.transactionsreducer.saffsList,
     validationsTrasactions: state.transactionsreducer.validationsTrasactions,
-    usTransactions: state.transactionsreducer.usTransactions,
-    totalvalidationsEntries :  state.transactionsreducer.totalvalidationsEntries,
+    Transactions: state.transactionsreducer.Transactions,
+    totalvalidationsEntries: state.transactionsreducer.totalvalidationsEntries,
     nodeUserData: state.userreducer.nodeUserData
 });
 
@@ -110,4 +115,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionContainer)
