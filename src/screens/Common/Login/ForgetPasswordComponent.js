@@ -5,7 +5,10 @@ import {
     Image,
     Text,
     StyleSheet,
-    TouchableOpacity, Linking
+    TouchableOpacity, 
+    Linking,
+    TouchableWithoutFeedback,
+    Keyboard
 } from 'react-native';
 import { gstyles } from '../../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg } from '../../../components/common/Constants';
@@ -15,7 +18,21 @@ import LoadingModel from "../../../components/common/Loading"
 
 const ForgetPasswordComponent = (props) => {
 
-    let otpTextInput = useRef(null);
+    const handlePhoneNumberChange = (text) => {
+        props.setMobileNumber(text)
+
+        if (text.length === 10) {
+            Keyboard.dismiss();
+        }
+    };
+
+    const handleOTPChange = (text) => {
+        props.setOtp(text);
+
+        if (text.length === 4) {
+            Keyboard.dismiss();
+        }
+    };
 
     return (
         <>
@@ -24,6 +41,7 @@ const ForgetPasswordComponent = (props) => {
                 animated={true}
                 barStyle="dark-content"
             />
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={[gstyles.container(app_Bg)]}>
                 <View style={[gstyles.mt(60), gstyles.centerXY]}>
                     <Image source={require('../../../assets/images/login_logo.png')}
@@ -65,7 +83,7 @@ const ForgetPasswordComponent = (props) => {
                             />
                         }
                         value={props.mobileNumber}
-                        onChangeText={(text) => { props.setMobileNumber(text) }}
+                        onChangeText={(text) => { handlePhoneNumberChange(text) }}
                         disabled={props.isOtpSent}
                         editable={!props.isOtpSent}
                         autoFocus={true}
@@ -98,12 +116,12 @@ const ForgetPasswordComponent = (props) => {
                                 iconColor={"#3F3F3F"}
                                 size={22}
                                 disabled={!props.isOtpSent}
-                                onPress={() => props.setHideOtp(!props.hideOtp)}
+                                onPress={() =>  props.setHideOtp(!props.hideOtp)}
                             />
                         }
                         value={props.otp}
                         editable={props.isOtpSent}
-                        onChangeText={(text) => { props.setOtp(text) }}
+                        onChangeText={(text) => { handleOTPChange(text) }}
                     />
                 </View>
 
@@ -147,6 +165,7 @@ const ForgetPasswordComponent = (props) => {
                     </View> */}
                 
             </View>
+            </TouchableWithoutFeedback>
             <LoadingModel loading={props.isLoading} />
             <TouchableOpacity onPress={() => { Linking.openURL('https://ticketsque.com/'); }} style={{ position: 'absolute', bottom: 30, alignSelf: 'center' }}>
                     <Text>Join as a Business Partner</Text>

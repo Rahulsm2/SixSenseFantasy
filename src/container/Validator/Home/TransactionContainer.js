@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import TransactionComponent from '../../../screens/Validator/Home/TransactionComponent';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
-import { getData, postData } from '../../../services/rootService';
+import { getData, postData, getNodeData } from '../../../services/rootService';
 import { getToken, getNodeToken } from '../../../services/persistData';
 import { showToast } from '../../../components/common/ShowToast';
 
@@ -13,37 +13,44 @@ const TransactionContainer = (props) => {
     const [filteredSTransactions, setFilterdSTransactions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const refRBSheet = useRef();
+    const [currentPage, setCurrentPage] = useState(0);
+    const [hasMorePages, setHasMorePages] = useState(true);
 
-    const getTransactions = async () => {
-        const nodeToken = await getNodeToken();
-        const response = await getNodeData(`service/tickets_service/v1/tickets/action/user/${props.nodeUserData?.user}`, {}, nodeToken,
-            { 'user': props.nodeUserData ? props.nodeUserData.user : "" });
-        console.log("getnodedata", response, response.statusCode)
-        if (response.statusCode == 200) {
-            if (response.errors) {
-                showToast(response.message);
-                setIsLoading(false);
-                return;
+    const getTransactions = async (page = 1) => {
+        try {
+            setIsLoading(true);
+            const nodeToken = await getNodeToken();
+            const response = await getNodeData(`service/tickets_service/v1/tickets/action/user/${props.nodeUserData?.user}?page=${page}`, {}, nodeToken, { 'user': props.nodeUserData ? props.nodeUserData.user : "" });
+
+            if (response.statusCode === 200) {
+                if (response.errors) {
+                    showToast(response.message);
+                } else {
+                    const data = response._payload;
+                    const totalCount = data.reduce((acc, item) => acc + item.total_people, 0);
+
+                    props.updateTransactions(page === 0 ? data : [...props.validationsTrasactions, ...data]);
+                    props.updateTotalEntries(totalCount);
+
+                    setCurrentPage(page);
+                    setHasMorePages(page < response.totalPages);
+                }
+            } else {
+                showToast(response.message ? response.message : 'Failed to load data.');
             }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        } finally {
             setIsLoading(false);
-            props.updateTransactions(response._payload);
-            console.log('response', response)
-            let data = response._payload;
-            let totalCount = 0;
-            for (let i = 0; i < data.length; i++) {
-                totalCount = totalCount + data[i].total_people;
-            }
-            props.updateTotalEntries(totalCount);
-        } else {
-            setIsLoading(false);
-            showToast(
-                response.message ? response.message : 'Session might expired, please login again.'
-            );
-            if (response == "Unauthorized request") {
-                loggingOut();
-            }
         }
-    }
+    };
+
+    const loadMore = () => {
+        showToast("Extra data incoming!!!!!")
+        if (hasMorePages && !isLoading ) {
+            getTransactions(currentPage + 1);
+        }
+    };
 
     const onClickBack = () => {
         navigation.goBack();
@@ -74,9 +81,8 @@ const TransactionContainer = (props) => {
             transactions={props.validationsTrasactions}
             nodeUserData={props.nodeUserData}
             selectedFilter={props.selectedFilter}
-            getTransactions={getTransactions}
             isLoading={isLoading}
-            totalEntries={props.totalvalidationsEntries}
+            getTransactions={loadMore}
         />
     );
 }
@@ -89,7 +95,6 @@ const mapStateToProps = state => ({
     saffsList: state.transactionsreducer.saffsList,
     validationsTrasactions: state.transactionsreducer.validationsTrasactions,
     Transactions: state.transactionsreducer.Transactions,
-    totalvalidationsEntries: state.transactionsreducer.totalvalidationsEntries,
     nodeUserData: state.userreducer.nodeUserData
 });
 
@@ -99,7 +104,6 @@ const mapDispatchToProps = dispatch => ({
     updateSelectedFilter: (selectedFilter) => dispatch({ type: 'UPDATE_SELECTED_FILTER', payload: { selectedFilter: selectedFilter } }),
     updateusTransactions: (usTransactions) => dispatch({ type: 'UPDATE_US_TRANSACTIONS', payload: { usTransactions: usTransactions } }),
     updateTransactions: (validationsTrasactions) => dispatch({ type: 'UPDATE_VALIDATED_TRANSACTIONS', payload: { validationsTrasactions: validationsTrasactions } }),
-    updateTotalEntries: (totalvalidationsEntries) => dispatch({ type: 'UPDATE_TOTAL_ENTRIES', payload: { totalvalidationsEntries: totalvalidationsEntries } }),
     logoutData: () => dispatch({ type: 'USER_LOGGED_OUT' })
 });
 

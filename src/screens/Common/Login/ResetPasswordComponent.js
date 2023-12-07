@@ -5,7 +5,9 @@ import {
     Image,
     Text,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Keyboard
 } from 'react-native';
 import { gstyles } from '../../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg } from '../../../components/common/Constants';
@@ -22,6 +24,7 @@ const ResetPasswordComponent = (props) => {
                 animated={true}
                 barStyle="dark-content"
             />
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={[gstyles.container(app_Bg)]}>
                 <View style={[gstyles.mt(60), gstyles.centerXY]}>
                     <Image source={require('../../../assets/images/login_logo.png')}
@@ -183,6 +186,7 @@ const ResetPasswordComponent = (props) => {
                 </LinearGradient>
 
             </View>
+            </TouchableWithoutFeedback>
             <LoadingModel loading={props.isLoading} />
         </>
     );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity, Image, FlatList} from 'react-native';
+import { View, Text, Modal, StatusBar, StyleSheet, TouchableOpacity, Image, FlatList, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { HEIGHT, OpenSans_Bold, WIDTH } from '../common/Constants';
 import { TextInput } from 'react-native-paper';
 import { gstyles } from '../common/GlobalStyles';
@@ -48,7 +48,7 @@ const CouponVerified2 = (props) => {
                     </LinearGradient>
                     <TextInput
                         placeholder={`${item.inputValue}`}
-                        value={(pax[index] !== undefined) ? pax[index].toString() : ''}
+                        value={(pax[index] !== undefined) ? pax[index] : ''}
                         onChangeText={(text) => {
                             const parsedText = parseInt(text) || 0;
                             const newValue = Math.min(parsedText, item.balance);
@@ -56,8 +56,8 @@ const CouponVerified2 = (props) => {
                             props.updateInputValue(index, newValue);
                         }}
                         keyboardType='numeric'
-                        style={{...styles.inputText}}
-                        placeholderTextColor="#0276E5" 
+                        style={{ ...styles.inputText }}
+                        placeholderTextColor="#0276E5"
                     />
                     <LinearGradient
                         start={{ x: 0, y: 1 }}
@@ -84,34 +84,35 @@ const CouponVerified2 = (props) => {
                 barStyle="light-content"
                 animated
             />
-            <View style={styles.modalContainer}>
-                <View style={styles.modalView}>
-                    <TouchableOpacity activeOpacity={0.6}
-                        onPress={() => { props.setcouponStatus('pending') }}
-                        style={{ position: 'absolute', right: 30, top: 30 }}
-                    >
-                        <AntDesign name='close' size={25} color='#0276E5' />
-                    </TouchableOpacity>
-                    <Text style={[gstyles.OpenSans_Bold(20, '#0276E5', gstyles.centerX), gstyles.mt(30)]}>
-                        Ticket Verified
-                    </Text>
-                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(30)]}>
-                        <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
-                            Ticket ID
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalView}>
+                        <TouchableOpacity activeOpacity={0.6}
+                            onPress={() => { props.setcouponStatus('pending') }}
+                            style={{ position: 'absolute', right: 30, top: 30 }}
+                        >
+                            <AntDesign name='close' size={25} color='#0276E5' />
+                        </TouchableOpacity>
+                        <Text style={[gstyles.OpenSans_Bold(20, '#0276E5', gstyles.centerX), gstyles.mt(30)]}>
+                            Ticket Verified
                         </Text>
-                        <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}<Text style={gstyles.OpenSans_SemiBold(16, '#000000')}>{props.qrData.ticket_tracking_id}</Text>
-                        </Text>
-                    </View>
-                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
-                        <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
-                            Total Entries
-                        </Text>
-                        <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}{props.qrData.total_ppl}{' People'}
-                        </Text>
-                    </View>
-                    {/* <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
+                        <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(30)]}>
+                            <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
+                                Ticket ID
+                            </Text>
+                            <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                                :{'    '}<Text style={gstyles.OpenSans_SemiBold(16, '#000000')}>{props.qrData.ticket_tracking_id}</Text>
+                            </Text>
+                        </View>
+                        <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
+                            <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
+                                Total Entries
+                            </Text>
+                            <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
+                                :{'    '}{props.qrData.total_ppl}{' People'}
+                            </Text>
+                        </View>
+                        {/* <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Valid till
                         </Text>
@@ -120,34 +121,35 @@ const CouponVerified2 = (props) => {
                         </Text>
                     </View> */}
 
-                    <FlatList
-                        data={props.qrData.tickets_data}
-                        renderItem={_renderPackage}
-                        extraData={props.isChangeData}
-                        keyExtractor={item => item.id}
-                        showsVerticalScrollIndicator={false}
-                        scrollEnabled={false}
-                    />
-                    <LinearGradient
-                        start={{ x: 0, y: 1 }}
-                        end={{ x: 1, y: 1 }}
-                        colors={['#8338EC', '#3A86FF']} style={{ ...styles.settleBtnTouch, opacity: props.qrData.totalAddedCount <= 0 ? 0.4 : 1 }}>
-                        <TouchableOpacity
-                            disabled={props.qrData.totalAddedCount <= 0}
-                            onPress={() => {
-                                props.setcouponStatus('redeem');
-                                setPax('');
-                                props.onCliclRedeem();
-                            }} activeOpacity={0.6}
-                            style={styles.btnTouch}
-                        >
-                            <Text style={gstyles.OpenSans_Bold(20, '#FFFFFF')}>
-                                Confirm
-                            </Text>
-                        </TouchableOpacity>
-                    </LinearGradient>
+                        <FlatList
+                            data={props.qrData.tickets_data}
+                            renderItem={_renderPackage}
+                            extraData={props.isChangeData}
+                            keyExtractor={item => item.id}
+                            showsVerticalScrollIndicator={false}
+                            scrollEnabled={false}
+                        />
+                        <LinearGradient
+                            start={{ x: 0, y: 1 }}
+                            end={{ x: 1, y: 1 }}
+                            colors={['#8338EC', '#3A86FF']} style={{ ...styles.settleBtnTouch, opacity: props.qrData.totalAddedCount <= 0 ? 0.4 : 1 }}>
+                            <TouchableOpacity
+                                disabled={props.qrData.totalAddedCount <= 0}
+                                onPress={() => {
+                                    props.setcouponStatus('redeem');
+                                    setPax('');
+                                    props.onCliclRedeem();
+                                }} activeOpacity={0.6}
+                                style={styles.btnTouch}
+                            >
+                                <Text style={gstyles.OpenSans_Bold(20, '#FFFFFF')}>
+                                    Confirm
+                                </Text>
+                            </TouchableOpacity>
+                        </LinearGradient>
+                    </View>
                 </View>
-            </View>
+            </TouchableWithoutFeedback>
         </Modal>
     );
 }
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
         fontFamily: OpenSans_Bold,
         color: '#0276E5',
         backgroundColor: 'transparent',
-        borderWidth:0
+        borderWidth: 0
     },
 
     modalView: {

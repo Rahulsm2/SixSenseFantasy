@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
     View,
     StatusBar,
@@ -10,8 +10,9 @@ import {
     ScrollView,
     RefreshControl,
     Platform,
-    TextInput
+    TextInput,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { gstyles } from '../../../components/common/GlobalStyles';
 import { HEIGHT, OpenSans_Medium, WIDTH, app_Bg } from '../../../components/common/Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -20,11 +21,30 @@ import LoadingModel from "../../../components/common/Loading";
 import moment from 'moment';
 
 const TransactionComponent = (props) => {
-    const platform = Platform.OS =='ios';
-    const CouponItem = ({ data, couponId, entries, verifiedTime,customer, eventName }) => {
+    const [apiCallMade, setApiCallMade] = useState(false);
+    const platform = Platform.OS == 'ios';
+
+    useEffect(() => {
+        AsyncStorage.getItem('apiCallMade')
+            .then(value => {
+                if (value !== null) {
+                    setApiCallMade(value === 'true');
+                }
+            });
+    }, []);
+
+    const handleGetTransactions = () => {
+        props.getTransactions();
+
+        setApiCallMade(true);
+        AsyncStorage.setItem('apiCallMade', 'true');
+    };
+
+    const CouponItem = ({ data, couponId, entries, verifiedTime, customer, eventName }) => {
         return (
             <TouchableOpacity style={styles.Entries} >
                 <View style={[gstyles.mx(10), gstyles.mt(7), gstyles.mb(15), { flexDirection: 'column' }]}>
+
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
                         <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>
                             {'Ticket ID          '}
@@ -32,27 +52,21 @@ const TransactionComponent = (props) => {
                         <Text style={gstyles.OpenSans_Bold(14, '#000000')}>{'  :  '}{couponId}</Text>
                     </View>
 
-                    {/* <View style={{ flexDirection: 'row', marginTop: 6 }}>
-                        <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>Event Name     :</Text>
-                        <Text style={gstyles.OpenSans_SemiBold(14, '#000000')}>{'  '}{props.usTransactions.event_name}</Text>
-                    </View> */}
-
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
                         <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>Guest Name     :</Text>
                         <Text style={gstyles.OpenSans_SemiBold(14, '#000000')}>{'  '}{(customer)}</Text>
                     </View>
-    
+
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
                         <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>No. of Entries   :</Text>
-                        <Text style={gstyles.OpenSans_Bold(14, '#000000')}>{'  '}{entries} </Text>  
+                        <Text style={gstyles.OpenSans_Bold(14, '#000000')}>{'  '}{entries} </Text>
                     </View>
-    
+
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
                         <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>Verified Time   :</Text>
                         <Text style={gstyles.OpenSans_SemiBold(14, '#000000')}>{'  '}{(verifiedTime)}</Text>
                     </View>
-                    
-                    
+
                 </View>
             </TouchableOpacity>
         );
@@ -60,7 +74,7 @@ const TransactionComponent = (props) => {
 
     const _renderNoTrans = () => {
         return (
-            <View style={[gstyles.centerXY, { marginTop:'25%' }]}>
+            <View style={[gstyles.centerXY, { marginTop: '25%' }]}>
                 <Image source={require('../../../assets/images/no_trans.png')}
                     style={[gstyles.iconSize(WIDTH / 1.8), { opacity: 0.7 }]}
                 />
@@ -79,7 +93,7 @@ const TransactionComponent = (props) => {
                 barStyle="dark-content"
             />
             <View style={[gstyles.container(app_Bg)]}>
-            <View style={[styles.header, (platform ? { paddingTop: 50 } : null )]}>
+                <View style={[styles.header, (platform ? { paddingTop: 50 } : null)]}>
                     <View style={[gstyles.inRow, { alignItems: 'center' }]}>
                         <TouchableOpacity activeOpacity={0.6}
                             onPress={() => { props.onClickBack() }}
@@ -94,47 +108,31 @@ const TransactionComponent = (props) => {
                     </View>
                 </View>
 
-                <ScrollView showsVerticalScrollIndicator={false} >
+                
 
-                <View style={styles.searchBoxView}>
-                    <View style={gstyles.inRow}>
-                        <Ionicons name='ios-search-outline' size={22} color='#3F3F3F' />
-                        <TextInput
-                            placeholder='Search'
-                            placeholderTextColor={'#3F3F3F'}
-                            style={styles.inputSearchText}
-                            value={props.searchQuery}
-                            onChangeText={(val)=>props.onSearch(val)}
-                        />
+                    <View style={styles.searchBoxView}>
+                        <View style={gstyles.inRow}>
+                            <Ionicons name='ios-search-outline' size={22} color='#3F3F3F' />
+                            <TextInput
+                                placeholder='Search'
+                                placeholderTextColor={'#3F3F3F'}
+                                style={styles.inputSearchText}
+                                value={props.searchQuery}
+                                onChangeText={(val) => props.onSearch(val)}
+                            />
+                        </View>
+                        {props.userData && props.userData.role == "Biller" ?
+                            <TouchableOpacity activeOpacity={0.6}
+                                onPress={() => props.getStaffs()}
+                            >
+                                <FontAwesome name='filter' size={22} color='#3F3F3F' />
+                            </TouchableOpacity> : null}
                     </View>
-                    {props.userData && props.userData.role=="Biller" ? 
-                    <TouchableOpacity activeOpacity={0.6}
-                        onPress={() =>  props.getStaffs()}
-                    >
-                        <FontAwesome name='filter' size={22} color='#3F3F3F' />
-                    </TouchableOpacity> : null }
-                </View>
-                    {/* <View style={styles.totalRedeemCard}>
-                        <View style={[gstyles.inRowJSB, gstyles.mx(10), gstyles.mt(15)]}>
-
-                            <Text style={gstyles.OpenSans_Bold(15, '#000000')}>
-                                Total Entries
-                            </Text>
-
-                            
-                        </View>
-                        <View style={[gstyles.mt(10), gstyles.mx(10), gstyles.mb(15)]}>
-                            <Text style={gstyles.OpenSans_SemiBold(30, '#0276E5')}>
-                                {props.totalEntries}
-                            </Text>
-                        </View>
-                    </View> */}
-
 
                     <FlatList
-                        data={ props.filteredSTransactions.length>0 ? props.filteredSTransactions : props.transactions }
-                        keyExtractor={(item,index) => item.ticket_tracking_id+index}
-                        renderItem={({ item, index}) => (
+                        data={props.filteredSTransactions.length > 0 ? props.filteredSTransactions : props.transactions}
+                        keyExtractor={(item, index) => item.ticket_tracking_id + index}
+                        renderItem={({ item, index }) => (
                             <CouponItem
                                 data={item}
                                 couponId={item.ticket_tracking_id}
@@ -144,11 +142,23 @@ const TransactionComponent = (props) => {
                             />
                         )}
                         ListEmptyComponent={_renderNoTrans}
+                        onEndReached={() => {
+                            if (!apiCallMade) {
+                                handleGetTransactions();
+                            }
+                        }}
+                        onEndReachedThreshold={0.1}
                     />
-                </ScrollView>
+                
             </View>
-            
-            <LoadingModel loading={props.isLoading}/>
+            {props.isPopMenu &&
+            <PopMenuModal
+                    isPopMenu={props.isPopMenu}
+                    setIsPopMenu={props.setIsPopMenu}
+                    setSelectedFilter={props.setSelectedFilter}
+                    selectedFilter={props.selectedFilter} />}
+
+            <LoadingModel loading={props.isLoading} />
         </>
     );
 }

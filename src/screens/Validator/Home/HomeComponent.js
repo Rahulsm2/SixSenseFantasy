@@ -17,6 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import LoadingModel from "../../../components/common/Loading"
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
+import eventModal from '../../../components/Validator/eventModal';
 
 const HomeComponent = (props) => {
     const navigation = useNavigation();
@@ -111,6 +112,9 @@ const HomeComponent = (props) => {
                             <Text style={gstyles.OpenSans_Bold(15, '#000000')}>
                                 Total Entries
                             </Text>
+                            <TouchableOpacity>
+                            <Ionicons name='caret-down-circle-sharp' size={20} color='#3F3F3F' />
+                            </TouchableOpacity>
 
                         </View>
                         <View style={[gstyles.mt(10), gstyles.mx(10), gstyles.mb(15)]}>

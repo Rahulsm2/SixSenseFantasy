@@ -5,7 +5,9 @@ import {
     Image,
     Text,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Keyboard
 } from 'react-native';
 import { gstyles } from '../../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg } from '../../../components/common/Constants';
@@ -22,6 +24,7 @@ const LoginComponent = (props) => {
                 animated={true}
                 barStyle="dark-content"
             />
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={[gstyles.container(app_Bg)]}>
                 <View style={[gstyles.mt(60), gstyles.centerXY]}>
 
@@ -125,8 +128,10 @@ const LoginComponent = (props) => {
                         </TouchableOpacity>
                     </View>
                 </View>
+                
                 <LoadingModel loading={props.isLoading} />
             </View>
+            </TouchableWithoutFeedback>
         </>
     );
 }

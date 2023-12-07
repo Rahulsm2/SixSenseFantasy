@@ -5,7 +5,9 @@ import {
     Image,
     Text,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    Keyboard
 } from 'react-native';
 import { gstyles } from '../../../components/common/GlobalStyles';
 import { OpenSans_Medium, WIDTH, app_Bg, OpenSans_SemiBold, HEIGHT } from '../../../components/common/Constants';
@@ -26,6 +28,7 @@ const ChangeMpinComponent = (props) => {
                 animated={true}
                 barStyle="dark-content"
             />
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={[gstyles.container(app_Bg)]}>
             <TouchableOpacity onPress={()=>{navigation.goBack()}} style={ Platform.OS=='android' ? styles.floatButtonAndroid : styles.floatButton} >
                     <MaterialCommunityIcons name='keyboard-backspace' size={25} color='#3F3F3F' />
@@ -116,6 +119,7 @@ const ChangeMpinComponent = (props) => {
                 </LinearGradient>
 
             </View>
+            </TouchableWithoutFeedback>
             <LoadingModel loading={props.isLoading} />
         </>
     );
