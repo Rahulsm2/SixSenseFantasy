@@ -16,7 +16,7 @@ import { gstyles } from '../../../components/common/GlobalStyles';
 import { HEIGHT, OpenSans_Medium, WIDTH, app_Bg } from '../../../components/common/Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import LoadingModel from "../../../components/common/Loading"
+import LoadingModel from "../../../components/common/Loading";
 import moment from 'moment';
 
 const TransactionComponent = (props) => {
@@ -94,14 +94,7 @@ const TransactionComponent = (props) => {
                     </View>
                 </View>
 
-                <ScrollView showsVerticalScrollIndicator={false} 
-                    refreshControl={
-                        <RefreshControl refreshing={props.isRefreshing} 
-                            onRefresh={()=>{
-                                props.setisRefreshing(true)
-                                props.getTransactions()
-                            }} />
-                    }>
+                <ScrollView showsVerticalScrollIndicator={false} >
 
                 <View style={styles.searchBoxView}>
                     <View style={gstyles.inRow}>

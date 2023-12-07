@@ -3,21 +3,16 @@ import TransactionComponent from '../../../screens/Validator/Home/TransactionCom
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import { getData, postData } from '../../../services/rootService';
-import { getToken } from '../../../services/persistData';
+import { getToken, getNodeToken } from '../../../services/persistData';
 import { showToast } from '../../../components/common/ShowToast';
 
 const TransactionContainer = (props) => {
 
     const navigation = useNavigation();
-    const [isBtnSelected, setIsBtnSelected] = useState('unSettled');
-    const [isRefreshing, setisRefreshing] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredSTransactions, setFilterdSTransactions] = useState([]);
-    const [filteredUSTransactions, setFilterdUSTransactions] = useState([]);
-    const [filteredFreeDrinkTransactions, setFilterdFreeDrinkTransactions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const refRBSheet = useRef();
-    const [isPopMenu, setIsPopMenu] = useState(false);
 
     const getTransactions = async () => {
         const nodeToken = await getNodeToken();
@@ -31,7 +26,6 @@ const TransactionContainer = (props) => {
                 return;
             }
             setIsLoading(false);
-            setisRefreshing(false);
             props.updateTransactions(response._payload);
             console.log('response', response)
             let data = response._payload;
@@ -42,7 +36,6 @@ const TransactionContainer = (props) => {
             props.updateTotalEntries(totalCount);
         } else {
             setIsLoading(false);
-            setisRefreshing(false)
             showToast(
                 response.message ? response.message : 'Session might expired, please login again.'
             );
@@ -77,11 +70,7 @@ const TransactionContainer = (props) => {
             searchQuery={searchQuery}
             onSearch={onSearch}
             filteredSTransactions={filteredSTransactions}
-            filteredFreeDrinkTransactions={filteredFreeDrinkTransactions}
             refRBSheet={refRBSheet}
-            isPopMenu={isPopMenu}
-            isRefreshing={isRefreshing}
-            setisRefreshing={setisRefreshing}
             transactions={props.validationsTrasactions}
             nodeUserData={props.nodeUserData}
             selectedFilter={props.selectedFilter}

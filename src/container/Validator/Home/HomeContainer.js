@@ -25,6 +25,7 @@ const HomeContainer = (props) => {
         const nodeToken = await getNodeToken();
         const response = await getNodeData(`service/tickets_service/v1/tickets/action/user/${props.nodeUserData?.user}`, {}, nodeToken, 
         { 'user': props.nodeUserData ? props.nodeUserData.user : "" });
+
         console.log("getnodedata", response,response.statusCode)
         if (response.statusCode == 200) {
             if (response.errors) {
@@ -52,7 +53,9 @@ const HomeContainer = (props) => {
                 loggingOut();
             }
         }
-    }
+    } 
+    
+      
 
     const loggingOut = async () => {
         const token = await removeToken();
