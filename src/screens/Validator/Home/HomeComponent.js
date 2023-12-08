@@ -17,7 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import LoadingModel from "../../../components/common/Loading"
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
-import eventModal from '../../../components/Validator/eventModal';
+import PopMenuModal from '../../../components/Validator/PopMenuModal';
 
 const HomeComponent = (props) => {
     const navigation = useNavigation();
@@ -112,8 +112,13 @@ const HomeComponent = (props) => {
                             <Text style={gstyles.OpenSans_Bold(15, '#000000')}>
                                 Total Entries
                             </Text>
-                            <TouchableOpacity>
-                            <Ionicons name='caret-down-circle-sharp' size={20} color='#3F3F3F' />
+                            <TouchableOpacity
+                                onPress={() => { props.setIsPopMenu(true) }}
+                                activeOpacity={0.6} style={gstyles.inRow}>
+                                <Text style={gstyles.OpenSans_SemiBold(14, '#000000', gstyles.me(5))}>
+                                    {props.selectedFilter == 'all' ? "All" : props.selectedFilter == 'self' ? "Self" : "Custom"}
+                                </Text>
+                                <Ionicons name='caret-down-circle-sharp' size={20} color='#3F3F3F' />
                             </TouchableOpacity>
 
                         </View>
@@ -153,6 +158,11 @@ const HomeComponent = (props) => {
                     />
                 </ScrollView>
             </View>
+            {props.isPopMenu &&
+                <PopMenuModal
+                    isPopMenu={props.isPopMenu}
+                    setIsPopMenu={props.setIsPopMenu}
+                    selectedFilter={props.selectedFilter} />}
             <LoadingModel loading={props.isLoading} />
         </>
     );

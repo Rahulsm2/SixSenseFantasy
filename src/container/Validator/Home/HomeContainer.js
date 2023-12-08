@@ -3,17 +3,17 @@ import HomeComponent from '../../../screens/Validator/Home/HomeComponent';
 import { useNavigation } from '@react-navigation/core';
 import { connect } from 'react-redux';
 import { getData, getNodeData, postData } from '../../../services/rootService';
-import { getNodeToken,removeNodeToken,removeMpin,removeToken } from '../../../services/persistData';
+import { getNodeToken, removeNodeToken, removeMpin, removeToken } from '../../../services/persistData';
 import { showToast } from '../../../components/common/ShowToast';
 import { CommonActions } from '@react-navigation/native';
 
 const HomeContainer = (props) => {
-    
-    const navigation = useNavigation();
 
+    const navigation = useNavigation();
+    const [isPopMenu, setIsPopMenu] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isRefreshing, setisRefreshing] = useState(false);
-    
+
     useEffect(() => {
         setIsLoading(true);
         getTransactions();
@@ -23,10 +23,10 @@ const HomeContainer = (props) => {
 
     const getTransactions = async () => {
         const nodeToken = await getNodeToken();
-        const response = await getNodeData(`service/tickets_service/v1/tickets/action/user/${props.nodeUserData?.user}`, {}, nodeToken, 
-        { 'user': props.nodeUserData ? props.nodeUserData.user : "" });
+        const response = await getNodeData(`service/events_service/v1/events/list/live`, {}, nodeToken,
+            { 'user': props.nodeUserData.user });
 
-        console.log("getnodedata", response,response.statusCode)
+        console.log("getnodedata", response, response.statusCode)
         if (response.statusCode == 200) {
             if (response.errors) {
                 showToast(response.message);
@@ -35,27 +35,42 @@ const HomeContainer = (props) => {
             }
             setIsLoading(false);
             setisRefreshing(false);
-            props.updateTransactions(response._payload);
-            console.log('response', response)
-            let data=response._payload;
-            let totalCount=0;
-            for (let i = 0; i < data.length; i++) {
-                totalCount=totalCount+data[i].total_people;
+            let events = [];
+            console.log('Response keys:', Object.keys(response));
+            const responseArray = Object.values(response);
+            console.log('Response length:', responseArray.length);
+            for (let i = 0; i < responseArray.length; i++) {
+                console.log(`Processing item at index ${i}:`, responseArray[i]);
+
+                let event = {
+                    id: responseArray[i]._id,
+                    name: responseArray[i].name,
+                };
+                events.push(event);
             }
-            props.updateTotalEntries(totalCount);
-        } else {
-            setIsLoading(false);
-            setisRefreshing(false)
-            showToast(
-                response.message ? response.message : 'Session might expired, please login again.'
-            );
-            if(response=="Unauthorized request"){
-                loggingOut();
-            }
+            console.log('event details', events);
+            props.updateSelectedFilter(events);
+
+            //     console.log('response', response)
+            //     let data = response._payload;
+            //     let totalCount = 0;
+            //     for (let i = 0; i < data.length; i++) {
+            //         totalCount = totalCount + data[i].total_people;
+            //     }
+            //     props.updateTotalEntries(totalCount);
+            // } else {
+            //     setIsLoading(false);
+            //     setisRefreshing(false)
+            //     showToast(
+            //         response.message ? response.message : 'Session might expired, please login again.'
+            //     );
+            //     if (response == "Unauthorized request") {
+            //         loggingOut();
+            //     }
         }
-    } 
-    
-      
+    }
+
+
 
     const loggingOut = async () => {
         const token = await removeToken();
@@ -63,16 +78,17 @@ const HomeContainer = (props) => {
         const nodetoke = await removeNodeToken();
         if (token && mpin && nodetoke) {
             props.logoutData();
-            {Platform.OS === 'android' ? (navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        {
-                            name: 'ForgetPasswordContainer',
-                        },
-                    ],
-                }),
-            )) : (navigation.navigate('ForgetPasswordContainer')) 
+            {
+                Platform.OS === 'android' ? (navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                            {
+                                name: 'ForgetPasswordContainer',
+                            },
+                        ],
+                    }),
+                )) : (navigation.navigate('ForgetPasswordContainer'))
             }
         }
     }
@@ -85,6 +101,8 @@ const HomeContainer = (props) => {
             nodeUserData={props.nodeUserData}
             selectedFilter={props.selectedFilter}
             getTransactions={getTransactions}
+            isPopMenu={isPopMenu}
+            setIsPopMenu={setIsPopMenu}
             isLoading={isLoading}
             totalEntries={props.totalvalidationsEntries}
         />
@@ -98,7 +116,7 @@ const mapStateToProps = state => ({
     saffsList: state.transactionsreducer.saffsList,
     validationsTrasactions: state.transactionsreducer.validationsTrasactions,
     usTransactions: state.transactionsreducer.usTransactions,
-    totalvalidationsEntries :  state.transactionsreducer.totalvalidationsEntries,
+    totalvalidationsEntries: state.transactionsreducer.totalvalidationsEntries,
     nodeUserData: state.userreducer.nodeUserData
 });
 

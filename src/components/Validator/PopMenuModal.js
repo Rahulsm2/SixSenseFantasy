@@ -24,46 +24,33 @@ const PopMenuModal = (props) => {
                         <TouchableOpacity
                             style={[styles.iconTouch, gstyles.mt(10)]}
                             activeOpacity={0.6}
-                            onPress={() => { 
+                            onPress={() => {
                                 props.setSelectedFilter('all')
-                                props.setIsPopMenu(false) }}
+                                props.setIsPopMenu(false)
+                            }}
                         >
-                            <View style={[styles.iconBg, { backgroundColor: props.selectedFilter=='all' ? '#0276E5' : '#fff' }]}>
-                                <MaterialCommunityIcons name={props.selectedFilter=='all' ? 'check-all': 'check'} size={12} color={props.selectedFilter=='all' ? '#fff' : '#000'} />
+                            <View style={[styles.iconBg, { backgroundColor: props.selectedFilter == 'all' ? '#0276E5' : '#fff' }]}>
+                                <MaterialCommunityIcons name={props.selectedFilter == 'all' ? 'check-all' : 'check'} size={12} color={props.selectedFilter == 'all' ? '#fff' : '#000'} />
                             </View>
-                            <Text style={gstyles.OpenSans_SemiBold(14, props.selectedFilter=='all' ? '#0276E5' : '#000', gstyles.ms(15))}>
+                            <Text style={gstyles.OpenSans_SemiBold(14, props.selectedFilter == 'all' ? '#0276E5' : '#000', gstyles.ms(15))}>
                                 All  Transactions
                             </Text>
                         </TouchableOpacity>
                         <View style={styles.hrLine} />
                         <TouchableOpacity style={[styles.iconTouch, gstyles.mb(10)]}
                             activeOpacity={0.6}
-                            onPress={() => { 
+                            onPress={() => {
                                 props.setSelectedFilter('self')
-                                props.setIsPopMenu(false) }}
+                                props.setIsPopMenu(false)
+                            }}
                         >
-                        <View style={[styles.iconBg, { backgroundColor: props.selectedFilter=='self' ? '#0276E5C' : '#fff' }]}>
-                                <MaterialCommunityIcons name={props.selectedFilter=='self' ? 'check-all': 'check'} size={12} color={props.selectedFilter=='self' ? '#fff' : '#000'} />
+                            <View style={[styles.iconBg, { backgroundColor: props.selectedFilter == 'self' ? '#0276E5C' : '#fff' }]}>
+                                <MaterialCommunityIcons name={props.selectedFilter == 'self' ? 'check-all' : 'check'} size={12} color={props.selectedFilter == 'self' ? '#fff' : '#000'} />
                             </View>
-                            <Text style={gstyles.OpenSans_SemiBold(14, props.selectedFilter=='self' ? '#0276E5' : '#000', gstyles.ms(15))}>
+                            <Text style={gstyles.OpenSans_SemiBold(14, props.selectedFilter == 'self' ? '#0276E5' : '#000', gstyles.ms(15))}>
                                 Self  Transactions
                             </Text>
                         </TouchableOpacity>
-                        {/* <View style={styles.hrLine} />
-                        <TouchableOpacity style={[styles.iconTouch, gstyles.mb(10)]}
-                            activeOpacity={0.6}
-                            onPress={() => { 
-                                props.setSelectedFilter('custom')
-                                props.setIsPopMenu(false) 
-                            }}
-                        >
-                        <View style={[styles.iconBg, { backgroundColor: props.selectedFilter=='custom' ? '#8338EC' : '#fff' }]}>
-                                <MaterialCommunityIcons name={props.selectedFilter=='custom' ? 'check-all': 'check'} size={12} color={props.selectedFilter=='custom' ? '#fff' : '#000'} />
-                            </View>
-                            <Text style={gstyles.OpenSans_SemiBold(14, props.selectedFilter=='custom' ? '#8338EC' : '#000', gstyles.ms(15))}>
-                                Custom
-                            </Text>
-                        </TouchableOpacity> */}
                     </View>
                 </View>
             </TouchableWithoutFeedback>
