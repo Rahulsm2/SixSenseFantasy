@@ -30,12 +30,12 @@ const LoginContainer = (props) => {
       showToast(message);
     } else {
       setIsLoading(true)
-      let data={
+      let data = {
         'phone': mobileNumber,
         'password': password
       }
       const response = await postNodeData('service/accounts_service/v1/no_auth/mobile-sign-in', data);
-      console.log("hi",response);
+      console.log("hi", response);
 
       if (response.statusCode === 200) {
         setIsLoading(false)
@@ -43,11 +43,11 @@ const LoginContainer = (props) => {
           showToast(response.message);
           return;
         }
-        if(response.node && !response.node.errors){
-          let nodadata=response.node;
-          let nodeuserdata=nodadata.partner;
-          nodeuserdata.role=nodadata.role;
-          nodeuserdata.user=nodadata.user;
+        if (response.node && !response.node.errors) {
+          let nodadata = response.node;
+          let nodeuserdata = nodadata.partner;
+          nodeuserdata.role = nodadata.role;
+          nodeuserdata.user = nodadata.user;
           props.updatenodeuser(nodeuserdata)
           console.log("hiiiiiii", nodadata)
           var isPersistNode = await persistNodeToken(response.node.token);
@@ -56,16 +56,18 @@ const LoginContainer = (props) => {
         // if (isPersist || isPersistNode) {
         if (isPersistNode) {
 
-          {Platform.OS === 'android' ? (navigation.dispatch(
-            CommonActions.reset({
+          {
+            Platform.OS === 'android' ? (navigation.dispatch(
+              CommonActions.reset({
                 index: 0,
                 routes: [
-                    {
-                        name: 'SetMPINContainer',
-                    },
+                  {
+                    name: 'SetMPINContainer',
+                  },
                 ],
-            }),
-        )) : (navigation.navigate('SetMPINContainer')) }
+              }),
+            )) : (navigation.navigate('SetMPINContainer'))
+          }
         }
       } else {
         setIsLoading(false)
@@ -77,7 +79,7 @@ const LoginContainer = (props) => {
       }
     }
   };
-  const onClickLoginWithOtp=()=>{
+  const onClickLoginWithOtp = () => {
     navigation.replace('ForgetPasswordContainer');
   }
 

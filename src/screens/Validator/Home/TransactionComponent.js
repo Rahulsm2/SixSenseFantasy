@@ -11,6 +11,7 @@ import {
     RefreshControl,
     Platform,
     TextInput,
+    ActivityIndicator
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { gstyles } from '../../../components/common/GlobalStyles';
@@ -21,28 +22,11 @@ import LoadingModel from "../../../components/common/Loading";
 import moment from 'moment';
 
 const TransactionComponent = (props) => {
-    const [apiCallMade, setApiCallMade] = useState(false);
     const platform = Platform.OS == 'ios';
 
-    useEffect(() => {
-        AsyncStorage.getItem('apiCallMade')
-            .then(value => {
-                if (value !== null) {
-                    setApiCallMade(value === 'true');
-                }
-            });
-    }, []);
-
-    const handleGetTransactions = () => {
-        props.getTransactions();
-
-        setApiCallMade(true);
-        AsyncStorage.setItem('apiCallMade', 'true');
-    };
-
-    const CouponItem = ({ data, couponId, entries, verifiedTime, customer, eventName }) => {
+    const CouponItem = ({ couponId, entries, verifiedTime, customer }) => {
         return (
-            <TouchableOpacity style={styles.Entries} >
+            <View style={styles.Entries} >
                 <View style={[gstyles.mx(10), gstyles.mt(7), gstyles.mb(15), { flexDirection: 'column' }]}>
 
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
@@ -68,7 +52,7 @@ const TransactionComponent = (props) => {
                     </View>
 
                 </View>
-            </TouchableOpacity>
+            </View>
         );
     }
 
@@ -108,55 +92,46 @@ const TransactionComponent = (props) => {
                     </View>
                 </View>
 
-                
-
-                    <View style={styles.searchBoxView}>
-                        <View style={gstyles.inRow}>
-                            <Ionicons name='ios-search-outline' size={22} color='#3F3F3F' />
-                            <TextInput
-                                placeholder='Search'
-                                placeholderTextColor={'#3F3F3F'}
-                                style={styles.inputSearchText}
-                                value={props.searchQuery}
-                                onChangeText={(val) => props.onSearch(val)}
-                            />
-                        </View>
-                        {props.userData && props.userData.role == "Biller" ?
-                            <TouchableOpacity activeOpacity={0.6}
-                                onPress={() => props.getStaffs()}
-                            >
-                                <FontAwesome name='filter' size={22} color='#3F3F3F' />
-                            </TouchableOpacity> : null}
+                <View style={styles.searchBoxView}>
+                    <View style={gstyles.inRow}>
+                        <Ionicons name='ios-search-outline' size={22} color='#3F3F3F' />
+                        <TextInput
+                            placeholder='Search'
+                            placeholderTextColor={'#3F3F3F'}
+                            style={styles.inputSearchText}
+                            value={props.searchQuery}
+                            onChangeText={(val) => props.onSearch(val)}
+                        />
                     </View>
 
-                    <FlatList
-                        data={props.filteredSTransactions.length > 0 ? props.filteredSTransactions : props.transactions}
-                        keyExtractor={(item, index) => item.ticket_tracking_id + index}
-                        renderItem={({ item, index }) => (
-                            <CouponItem
-                                data={item}
-                                couponId={item.ticket_tracking_id}
-                                entries={item.total_people}
-                                verifiedTime={moment(item.timestamp).format("DD MMM YY | hh:mm A")}
-                                customer={item.customer_name}
-                            />
-                        )}
-                        ListEmptyComponent={_renderNoTrans}
-                        onEndReached={() => {
-                            if (!apiCallMade) {
-                                handleGetTransactions();
-                            }
-                        }}
-                        onEndReachedThreshold={0.1}
-                    />
-                
+                </View>
+
+                <FlatList
+                    data={props.filteredSTransactions.length > 0 ? props.filteredSTransactions : props.transactions}
+                    keyExtractor={(item, index) => item.ticket_tracking_id + index}
+                    renderItem={({ item, index }) => (
+                        <CouponItem
+                            data={item}
+                            couponId={item.ticket_tracking_id}
+                            entries={item.total_people}
+                            verifiedTime={moment(item.timestamp).format("DD MMM YY | hh:mm A")}
+                            customer={item.customer_name}
+                        />
+                    )}
+                    ListEmptyComponent={_renderNoTrans}
+                    onEndReached={() => {
+                        console.log("props.saffsList.currentPage", props.saffsList.currentPage, "props.saffsList.totalPages", props.saffsList.totalPages, props.transactions.length)
+                        if (props.transactions.length > 14 && props.transactions.length !== props.saffsList.total_records && props.transactions.length < props.saffsList.total_records) {
+                            props.getEventDetails();
+                        }
+                    }}
+                    onEndReachedThreshold={0.1}
+                    ListFooterComponent={() => {
+                        return props.transactions.length < props.saffsList.total_records ?
+                            <ActivityIndicator size='large' color="#0276E5" /> : null;
+                    }}
+                />
             </View>
-            {props.isPopMenu &&
-            <PopMenuModal
-                    isPopMenu={props.isPopMenu}
-                    setIsPopMenu={props.setIsPopMenu}
-                    setSelectedFilter={props.setSelectedFilter}
-                    selectedFilter={props.selectedFilter} />}
 
             <LoadingModel loading={props.isLoading} />
         </>

@@ -13,6 +13,12 @@ const HomeContainer = (props) => {
     const [isPopMenu, setIsPopMenu] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isRefreshing, setisRefreshing] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState('');
+    const [selectedEventId, setSelectedEventId] = useState('');
+    const [expireDate, setExpireDate] = useState('');
+    const [vendorId, setVendorId] = useState('');
+    props.updateEventDetails(selectedEventId);
+    console.log("event", selectedEvent, "ID", selectedEventId, "date", expireDate, "vendor", vendorId)
 
     useEffect(() => {
         setIsLoading(true);
@@ -20,13 +26,12 @@ const HomeContainer = (props) => {
         return () => { };
     }, []);
 
-
     const getTransactions = async () => {
         const nodeToken = await getNodeToken();
         const response = await getNodeData(`service/events_service/v1/events/list/live`, {}, nodeToken,
             { 'user': props.nodeUserData.user });
 
-        console.log("getnodedata", response, response.statusCode)
+        console.log("getnodedata", response, response.statusCode, response[0].vendor)
         if (response.statusCode == 200) {
             if (response.errors) {
                 showToast(response.message);
@@ -45,32 +50,70 @@ const HomeContainer = (props) => {
                 let event = {
                     id: responseArray[i]._id,
                     name: responseArray[i].name,
+                    event_end: responseArray[i].event_end,
+                    vendor: response[0].vendor
                 };
                 events.push(event);
             }
             console.log('event details', events);
+            getEventDetails(events[0].id);
+            props.updateEventDetails('');
             props.updateSelectedFilter(events);
+            setSelectedEvent(events[0].name)
+            setSelectedEventId(events[0].id)
+            setExpireDate(events[0].event_end)
+            setVendorId(events[0].vendor)
+            props.updateVendor(events[0].vendor)
+            props.updateEventDetails(selectedEventId);
+            console.log("events[0].vendor", props.vendor)
 
-            //     console.log('response', response)
-            //     let data = response._payload;
-            //     let totalCount = 0;
-            //     for (let i = 0; i < data.length; i++) {
-            //         totalCount = totalCount + data[i].total_people;
-            //     }
-            //     props.updateTotalEntries(totalCount);
-            // } else {
-            //     setIsLoading(false);
-            //     setisRefreshing(false)
-            //     showToast(
-            //         response.message ? response.message : 'Session might expired, please login again.'
-            //     );
-            //     if (response == "Unauthorized request") {
-            //         loggingOut();
-            //     }
+        } else {
+            setIsLoading(false);
+            setisRefreshing(false)
+            showToast(
+                response.message ? response.message : 'Session might expired, please login again.'
+            );
+            if (response == "Unauthorized request") {
+                loggingOut();
+            }
         }
     }
 
+    const getEventDetails = async (id) => {
+        setIsLoading(true);
+        const nodeToken = await getNodeToken();
+        const response = await getNodeData(`service/tickets_service/v1/tickets/action/user/` + id, {}, nodeToken,
+            { 'user': props.nodeUserData.user });
 
+        console.log("Event details", response, response.statusCode)
+
+
+        if (response.statusCode == 200) {
+            if (response.errors) {
+                showToast(response.message);
+                setIsLoading(false);
+                return;
+            } else {
+                const data = response._payload;
+                const totalCount = data.reduce((acc, item) => acc + item.total_people, 0);
+                props.updateTransactions(data);
+                props.updateTotalEntries(totalCount);
+                props.updateStaffsList(response)
+
+            }
+            setIsLoading(false);
+            setisRefreshing(false);
+        } else {
+            setIsLoading(false);
+            setisRefreshing(false)
+            showToast(
+                response.message ? response.message : 'Session might expired, please login again.'
+            );
+            if (response == "Unauthorized request") {
+                loggingOut();
+            }
+        }
+    }
 
     const loggingOut = async () => {
         const token = await removeToken();
@@ -101,9 +144,17 @@ const HomeContainer = (props) => {
             nodeUserData={props.nodeUserData}
             selectedFilter={props.selectedFilter}
             getTransactions={getTransactions}
+            getEventDetails={getEventDetails}
             isPopMenu={isPopMenu}
             setIsPopMenu={setIsPopMenu}
             isLoading={isLoading}
+            selectedEvent={selectedEvent}
+            setSelectedEvent={setSelectedEvent}
+            selectedEventId={selectedEventId}
+            setSelectedEventId={setSelectedEventId}
+            setExpireDate={setExpireDate}
+            expireDate={expireDate}
+            saffsList={props.saffsList}
             totalEntries={props.totalvalidationsEntries}
         />
     );
@@ -117,7 +168,9 @@ const mapStateToProps = state => ({
     validationsTrasactions: state.transactionsreducer.validationsTrasactions,
     usTransactions: state.transactionsreducer.usTransactions,
     totalvalidationsEntries: state.transactionsreducer.totalvalidationsEntries,
-    nodeUserData: state.userreducer.nodeUserData
+    nodeUserData: state.userreducer.nodeUserData,
+    eventDetails: state.transactionsreducer.eventDetails,
+    vendor: state.transactionsreducer.vendor,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -127,6 +180,8 @@ const mapDispatchToProps = dispatch => ({
     updateusTransactions: (usTransactions) => dispatch({ type: 'UPDATE_US_TRANSACTIONS', payload: { usTransactions: usTransactions } }),
     updateTransactions: (validationsTrasactions) => dispatch({ type: 'UPDATE_VALIDATED_TRANSACTIONS', payload: { validationsTrasactions: validationsTrasactions } }),
     updateTotalEntries: (totalvalidationsEntries) => dispatch({ type: 'UPDATE_TOTAL_ENTRIES', payload: { totalvalidationsEntries: totalvalidationsEntries } }),
+    updateEventDetails: (eventDetails) => dispatch({ type: 'UPDATE_EVENT_DETAILS', payload: { eventDetails: eventDetails } }),
+    updateVendor: (vendor) => dispatch({ type: 'UPDATE_VENDOR_DETAILS', payload: { vendor: vendor } }),
     logoutData: () => dispatch({ type: 'USER_LOGGED_OUT' })
 });
 

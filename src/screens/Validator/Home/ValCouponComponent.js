@@ -29,7 +29,7 @@ const ValCouponComponent = (props) => {
     const horizontalHeight = QR_BOX_SIZE;
     const horizontalWidth = (width - QR_BOX_SIZE) / 2;
     const inputRef = useRef()
-    const platform = Platform.OS =='ios';
+    const platform = Platform.OS == 'ios';
 
     return (
         <>
@@ -39,7 +39,7 @@ const ValCouponComponent = (props) => {
                 barStyle="dark-content"
             />
             <View style={[gstyles.container(app_Bg)]}>
-                <View style={[styles.header, (platform ? { paddingTop: HEIGHT*0.04 } : null )]}>
+                <View style={[styles.header, (platform ? { paddingTop: HEIGHT * 0.04 } : null)]}>
                     <View style={[gstyles.inRow, { alignItems: 'center' }]}>
                         <TouchableOpacity activeOpacity={0.6}
                             onPress={() => { props.onClickBack() }}
@@ -142,7 +142,7 @@ const ValCouponComponent = (props) => {
                     </RNCamera>
                 </View>
                 <LoadingModel loading={props.isLoading} />
-                
+
 
                 {/* <CouponVerified
                     isVisible={props.couponStatus == 'entry_verified'}
@@ -162,7 +162,8 @@ const ValCouponComponent = (props) => {
                 <CouponExpiredModal
                     visible={props.couponStatus == 'coupon_expired'}
                     setcouponStatus={props.setcouponStatus}
-                    qrData={props.qrData} />
+                    qrData={props.qrData}
+                    usTransactions={props.usTransactions} />
 
                 <CouponAlreadyVerified
                     visible={props.couponStatus == 'Already_Verified'}
@@ -177,7 +178,7 @@ const ValCouponComponent = (props) => {
                         <TouchableOpacity onPress={
                             async () => {
                                 const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA)
-                                const result = await request(PERMISSIONS.IOS.CAMERA); 
+                                const result = await request(PERMISSIONS.IOS.CAMERA);
                                 if (granted == PermissionsAndroid.RESULTS.GRANTED || result === RESULTS.GRANTED) {
                                     props.setSeekPremission(false);
                                 }
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
         ...gstyles.inRowJSB,
         paddingHorizontal: 20,
         elevation: 3,
-         
+
     },
 
     totalRedeemCard: {

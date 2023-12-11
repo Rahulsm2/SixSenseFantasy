@@ -22,8 +22,6 @@ const ValCouponContainer = (props) => {
   const [isChangeData, setIsChangeData] = useState(false);
   const [seekPremission, setSeekPremission] = useState(false);
   const inputRef = useRef()
-  
-
   {
     Platform.OS === 'android' ? useEffect(() => {
       console.log(inputRef)
@@ -84,18 +82,18 @@ const ValCouponContainer = (props) => {
 
         }
         result1.user_id = props.nodeUserData.user;
-        result1.vendor_id = qrData.user_data.vendor._id;
+        result1.vendor_id = props.vendor;
         console.log('result1', result1)
         console.log(props.nodeUserData.user)
 
         const response = await postNodeData('service/tickets_service/v1/tickets/action/entry', result1, nodeToken,
-          { 'timestamp': new Date(), 'user': props.nodeUserData.user, 'vendor': qrData.user_data.vendor._id });
+          { 'timestamp': new Date(), 'user': props.nodeUserData.user, 'vendor': props.vendor });
 
         console.log("onClickRedeem Response", response);
         if (response.statusCode == 200) {
           showToast('Ticket Successfully Verified');
           setIsLoading(false);
-          getTransactions();
+          getEventDetails(props.eventDetails);
           navigation.navigate("HomeContainer");
         } else {
           setIsLoading(false);
@@ -121,7 +119,7 @@ const ValCouponContainer = (props) => {
       ...completedata,
       tickets_data: ticketsData,
       totalAddedCount: totalAddedCount,
-  };
+    };
     setqrData(completedata);
     setIsChangeData(!isChangeData);
     console.log("updated", qrData)
@@ -144,7 +142,7 @@ const ValCouponContainer = (props) => {
         props.updateusTransactions(response1)
 
         console.log("response1.tickets_data", response1.event_name);
-        
+
       }
 
       if (nodeToken && response1.statusCode == 200) {
@@ -163,73 +161,79 @@ const ValCouponContainer = (props) => {
         var curenttime = moment();
         if (totalBalence == 0) {
           setcouponStatus('Already_Verified')
-        } 
-        else if (totalBalence > 0) {
-         if (
-          curenttime.isBetween(
-            moment(response1.tickets_data[0].package_data.ticket_param.valid_from),
-            moment(response1.tickets_data[0].package_data.ticket_param.valid_till),
-          )
-        ) {
-          setcouponStatus("entry_verified2")
-        } else if(curenttime.isBefore(moment(response1.tickets_data[0].package_data.ticket_param.valid_from))){
-          showToast('Event Yet to Start')
-          navigation.navigate('HomeContainer')
-          setcouponStatus('pending')
-          
-        } else {
-          setcouponStatus('coupon_expired')
         }
+        else if (totalBalence > 0) {
+          if (
+            curenttime.isBetween(
+              moment(response1.event_start),
+              moment(response1.event_end),
+            )
+          ) {
+            setcouponStatus("entry_verified2")
+          } else if (curenttime.isBefore(moment(response1.event_start))) {
+            showToast('Event Yet to Start')
+            navigation.navigate('HomeContainer')
+            setcouponStatus('pending')
+
+          } else {
+            setcouponStatus('coupon_expired')
           }
         }
-        else {
-          showToast('Invalid Ticket')
-          navigation.navigate('HomeContainer')
-          setcouponStatus('pending')
-        }
-        
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 2000);
-      } else {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 2000);
-        response1.message
-          ? showToast(response1.message)
-          : showToast(
-            'Invalid Ticket'
-          );
       }
+      else {
+        showToast('Invalid Ticket')
+        navigation.navigate('HomeContainer')
+        setcouponStatus('pending')
+      }
+
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+    } else {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+      response1.message
+        ? showToast(response1.message)
+        : showToast(
+          'Invalid Ticket'
+        );
+    }
   };
 
-  const getTransactions = async () => {
+  const getEventDetails = async (id) => {
+    setIsLoading(true);
     const nodeToken = await getNodeToken();
-    const response = await getNodeData(`service/tickets_service/v1/tickets/action/user/${props.nodeUserData?.user}`, {}, nodeToken,
-      { 'user': props.nodeUserData ? props.nodeUserData.user : "" });
-    console.log("getnodedata", response, response.statusCode)
+    const response = await getNodeData(`service/tickets_service/v1/tickets/action/user/` + id, {}, nodeToken,
+      { 'user': props.nodeUserData.user });
+
+    console.log("Event details", response, response.statusCode)
+
+
     if (response.statusCode == 200) {
       if (response.errors) {
         showToast(response.message);
         setIsLoading(false);
         return;
+      } else {
+        const data = response._payload;
+        const totalCount = data.reduce((acc, item) => acc + item.total_people, 0);
+        props.updateTransactions(data);
+        props.updateTotalEntries(totalCount);
+
       }
       setIsLoading(false);
-      props.updateTransactions(response._payload);
-      let data = response._payload;
-      let totalCount = 0;
-      for (let i = 0; i < data.length; i++) {
-        totalCount = totalCount + data[i].total_people;
-      }
-      props.updateTotalEntries(totalCount);
     } else {
       setIsLoading(false);
       showToast(
         response.message ? response.message : 'Session might expired, please login again.'
       );
+      if (response == "Unauthorized request") {
+        loggingOut();
+      }
     }
   }
-  
+
 
   return (
     <ValCouponComponent
@@ -246,6 +250,7 @@ const ValCouponContainer = (props) => {
       setSeekPremission={setSeekPremission}
       updateInputValue={updateInputValue}
       isChangeData={isChangeData}
+      usTransactions={props.usTransactions}
     />
   );
 }
@@ -255,7 +260,9 @@ const mapStateToProps = state => ({
   sTransactions: state.transactionsreducer.sTransactions,
   usTransactions: state.transactionsreducer.usTransactions,
   totalAmount: state.transactionsreducer.totalAmount,
-  nodeUserData: state.userreducer.nodeUserData
+  nodeUserData: state.userreducer.nodeUserData,
+  eventDetails: state.transactionsreducer.eventDetails,
+  vendor: state.transactionsreducer.vendor,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -264,6 +271,8 @@ const mapDispatchToProps = dispatch => ({
   updateTotalAmount: (totalAmount) => dispatch({ type: 'UPDATE_TOTAL_AMOUNT', payload: { totalAmount: totalAmount } }),
   updateTransactions: (validationsTrasactions) => dispatch({ type: 'UPDATE_VALIDATED_TRANSACTIONS', payload: { validationsTrasactions: validationsTrasactions } }),
   updateTotalEntries: (totalvalidationsEntries) => dispatch({ type: 'UPDATE_TOTAL_ENTRIES', payload: { totalvalidationsEntries: totalvalidationsEntries } }),
+  updateEventDetails: (eventDetails) => dispatch({ type: 'UPDATE_EVENT_DETAILS', payload: { eventDetails: eventDetails } }),
+  updateVendor: (vendor) => dispatch({ type: 'UPDATE_VENDOR_DETAILS', payload: { vendor: vendor } }),
 });
 
 

@@ -9,14 +9,16 @@ import { useNavigation } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 
 const CouponExpiredModal = (props) => {
-    const navigation= useNavigation();
+    const navigation = useNavigation();
     return (
         <Modal
             transparent
             visible={props.visible}
             animationType="fade"
-            onRequestClose={() => { props.setcouponStatus('pending') 
-            navigation.navigate('HomeContainer') }}>
+            onRequestClose={() => {
+                props.setcouponStatus('pending')
+                navigation.navigate('HomeContainer')
+            }}>
             <StatusBar
                 backgroundColor={'rgba(0,0,0,0.5)'}
                 barStyle="light-content"
@@ -26,24 +28,26 @@ const CouponExpiredModal = (props) => {
                 <View style={styles.modalView}>
                     <LottieView source={require('../../assets/gif/animation_time.json')} style={[gstyles.iconSize(228, 228), gstyles.centerX]} autoPlay loop />
                     <TouchableOpacity activeOpacity={0.6}
-                        onPress={() => { props.setcouponStatus('pending')
-                    navigation.navigate('HomeContainer') }}
+                        onPress={() => {
+                            props.setcouponStatus('pending')
+                            navigation.navigate('HomeContainer')
+                        }}
                         style={{ position: 'absolute', right: 30, top: 30 }}
                     >
                         <AntDesign name='close' size={25} color='#0276E5' />
                     </TouchableOpacity>
                     <Text style={gstyles.OpenSans_SemiBold(20, '#FF0000', gstyles.centerX)}>
-                    Ticket Expired
+                        Ticket Expired
                     </Text>
                     <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(20)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
-                        Ticket ID
+                            Ticket ID
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
                             :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#000000')}>#{props.qrData.ticket_tracking_id}</Text>
                         </Text>
                     </View>
-                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14), gstyles.mb(40)]}>
+                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Created at
                         </Text>
@@ -51,14 +55,14 @@ const CouponExpiredModal = (props) => {
                             :{'    '}{moment(props.qrData.ticket_created_at).format('DD/MM/YY,   hh: mm A')}
                         </Text>
                     </View>
-                    {/* <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14), gstyles.mb(50)]}>
+                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14), gstyles.mb(50)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Valid till
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}{props.expired}
+                            :{'    '}{moment(props.usTransactions.event_end).format('DD/MM/YY,   hh: mm A')}
                         </Text>
-                    </View> */}
+                    </View>
                 </View>
             </View>
         </Modal>

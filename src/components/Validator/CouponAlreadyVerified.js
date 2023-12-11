@@ -6,9 +6,10 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import LottieView from 'lottie-react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const CouponAlreadyVerified = (props) => {
-
+    const navigation = useNavigation()
     return (
         <Modal
             transparent
@@ -25,30 +26,33 @@ const CouponAlreadyVerified = (props) => {
 
                     <LottieView source={require('../../assets/gif/animation_warn.json')} style={[gstyles.iconSize(228, 228), gstyles.centerX]} autoPlay loop />
                     <TouchableOpacity activeOpacity={0.6}
-                        onPress={() => { props.setcouponStatus('pending') }}
+                        onPress={() => {
+                            props.setcouponStatus('pending')
+                            navigation.navigate('HomeContainer')
+                        }}
                         style={{ position: 'absolute', right: 30, top: 30 }}
                     >
                         <AntDesign name='close' size={25} color='#0276E5' />
                     </TouchableOpacity>
                     <Text style={gstyles.OpenSans_SemiBold(20, '#FF0000', gstyles.centerX)}>
-                        {props.couponData.type=='coupon' ? "Coupon Already Verified" : "Ticket Already Verified"}
+                        {props.couponData.type == 'coupon' ? "Coupon Already Verified" : "Ticket Already Verified"}
                     </Text>
                     <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(25)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
-                            {props.couponData.type=='coupon' ? "Coupon ID" : "Ticket ID"}
+                            {props.couponData.type == 'coupon' ? "Coupon ID" : "Ticket ID"}
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#000000')}>{props.couponData.type=='coupon' ? props.couponData.id : props.couponData.ticket_tracking_id}</Text>
+                            :{'    '}<Text style={gstyles.OpenSans_Bold(16, '#000000')}>{props.couponData.type == 'coupon' ? props.couponData.id : props.couponData.ticket_tracking_id}</Text>
                         </Text>
                     </View>
-                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(20), gstyles.mb(props.couponData.type=='coupon' ? 0 : 40)]}>
+                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(20), gstyles.mb(props.couponData.type == 'coupon' ? 0 : 40)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Total Entries
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
                             :{'    '}<Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            {props.couponData.type=='coupon' ? 2*Number(props.couponData.couple_count)+Number(props.couponData.ladies_count)+
-                            Number(props.couponData.stag_count) : props.couponData.total_ppl}{' People'}
+                                {props.couponData.type == 'coupon' ? 2 * Number(props.couponData.couple_count) + Number(props.couponData.ladies_count) +
+                                    Number(props.couponData.stag_count) : props.couponData.total_ppl}{' People'}
                             </Text>
                         </Text>
                     </View>
@@ -63,7 +67,7 @@ const CouponAlreadyVerified = (props) => {
                             :{'    '}02/02/23, 05:35 PM
                         </Text>
                     </View> */}
-                    {props.couponData.type=='coupon' && <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14), gstyles.mb(80)]}>
+                    {props.couponData.type == 'coupon' && <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14), gstyles.mb(80)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Valid till
                         </Text>
@@ -73,7 +77,7 @@ const CouponAlreadyVerified = (props) => {
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
                             :{'    '}{moment(props.couponData.expiry_time).format("DD/MM/YY,  hh:mm A")}
                         </Text>
-                    </View> }
+                    </View>}
                 </View>
             </View>
         </Modal>
