@@ -24,7 +24,6 @@
     "react-native": "0.71.6",
     "react-native-camera": "^4.2.1",
     "react-native-device-info": "^10.7.0",
-    "react-native-element-dropdown": "^2.10.1",
     "react-native-indicator": "^1.2.2",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-macos": "^0.72.11",

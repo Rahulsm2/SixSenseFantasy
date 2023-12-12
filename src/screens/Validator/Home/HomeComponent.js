@@ -27,29 +27,6 @@ const HomeComponent = (props) => {
     const platform = Platform.OS == 'ios';
     const [modal, setModal] = useState(false);
 
-    const renderItem = ({ item }) => (
-        item.name != undefined ?
-            <>
-                <TouchableOpacity
-                    style={[gstyles.mt(5)]}
-                    activeOpacity={0.6}
-                    onPress={() => {
-                        if (props.selectedEventId != item.id) {
-                            props.setSelectedEvent(item.name)
-                            props.setSelectedEventId(item.id)
-                            props.getEventDetails(item.id)
-                        }
-                        setModal(false);
-                    }}
-                >
-                    <Text style={[gstyles.OpenSans_SemiBold(14, props.selectedEvent === item.name ? '#0276E5' : '#000', gstyles.ms(15)), { opacity: props.selectedEventId == item.id ? 0.5 : 1, margin: 10 }]}>
-                        {item.name}
-                    </Text>
-                </TouchableOpacity>
-
-            </> : null
-    );
-
     const CouponItem = ({ couponId, entries, verifiedTime, customer }) => {
         return (
             <View style={styles.Entries} >
@@ -93,8 +70,32 @@ const HomeComponent = (props) => {
             </View>
         );
     }
-    console.log(props.selectedFilter, "props.selectedFilter");
+
+    const renderItem = ({ item }) => (
+        item.name != undefined ?
+            <>
+                <TouchableOpacity
+                    style={[gstyles.mt(5)]}
+                    activeOpacity={0.6}
+                    onPress={() => {
+                        if (props.selectedEventId != item.id) {
+                            props.setSelectedEvent(item.name)
+                            props.setSelectedEventId(item.id)
+                            props.getEventDetails(item.id)
+                        }
+                        setModal(false);
+                    }}
+                >
+                    <Text style={[gstyles.OpenSans_SemiBold(14, props.selectedEvent === item.name ? '#0276E5' : '#000', gstyles.ms(15)), { opacity: props.selectedEventId == item.id ? 0.5 : 1, margin: 10 }]}>
+                        {item.name}
+                    </Text>
+                </TouchableOpacity>
+
+            </> : null
+    );
+
     const arrayLength = props.transactions.length
+
     return (
         <>
             <StatusBar
@@ -127,12 +128,14 @@ const HomeComponent = (props) => {
                         onRefresh={() => {
                             props.setisRefreshing(true)
                             props.getEventDetails(props.selectedEventId)
-                        }} />
+                        }}
+                    />
                 }>
                     <TouchableOpacity style={styles.inputContainer} onPress={() => setModal(true)}>
                         <View style={[styles.pickerContainer, { flexDirection: 'row' }]}>
                             <Text style={[gstyles.OpenSans_Bold(16, '#000000'), { left: 15, maxWidth: WIDTH * 0.78 }]}>{props.selectedEvent}</Text>
-                            {modal ? <AntDesign name='caretup' size={15} color='black' style={{ right: 15 }} /> : <AntDesign name='caretdown' size={15} color='black' style={{ right: 15 }} />}
+                            {modal ? <AntDesign name='caretup' size={15} color='black' style={{ right: 15 }} />
+                                : <AntDesign name='caretdown' size={15} color='black' style={{ right: 15 }} />}
                         </View>
                     </TouchableOpacity>
                     <View style={styles.totalRedeemCard}>
@@ -182,7 +185,8 @@ const HomeComponent = (props) => {
                     transparent
                     visible={true}
                     animationType="fade"
-                    onRequestClose={() => { props.setIsPopMenu(false) }}>
+                    onRequestClose={() => { setModal(false) }}
+                    onBackdropPress={() => { setModal(false) }}>
                     <StatusBar
                         backgroundColor={'rgba(0,0,0,0.2)'}
                         barStyle="light-content"
@@ -190,7 +194,7 @@ const HomeComponent = (props) => {
                     />
 
                     <TouchableWithoutFeedback
-                        onPress={() => { props.setIsPopMenu(false) }}>
+                        onPress={() => { setModal(false) }}>
                         <View style={styles.modalContainer}>
                             <View style={styles.modalView}>
                                 <FlatList

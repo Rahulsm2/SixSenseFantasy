@@ -53,10 +53,7 @@ const TransactionContainer = (props) => {
                         showToast(response.message);
                     } else {
                         const data = response._payload;
-                        const totalCount = data.reduce((acc, item) => acc + item.total_people, 0);
-
                         props.updateTransactions(page === 0 ? data : [...props.validationsTrasactions, ...data]);
-                        props.updateTotalEntries(totalCount);
 
                         setCurrentPage(response.currentPage);
                         setHasMorePages(response.currentPage < response.saffsList.totalPages);
