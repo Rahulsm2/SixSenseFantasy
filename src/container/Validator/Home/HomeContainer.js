@@ -18,7 +18,7 @@ const HomeContainer = (props) => {
     const [expireDate, setExpireDate] = useState('');
     const [vendorId, setVendorId] = useState('');
     props.updateEventDetails(selectedEventId);
-    console.log("event", selectedEvent, "ID", selectedEventId, "date", expireDate, "vendor", vendorId)
+    // console.log("event", selectedEvent, "ID", selectedEventId, "date", expireDate, "vendor", vendorId)
 
     useEffect(() => {
         setIsLoading(true);
@@ -43,7 +43,7 @@ const HomeContainer = (props) => {
             let events = [];
             console.log('Response keys:', Object.keys(response));
             const responseArray = Object.values(response);
-            console.log('Response length:', responseArray.length);
+            // console.log('Response length:', responseArray.length);
             for (let i = 0; i < responseArray.length; i++) {
                 console.log(`Processing item at index ${i}:`, responseArray[i]);
 
@@ -65,13 +65,13 @@ const HomeContainer = (props) => {
             setVendorId(events[0].vendor)
             props.updateVendor(events[0].vendor)
             props.updateEventDetails(selectedEventId);
-            console.log("events[0].vendor", props.vendor)
+            // console.log("events[0].vendor", props.vendor)
 
         } else {
             setIsLoading(false);
             setisRefreshing(false)
             showToast(
-                response.message ? response.message : 'Session might expired, please login again.'
+                response ? response : 'Session might expired, please login again.'
             );
             if (response == "Unauthorized request") {
                 loggingOut();
@@ -85,7 +85,7 @@ const HomeContainer = (props) => {
         const response = await getNodeData(`service/tickets_service/v1/tickets/action/user/` + id, {}, nodeToken,
             { 'user': props.nodeUserData.user });
 
-        console.log("Event details", response, response.statusCode)
+        // console.log("Event details", response, response.statusCode)
 
 
         if (response.statusCode == 200) {
@@ -95,9 +95,7 @@ const HomeContainer = (props) => {
                 return;
             } else {
                 const data = response._payload;
-                const totalCount = data.reduce((acc, item) => acc + item.total_people, 0);
                 props.updateTransactions(data);
-                props.updateTotalEntries(totalCount);
                 props.updateStaffsList(response)
 
             }
@@ -107,7 +105,7 @@ const HomeContainer = (props) => {
             setIsLoading(false);
             setisRefreshing(false)
             showToast(
-                response.message ? response.message : 'Session might expired, please login again.'
+                response ? response : 'Session might expired, please login again.'
             );
             if (response == "Unauthorized request") {
                 loggingOut();

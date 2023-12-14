@@ -8,8 +8,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 
-
-
 const CouponVerified2 = (props) => {
     const initialPax = Array.isArray(props.qrData?.tickets_data) ? Array(props.qrData.tickets_data.length).fill(0) : [];
 
@@ -28,11 +26,11 @@ const CouponVerified2 = (props) => {
         return item.balance == 0 ? null : (
             <View style={[{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, gstyles.ms(30), gstyles.mt(20)]}>
                 <View>
-                    <Text style={[gstyles.OpenSans_SemiBold(20, '#3A86FF'), { maxWidth: WIDTH * 0.5 }]}>
-                        {item.package_data.package_map.package.name} <Text style={gstyles.OpenSans_SemiBold(14, '#000')}>( {item.package_data.package_map.package.pax} People )</Text>
+                    <Text style={[gstyles.OpenSans_SemiBold(20, '#3A86FF'), { maxWidth: WIDTH * 0.4 }]}>
+                        {item.package_data.package_map.package.name} <Text style={gstyles.OpenSans_SemiBold(14, '#000')}>( {item.package_data.package_map.package.pax} PAX )</Text>
                     </Text>
-                    <Text style={[gstyles.OpenSans_SemiBold(14, '#3A86FF'), { maxWidth: WIDTH * 0.5 }]}>
-                        Balances : <Text style={gstyles.OpenSans_SemiBold(12, '#000')}>{item.balance} People </Text>
+                    <Text style={[gstyles.OpenSans_SemiBold(14, '#3A86FF'), { maxWidth: WIDTH * 0.4 }]}>
+                        Balances : <Text style={gstyles.OpenSans_SemiBold(12, '#000')}>{item.balance} </Text>
                     </Text>
                 </View>
                 <View style={gstyles.inRow}>
@@ -111,14 +109,14 @@ const CouponVerified2 = (props) => {
                             :{'    '}{props.qrData.total_ppl}{' People'}
                         </Text>
                     </View>
-                    {/* <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
+                    <View style={[gstyles.inRow, gstyles.ms(35), gstyles.mt(14)]}>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000', gstyles.size('35%'))}>
                             Valid till
                         </Text>
                         <Text style={gstyles.OpenSans_Regular(16, '#000000')}>
-                            :{'    '}{moment(props.qrData.expiry_time).format("DD/MM/YY,  hh:mm A")}
+                            :{'    '}{moment(props.usTransactions.event_end).format("DD/MM/YY,  hh:mm A")}
                         </Text>
-                    </View> */}
+                    </View>
 
                     <FlatList
                         data={props.qrData.tickets_data}
@@ -163,11 +161,12 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.5)'
     },
     inputText: {
-        fontSize: 24,
+        fontSize: 17,
         fontFamily: OpenSans_Bold,
         color: '#0276E5',
         backgroundColor: 'transparent',
-        borderWidth: 0
+        borderWidth: 0,
+        maxWidth: 100
     },
 
     modalView: {

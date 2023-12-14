@@ -6,6 +6,9 @@ import { postNodeData, getNodeData } from '../../../services/rootService';
 import { getToken, getNodeToken } from '../../../services/persistData';
 import { showToast } from '../../../components/common/ShowToast';
 import moment from 'moment';
+import { CommonActions } from '@react-navigation/native';
+import { removeNodeToken, removeMpin, removeToken } from '../../../services/persistData';
+
 
 const ValCouponContainer = (props) => {
 
@@ -64,45 +67,51 @@ const ValCouponContainer = (props) => {
       return;
     }
     try {
-      if (!isLoading) {
-        setIsLoading(true);
-        setcouponStatus('pending')
-        const nodeToken = await getNodeToken();
-        let result1 = {};
-        result1.event_id = qrData.tickets_data[0].package_data.association;
-        result1.ticket_data = [];
-        for (let i = 0; i < qrData.tickets_data.length; i++) {
-          if (qrData.tickets_data[i].inputValue > 0) {
-            result1.ticket_data.push({
-              "ticket_id": qrData.tickets_data[i].ticket_id,
-              "ticket_tracking_id": qrData.ticket_tracking_id,
-              "action_value": qrData.tickets_data[i].inputValue
-            });
-          }
-
+      // if (!isLoading) {
+      setIsLoading(true);
+      setcouponStatus('pending')
+      const nodeToken = await getNodeToken();
+      let result1 = {};
+      result1.event_id = qrData.tickets_data[0].package_data.association;
+      result1.ticket_data = [];
+      for (let i = 0; i < qrData.tickets_data.length; i++) {
+        if (qrData.tickets_data[i].inputValue > 0) {
+          result1.ticket_data.push({
+            "ticket_id": qrData.tickets_data[i].ticket_id,
+            "ticket_tracking_id": qrData.ticket_tracking_id,
+            "action_value": qrData.tickets_data[i].inputValue
+          });
         }
-        result1.user_id = props.nodeUserData.user;
-        result1.vendor_id = props.vendor;
-        console.log('result1', result1)
-        console.log(props.nodeUserData.user)
 
-        const response = await postNodeData('service/tickets_service/v1/tickets/action/entry', result1, nodeToken,
-          { 'timestamp': new Date(), 'user': props.nodeUserData.user, 'vendor': props.vendor });
-
-        console.log("onClickRedeem Response", response);
-        if (response.statusCode == 200) {
-          showToast('Ticket Successfully Verified');
-          setIsLoading(false);
-          getEventDetails(props.eventDetails);
-          navigation.navigate("HomeContainer");
-        } else {
-          setIsLoading(false);
-          showToast(
-            response.message ? response.message : 'Session might expired, please login again.'
-          );
-        }
       }
+      result1.user_id = props.nodeUserData.user;
+      result1.vendor_id = props.vendor;
+      console.log('result1', result1)
+      console.log(props.nodeUserData.user)
+
+      const response = await postNodeData('service/tickets_service/v1/tickets/action/entry', result1, nodeToken,
+        { 'timestamp': new Date(), 'user': props.nodeUserData.user, 'vendor': props.vendor });
+
+      console.log("onClickRedeem Response", response);
+      if (response.statusCode == 200) {
+        showToast('Ticket Successfully Verified');
+        setIsLoading(false);
+        getEventDetails(props.eventDetails);
+        navigation.navigate("HomeContainer");
+      } else if (response == 'Verification timeout') {
+        setIsLoading(false);
+        setcouponStatus('pending');
+        showToast('Please Scan again');
+        return;
+      } else {
+        setIsLoading(false);
+        showToast(
+          response ? response : 'Session might expired, please login again.'
+        );
+      }
+      // }
     } catch (error) {
+      setcouponStatus('pending')
       console.error("Error occurred:", error);
     }
   };
@@ -144,8 +153,10 @@ const ValCouponContainer = (props) => {
         console.log("response1.tickets_data", response1.event_name);
 
       }
-
-      if (nodeToken && response1.statusCode == 200) {
+      if (response1 == "Unauthorized request") {
+        showToast('Session might have expired, please login again!!!')
+        loggingOut();
+      } else if (nodeToken && response1.statusCode == 200) {
         // console.log("response1.tickets_data", response1);
         let totalBalence = 0;
         let completedata = response1;
@@ -159,27 +170,26 @@ const ValCouponContainer = (props) => {
         completedata.totalAddedCount = totalBalence;
         setqrData(completedata);
         var curenttime = moment();
-        if (totalBalence == 0) {
+        if (totalBalence == 0 && curenttime.isBetween(moment(response1.event_start), moment(response1.event_end))) {
           setcouponStatus('Already_Verified')
         }
-        else if (totalBalence > 0) {
-          if (
-            curenttime.isBetween(
-              moment(response1.event_start),
-              moment(response1.event_end),
-            )
-          ) {
-            setcouponStatus("entry_verified2")
-          } else if (curenttime.isBefore(moment(response1.event_start))) {
-            showToast('Event Yet to Start')
-            navigation.navigate('HomeContainer')
-            setcouponStatus('pending')
+        else if (
+          curenttime.isBetween(
+            moment(response1.event_start),
+            moment(response1.event_end),
+          )
+        ) {
+          setcouponStatus("entry_verified2")
+        } else if (curenttime.isBefore(moment(response1.event_start))) {
+          showToast('Event Yet to Start')
+          navigation.navigate('HomeContainer')
+          setcouponStatus('pending')
 
-          } else {
-            setcouponStatus('coupon_expired')
-          }
+        } else {
+          setcouponStatus('coupon_expired')
         }
       }
+
       else {
         showToast('Invalid Ticket')
         navigation.navigate('HomeContainer')
@@ -200,6 +210,27 @@ const ValCouponContainer = (props) => {
         );
     }
   };
+
+  const loggingOut = async () => {
+    const token = await removeToken();
+    const mpin = await removeMpin();
+    const nodetoke = await removeNodeToken();
+    if (token && mpin && nodetoke) {
+      props.logoutData();
+      {
+        Platform.OS === 'android' ? (navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'ForgetPasswordContainer',
+              },
+            ],
+          }),
+        )) : (navigation.navigate('ForgetPasswordContainer'))
+      }
+    }
+  }
 
   const getEventDetails = async (id) => {
     setIsLoading(true);
@@ -223,12 +254,18 @@ const ValCouponContainer = (props) => {
 
       }
       setIsLoading(false);
+    } else if (response == 'Verification timeout') {
+      setIsLoading(false);
+      setcouponStatus('pending');
+      showToast('Please Scan again');
+      return;
     } else {
       setIsLoading(false);
       showToast(
-        response.message ? response.message : 'Session might expired, please login again.'
+        response ? response : 'Session might expired, please login again.'
       );
       if (response == "Unauthorized request") {
+        showToast('Session might expired, please login again!!!')
         loggingOut();
       }
     }
@@ -273,6 +310,7 @@ const mapDispatchToProps = dispatch => ({
   updateTotalEntries: (totalvalidationsEntries) => dispatch({ type: 'UPDATE_TOTAL_ENTRIES', payload: { totalvalidationsEntries: totalvalidationsEntries } }),
   updateEventDetails: (eventDetails) => dispatch({ type: 'UPDATE_EVENT_DETAILS', payload: { eventDetails: eventDetails } }),
   updateVendor: (vendor) => dispatch({ type: 'UPDATE_VENDOR_DETAILS', payload: { vendor: vendor } }),
+  logoutData: () => dispatch({ type: 'USER_LOGGED_OUT' })
 });
 
 

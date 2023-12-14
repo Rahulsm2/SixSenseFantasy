@@ -23,7 +23,8 @@ import moment from 'moment';
 
 const TransactionComponent = (props) => {
     const platform = Platform.OS == 'ios';
-
+    const filteredSTransactionsLength = props.filteredSTransactions ? props.filteredSTransactions.length : 0;
+    console.log(filteredSTransactionsLength, "filteredSTransactionsLength");
     const CouponItem = ({ couponId, entries, verifiedTime, customer }) => {
         return (
             <View style={styles.Entries} >
@@ -107,7 +108,7 @@ const TransactionComponent = (props) => {
                 </View>
 
                 <FlatList
-                    data={props.filteredSTransactions.length > 0 ? props.filteredSTransactions : props.transactions}
+                    data={filteredSTransactionsLength > 0 ? props.filteredSTransactions : props.transactions}
                     keyExtractor={(item, index) => item.ticket_tracking_id + index}
                     renderItem={({ item, index }) => (
                         <CouponItem
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 16,
-        marginBottom: 15
+        marginBottom: 5
     },
 
     totalRedeemCard: {

@@ -20,7 +20,6 @@ import LoadingModel from "../../../components/common/Loading"
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
 import { useNavigation } from '@react-navigation/native';
-import PopMenuModal from '../../../components/Validator/PopMenuModal';
 
 const HomeComponent = (props) => {
     const navigation = useNavigation();
@@ -75,7 +74,7 @@ const HomeComponent = (props) => {
         item.name != undefined ?
             <>
                 <TouchableOpacity
-                    style={[gstyles.mt(5)]}
+                    style={{ margin: 5 }}
                     activeOpacity={0.6}
                     onPress={() => {
                         if (props.selectedEventId != item.id) {
@@ -86,7 +85,7 @@ const HomeComponent = (props) => {
                         setModal(false);
                     }}
                 >
-                    <Text style={[gstyles.OpenSans_SemiBold(14, props.selectedEvent === item.name ? '#0276E5' : '#000', gstyles.ms(15)), { opacity: props.selectedEventId == item.id ? 0.5 : 1, margin: 10 }]}>
+                    <Text style={[gstyles.OpenSans_SemiBold(14, props.selectedEvent === item.name ? '#0276E5' : '#000', gstyles.ms(15)), { opacity: props.selectedEventId == item.id ? 0.5 : 1, margin: 7 }]}>
                         {item.name}
                     </Text>
                 </TouchableOpacity>
@@ -127,6 +126,7 @@ const HomeComponent = (props) => {
                     <RefreshControl refreshing={props.isRefreshing}
                         onRefresh={() => {
                             props.setisRefreshing(true)
+                            props.getTransactions()
                             props.getEventDetails(props.selectedEventId)
                         }}
                     />
@@ -188,7 +188,7 @@ const HomeComponent = (props) => {
                     onRequestClose={() => { setModal(false) }}
                     onBackdropPress={() => { setModal(false) }}>
                     <StatusBar
-                        backgroundColor={'rgba(0,0,0,0.2)'}
+                        backgroundColor={'rgba(0,0,0,0.5)'}
                         barStyle="light-content"
                         animated
                     />
@@ -258,8 +258,9 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.2)',
-        alignItems: 'center',
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     modalView: {
         width: WIDTH * 0.90,
@@ -272,10 +273,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         borderRadius: 4,
-        top: 115,
-        alignSelf: 'flex-end',
-        marginRight: 20,
-
     },
 
     unSettleBtnTouch: {

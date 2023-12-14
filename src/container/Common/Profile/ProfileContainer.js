@@ -51,16 +51,17 @@ const ProfileContainer = (props) => {
         const nodetoke = await removeNodeToken();
         if (token && mpin && nodetoke) {
             props.logoutData();
-            {Platform.OS === 'android' ? (navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        {
-                            name: 'ForgetPasswordContainer',
-                        },
-                    ],
-                }),
-            )) : (navigation.navigate('ForgetPasswordContainer')) 
+            {
+                Platform.OS === 'android' ? (navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                            {
+                                name: 'ForgetPasswordContainer',
+                            },
+                        ],
+                    }),
+                )) : (navigation.navigate('ForgetPasswordContainer'))
             }
         }
     }

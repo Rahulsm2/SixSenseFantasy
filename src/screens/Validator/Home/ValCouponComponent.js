@@ -157,6 +157,7 @@ const ValCouponComponent = (props) => {
                     onCliclContinue={props.onCliclContinue}
                     updateInputValue={props.updateInputValue}
                     isChangeData={props.isChangeData}
+                    usTransactions={props.usTransactions}
                     onCliclRedeem={props.onCliclRedeem} />
 
                 <CouponExpiredModal
