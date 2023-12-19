@@ -45,8 +45,8 @@ const HomeContainer = (props) => {
             const responseArray = Object.values(response);
             // console.log('Response length:', responseArray.length);
             for (let i = 0; i < responseArray.length; i++) {
-                console.log(`Processing item at index ${i}:`, responseArray[i]);
 
+                console.log(`Processing item at index ${i}:`, responseArray[i]);
                 let event = {
                     id: responseArray[i]._id,
                     name: responseArray[i].name,
@@ -54,6 +54,7 @@ const HomeContainer = (props) => {
                     vendor: response[0].vendor
                 };
                 events.push(event);
+
             }
             console.log('event details', events);
             getEventDetails(events[0].id);

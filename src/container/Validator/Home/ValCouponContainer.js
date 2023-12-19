@@ -17,9 +17,9 @@ const ValCouponContainer = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   //pending - not scaned yet
   //verified - verified
-  //aboutToStart - about To Start
-  //expired - expired
-  //invalid - invalid
+  // aboutToStart - about To Start
+  // expired - expired
+  // invalid - invalid
   const [couponStatus, setcouponStatus] = useState("pending");
   const [qrData, setqrData] = useState('');
   const [isChangeData, setIsChangeData] = useState(false);
@@ -54,6 +54,8 @@ const ValCouponContainer = (props) => {
   }
 
   const onCliclRedeem = async () => {
+    console.log("redeem button clicked")
+    setcouponStatus('pending');
     let completedata = qrData;
     let ticketdata = completedata.tickets_data;
     let totalAddedCount = 0;
@@ -67,49 +69,49 @@ const ValCouponContainer = (props) => {
       return;
     }
     try {
-      // if (!isLoading) {
-      setIsLoading(true);
-      setcouponStatus('pending')
-      const nodeToken = await getNodeToken();
-      let result1 = {};
-      result1.event_id = qrData.tickets_data[0].package_data.association;
-      result1.ticket_data = [];
-      for (let i = 0; i < qrData.tickets_data.length; i++) {
-        if (qrData.tickets_data[i].inputValue > 0) {
-          result1.ticket_data.push({
-            "ticket_id": qrData.tickets_data[i].ticket_id,
-            "ticket_tracking_id": qrData.ticket_tracking_id,
-            "action_value": qrData.tickets_data[i].inputValue
-          });
+      if (!isLoading) {
+        setIsLoading(true);
+        setcouponStatus('pending')
+        const nodeToken = await getNodeToken();
+        let result1 = {};
+        result1.event_id = qrData.tickets_data[0].package_data.association;
+        result1.ticket_data = [];
+        for (let i = 0; i < qrData.tickets_data.length; i++) {
+          if (qrData.tickets_data[i].inputValue > 0) {
+            result1.ticket_data.push({
+              "ticket_id": qrData.tickets_data[i].ticket_id,
+              "ticket_tracking_id": qrData.ticket_tracking_id,
+              "action_value": qrData.tickets_data[i].inputValue
+            });
+          }
+
         }
+        result1.user_id = props.nodeUserData.user;
+        result1.vendor_id = props.vendor;
+        console.log('result1', result1)
+        console.log(props.nodeUserData.user)
 
+        const response = await postNodeData('service/tickets_service/v1/tickets/action/entry', result1, nodeToken,
+          { 'timestamp': new Date(), 'user': props.nodeUserData.user, 'vendor': props.vendor });
+
+        console.log("onClickRedeem Response", response);
+        if (response.statusCode == 200) {
+          showToast('Ticket Successfully Verified');
+          setIsLoading(false);
+          getEventDetails(props.eventDetails);
+          navigation.navigate("HomeContainer");
+        } else if (response == 'Verification timeout') {
+          setIsLoading(false);
+          setcouponStatus('pending');
+          showToast('Please Scan again');
+          return;
+        } else {
+          setIsLoading(false);
+          showToast(
+            response ? response : 'Session might expired, please login again.'
+          );
+        }
       }
-      result1.user_id = props.nodeUserData.user;
-      result1.vendor_id = props.vendor;
-      console.log('result1', result1)
-      console.log(props.nodeUserData.user)
-
-      const response = await postNodeData('service/tickets_service/v1/tickets/action/entry', result1, nodeToken,
-        { 'timestamp': new Date(), 'user': props.nodeUserData.user, 'vendor': props.vendor });
-
-      console.log("onClickRedeem Response", response);
-      if (response.statusCode == 200) {
-        showToast('Ticket Successfully Verified');
-        setIsLoading(false);
-        getEventDetails(props.eventDetails);
-        navigation.navigate("HomeContainer");
-      } else if (response == 'Verification timeout') {
-        setIsLoading(false);
-        setcouponStatus('pending');
-        showToast('Please Scan again');
-        return;
-      } else {
-        setIsLoading(false);
-        showToast(
-          response ? response : 'Session might expired, please login again.'
-        );
-      }
-      // }
     } catch (error) {
       setcouponStatus('pending')
       console.error("Error occurred:", error);
@@ -149,7 +151,7 @@ const ValCouponContainer = (props) => {
         );
 
         props.updateusTransactions(response1)
-
+        console.log("response1", response1);
         console.log("response1.tickets_data", response1.event_name);
 
       }
@@ -203,8 +205,8 @@ const ValCouponContainer = (props) => {
       setTimeout(() => {
         setIsLoading(false);
       }, 2000);
-      response1.message
-        ? showToast(response1.message)
+      response1
+        ? showToast(response1)
         : showToast(
           'Invalid Ticket'
         );
@@ -248,10 +250,8 @@ const ValCouponContainer = (props) => {
         return;
       } else {
         const data = response._payload;
-        const totalCount = data.reduce((acc, item) => acc + item.total_people, 0);
         props.updateTransactions(data);
-        props.updateTotalEntries(totalCount);
-
+        props.updateStaffsList(response)
       }
       setIsLoading(false);
     } else if (response == 'Verification timeout') {
@@ -300,9 +300,11 @@ const mapStateToProps = state => ({
   nodeUserData: state.userreducer.nodeUserData,
   eventDetails: state.transactionsreducer.eventDetails,
   vendor: state.transactionsreducer.vendor,
+  saffsList: state.transactionsreducer.saffsList,
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateStaffsList: (saffsList) => dispatch({ type: 'UPDATE_STFFS_LIST', payload: { saffsList: saffsList } }),
   updatesTransactions: (sTransactions) => dispatch({ type: 'UPDATE_S_TRANSACTIONS', payload: { sTransactions: sTransactions } }),
   updateusTransactions: (usTransactions) => dispatch({ type: 'UPDATE_US_TRANSACTIONS', payload: { usTransactions: usTransactions } }),
   updateTotalAmount: (totalAmount) => dispatch({ type: 'UPDATE_TOTAL_AMOUNT', payload: { totalAmount: totalAmount } }),

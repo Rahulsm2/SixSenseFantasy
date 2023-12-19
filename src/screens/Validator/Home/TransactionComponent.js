@@ -18,6 +18,7 @@ import { gstyles } from '../../../components/common/GlobalStyles';
 import { HEIGHT, OpenSans_Medium, WIDTH, app_Bg } from '../../../components/common/Constants';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
 import LoadingModel from "../../../components/common/Loading";
 import moment from 'moment';
 
@@ -103,6 +104,9 @@ const TransactionComponent = (props) => {
                             value={props.searchQuery}
                             onChangeText={(val) => props.onSearch(val)}
                         />
+                        <TouchableOpacity onPress={() => props.setSearchQuery('')} style={{ right: 20 }}>
+                            <Entypo name='cross' size={25} color='#3F3F3F' />
+                        </TouchableOpacity>
                     </View>
 
                 </View>
@@ -166,7 +170,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: 16,
+        paddingHorizontal: 15,
         marginBottom: 5
     },
 

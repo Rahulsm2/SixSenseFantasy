@@ -87,7 +87,7 @@ const TransactionContainer = (props) => {
         const response1 = await getNodeData(`service/tickets_service/v1/tickets/action/user/` + props.eventDetails + '?search=' + searchQuery, {}, nodeToken,
             { 'user': props.nodeUserData.user });
         setFilterdSTransactions(response1._payload);
-        if (searchQuery.length < query.length && query.length >= 3 && response1._payload.length <= 0) {
+        if (searchQuery.length < query.length && query.length >= 2 && response1._payload.length <= 0) {
             showToast("No result found..");
         }
     };
@@ -96,6 +96,7 @@ const TransactionContainer = (props) => {
         <TransactionComponent
             onClickBack={onClickBack}
             searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
             onSearch={onSearch}
             filteredSTransactions={filteredSTransactions}
             refRBSheet={refRBSheet}

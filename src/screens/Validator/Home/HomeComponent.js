@@ -127,7 +127,7 @@ const HomeComponent = (props) => {
                         onRefresh={() => {
                             props.setisRefreshing(true)
                             props.getTransactions()
-                            props.getEventDetails(props.selectedEventId)
+                            // props.getEventDetails(props.selectedEventId)
                         }}
                     />
                 }>
