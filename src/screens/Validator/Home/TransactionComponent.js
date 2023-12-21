@@ -24,7 +24,7 @@ import moment from 'moment';
 
 const TransactionComponent = (props) => {
     const platform = Platform.OS == 'ios';
-    const filteredSTransactionsLength = props.filteredSTransactions ? props.filteredSTransactions.length : 0;
+    let filteredSTransactionsLength = props.filteredSTransactions ? props.filteredSTransactions.length : 0;
     console.log(filteredSTransactionsLength, "filteredSTransactionsLength");
     const CouponItem = ({ couponId, entries, verifiedTime, customer }) => {
         return (
@@ -32,10 +32,10 @@ const TransactionComponent = (props) => {
                 <View style={[gstyles.mx(10), gstyles.mt(7), gstyles.mb(15), { flexDirection: 'column' }]}>
 
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
-                        <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>
+                        <Text style={gstyles.OpenSans_SemiBold(13, '#777')} >
                             {'Ticket ID          '}
                         </Text>
-                        <Text style={gstyles.OpenSans_Bold(14, '#000000')}>{'  :  '}{couponId}</Text>
+                        <Text style={gstyles.OpenSans_Bold(14, '#000000')} selectable={true}>{'  :  '}{couponId}</Text>
                     </View>
 
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>
@@ -102,13 +102,17 @@ const TransactionComponent = (props) => {
                             placeholderTextColor={'#3F3F3F'}
                             style={styles.inputSearchText}
                             value={props.searchQuery}
-                            onChangeText={(val) => props.onSearch(val)}
+                            onChangeText={(val) => {
+                                console.log('Input Value:', val);
+                                props.setSearchQuery(val)
+                                props.onSearch(props.searchQuery);
+                            }}
                         />
+
                         <TouchableOpacity onPress={() => props.setSearchQuery('')} style={{ right: 20 }}>
                             <Entypo name='cross' size={25} color='#3F3F3F' />
                         </TouchableOpacity>
                     </View>
-
                 </View>
 
                 <FlatList

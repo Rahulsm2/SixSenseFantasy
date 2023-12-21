@@ -81,16 +81,44 @@ const TransactionContainer = (props) => {
     }
 
     const onSearch = async query => {
-        setSearchQuery(query);
-        console.log("onsearch", query);
+
+        console.log('Before API call: filteredSTransactions', filteredSTransactions);
+        // setSearchQuery(query);
+
+        console.log('search', searchQuery)
+        let page = 0;
         const nodeToken = await getNodeToken();
-        const response1 = await getNodeData(`service/tickets_service/v1/tickets/action/user/` + props.eventDetails + '?search=' + searchQuery, {}, nodeToken,
+        const response = await getNodeData(`service/tickets_service/v1/tickets/action/user/` + props.eventDetails + '?search=' + searchQuery + '&page=' + page, {}, nodeToken,
             { 'user': props.nodeUserData.user });
-        setFilterdSTransactions(response1._payload);
-        if (searchQuery.length < query.length && query.length >= 2 && response1._payload.length <= 0) {
-            showToast("No result found..");
+
+        const totalRecords = response.total_records;
+        const totalPages = response.totalPages;
+        console.log('totalRecords', totalRecords);
+        console.log('After API call: filteredSTransactions', filteredSTransactions);
+        if (totalRecords < 14) {
+            setFilterdSTransactions(response._payload);
+        } else if (totalRecords > 14) {
+            let combinedData = response._payload;
+
+            for (let nextPage = 1; nextPage < totalPages; nextPage++) {
+                const nextPageResponse = await getNodeData(`service/tickets_service/v1/tickets/action/user/` + props.eventDetails + '?search=' + searchQuery + '&page=' + nextPage, {}, nodeToken,
+                    { 'user': props.nodeUserData.user });
+
+                if (nextPageResponse.statusCode === 200 && nextPageResponse._payload.length > 0) {
+                    combinedData = [...combinedData, ...nextPageResponse._payload];
+                }
+            }
+
+            setFilterdSTransactions(combinedData);
+            setHasMorePages(response.currentPage < response.totalPages);
+        } else {
+            showToast("No result found.");
+            setFilterdSTransactions([]);
+            setHasMorePages(false);
         }
     };
+
+
 
     return (
         <TransactionComponent

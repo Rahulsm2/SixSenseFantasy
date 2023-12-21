@@ -17,6 +17,14 @@ import LoadingModel from "../../../components/common/Loading"
 
 const MPINLoginComponent = (props) => {
 
+    const handleMpin = (text) => {
+        props.setMpin(text)
+
+        if (text.length === 4) {
+            Keyboard.dismiss();
+        }
+    };
+
     return (
         <>
             <StatusBar
@@ -65,7 +73,7 @@ const MPINLoginComponent = (props) => {
                                 />
                             }
                             value={props.mpin}
-                            onChangeText={(text) => props.setMpin(text)}
+                            onChangeText={(text) => handleMpin(text)}
                             autoFocus={true}
                         />
                     </View>

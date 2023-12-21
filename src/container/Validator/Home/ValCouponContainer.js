@@ -111,9 +111,12 @@ const ValCouponContainer = (props) => {
             response ? response : 'Session might expired, please login again.'
           );
         }
+      } else {
+        showToast('Please Scan again');
       }
     } catch (error) {
       setcouponStatus('pending')
+      showToast('Please Scan Again')
       console.error("Error occurred:", error);
     }
   };

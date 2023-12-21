@@ -34,7 +34,7 @@ const HomeComponent = (props) => {
                         <Text style={gstyles.OpenSans_SemiBold(13, '#777')}>
                             {'Ticket ID          '}
                         </Text>
-                        <Text style={gstyles.OpenSans_Bold(14, '#000000')}>{'  :  '}{couponId}</Text>
+                        <Text style={gstyles.OpenSans_Bold(14, '#000000')} selectable={true}>{'  :  '}{couponId}</Text>
                     </View>
 
                     <View style={{ flexDirection: 'row', marginTop: 6 }}>

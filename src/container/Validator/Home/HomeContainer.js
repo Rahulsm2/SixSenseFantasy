@@ -38,7 +38,7 @@ const HomeContainer = (props) => {
                 setIsLoading(false);
                 return;
             }
-            setIsLoading(false);
+            // setIsLoading(false);
             setisRefreshing(false);
             let events = [];
             console.log('Response keys:', Object.keys(response));
