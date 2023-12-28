@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "TicketsQue_Insider.app"
-               BlueprintName = "TicketsQue_Insider"
-               ReferencedContainer = "container:TicketsQue_Insider.xcodeproj">
+               BuildableName = "SixSenseFantasy.app"
+               BlueprintName = "SixSenseFantasy"
+               ReferencedContainer = "container:SixSenseFantasy.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "TicketsQue_InsiderTests.xctest"
-               BlueprintName = "TicketsQue_InsiderTests"
-               ReferencedContainer = "container:TicketsQue_Insider.xcodeproj">
+               BuildableName = "SixSenseFantasyTests.xctest"
+               BlueprintName = "SixSenseFantasyTests"
+               ReferencedContainer = "container:SixSenseFantasy.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "TicketsQue_Insider.app"
-            BlueprintName = "TicketsQue_Insider"
-            ReferencedContainer = "container:TicketsQue_Insider.xcodeproj">
+            BuildableName = "SixSenseFantasy.app"
+            BlueprintName = "SixSenseFantasy"
+            ReferencedContainer = "container:SixSenseFantasy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "TicketsQue_Insider.app"
-            BlueprintName = "TicketsQue_Insider"
-            ReferencedContainer = "container:TicketsQue_Insider.xcodeproj">
+            BuildableName = "SixSenseFantasy.app"
+            BlueprintName = "SixSenseFantasy"
+            ReferencedContainer = "container:SixSenseFantasy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface TicketsQue_InsiderTests : XCTestCase
+@interface SixSenseFantasyTests : XCTestCase
 
 @end
 
-@implementation TicketsQue_InsiderTests
+@implementation SixSenseFantasyTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

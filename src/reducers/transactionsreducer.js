@@ -1,46 +1,15 @@
 const initialState = {
-    sTransactions: [],
-    usTransactions: [],
-    totalAmount: 0,
-    saffsList: [],
-    selectedFilter: 'all',
-    filteredStaffsList: [],
-    validationsTrasactions: [],
-    eventDetails: [],
-    totalvalidationsEntries: 0,
-    vendor: [],
+    players: {},
+    playersSelected: {}
+
 }
 const transactionsreducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'UPDATE_S_TRANSACTIONS':
-            return { ...state, sTransactions: action.payload.sTransactions }
+        case 'UPDATE_PLAYERS':
+            return { ...state, players: action.payload.players }
             break;
-        case 'UPDATE_US_TRANSACTIONS':
-            return { ...state, usTransactions: action.payload.usTransactions }
-            break;
-        case 'UPDATE_TOTAL_AMOUNT':
-            return { ...state, totalAmount: action.payload.totalAmount }
-            break;
-        case 'UPDATE_STFFS_LIST':
-            return { ...state, saffsList: action.payload.saffsList }
-            break;
-        case 'UPDATE_SELECTED_FILTER':
-            return { ...state, selectedFilter: action.payload.selectedFilter }
-            break;
-        case 'UPDATE_FILTERED_STAFF':
-            return { ...state, filteredStaffsList: action.payload.filteredStaffsList }
-            break;
-        case 'UPDATE_VALIDATED_TRANSACTIONS':
-            return { ...state, validationsTrasactions: action.payload.validationsTrasactions }
-            break;
-        case 'UPDATE_TOTAL_ENTRIES':
-            return { ...state, totalvalidationsEntries: action.payload.totalvalidationsEntries }
-            break;
-        case 'UPDATE_EVENT_DETAILS':
-            return { ...state, eventDetails: action.payload.eventDetails }
-            break;
-        case 'UPDATE_VENDOR_DETAILS':
-            return { ...state, vendor: action.payload.vendor }
+        case 'UPDATE_SELECTED_PLAYERS':
+            return { ...state, playersSelected: action.payload.playersSelected }
             break;
         default:
             return state;

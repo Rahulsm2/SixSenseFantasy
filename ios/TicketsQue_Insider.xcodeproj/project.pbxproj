@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* TicketsQue_InsiderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* TicketsQue_InsiderTests.m */; };
-		0C80B921A6F3F58F76C31292 /* libPods-TicketsQue_Insider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-TicketsQue_Insider.a */; };
+		00E356F31AD99517003FC87E /* SixSenseFantasyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SixSenseFantasyTests.m */; };
+		0C80B921A6F3F58F76C31292 /* libPods-SixSenseFantasy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-SixSenseFantasy.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		34D0DAFBC1FC43CB9AF847FD /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0F865D0A41C2481E96E477E8 /* OpenSans-Light.ttf */; };
-		7699B88040F8A987B510C191 /* libPods-TicketsQue_Insider-TicketsQue_InsiderTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-TicketsQue_Insider-TicketsQue_InsiderTests.a */; };
+		7699B88040F8A987B510C191 /* libPods-SixSenseFantasy-SixSenseFantasyTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-SixSenseFantasy-SixSenseFantasyTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A5C22DE93BAC4CCEBE881A29 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CF7F7584F524CF2A015C866 /* OpenSans-Bold.ttf */; };
 		B76629F7667B4609BB302BDF /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6B626E063DA4797B10750A7 /* OpenSans-Regular.ttf */; };
@@ -28,30 +28,30 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = TicketsQue_Insider;
+			remoteInfo = SixSenseFantasy;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* TicketsQue_InsiderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TicketsQue_InsiderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* SixSenseFantasyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SixSenseFantasyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* TicketsQue_InsiderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TicketsQue_InsiderTests.m; sourceTree = "<group>"; };
+		00E356F21AD99517003FC87E /* SixSenseFantasyTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SixSenseFantasyTests.m; sourceTree = "<group>"; };
 		0F865D0A41C2481E96E477E8 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Light.ttf"; path = "../src/assets/fonts/OpenSans-Light.ttf"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* TicketsQue_Insider.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TicketsQue_Insider.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = TicketsQue_Insider/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = TicketsQue_Insider/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TicketsQue_Insider/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TicketsQue_Insider/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TicketsQue_Insider/main.m; sourceTree = "<group>"; };
-		19F6CBCC0A4E27FBF8BF4A61 /* libPods-TicketsQue_Insider-TicketsQue_InsiderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TicketsQue_Insider-TicketsQue_InsiderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* SixSenseFantasy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SixSenseFantasy.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = SixSenseFantasy/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = SixSenseFantasy/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = SixSenseFantasy/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = SixSenseFantasy/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = SixSenseFantasy/main.m; sourceTree = "<group>"; };
+		19F6CBCC0A4E27FBF8BF4A61 /* libPods-SixSenseFantasy-SixSenseFantasyTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SixSenseFantasy-SixSenseFantasyTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B7AE3728B294FDBAE1AD2D5 /* OpenSans-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Medium.ttf"; path = "../src/assets/fonts/OpenSans-Medium.ttf"; sourceTree = "<group>"; };
-		3B4392A12AC88292D35C810B /* Pods-TicketsQue_Insider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TicketsQue_Insider.debug.xcconfig"; path = "Target Support Files/Pods-TicketsQue_Insider/Pods-TicketsQue_Insider.debug.xcconfig"; sourceTree = "<group>"; };
+		3B4392A12AC88292D35C810B /* Pods-SixSenseFantasy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SixSenseFantasy.debug.xcconfig"; path = "Target Support Files/Pods-SixSenseFantasy/Pods-SixSenseFantasy.debug.xcconfig"; sourceTree = "<group>"; };
 		3C7D3077DEB94053B04668BB /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../src/assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
-		5709B34CF0A7D63546082F79 /* Pods-TicketsQue_Insider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TicketsQue_Insider.release.xcconfig"; path = "Target Support Files/Pods-TicketsQue_Insider/Pods-TicketsQue_Insider.release.xcconfig"; sourceTree = "<group>"; };
-		5B7EB9410499542E8C5724F5 /* Pods-TicketsQue_Insider-TicketsQue_InsiderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TicketsQue_Insider-TicketsQue_InsiderTests.debug.xcconfig"; path = "Target Support Files/Pods-TicketsQue_Insider-TicketsQue_InsiderTests/Pods-TicketsQue_Insider-TicketsQue_InsiderTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5DCACB8F33CDC322A6C60F78 /* libPods-TicketsQue_Insider.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TicketsQue_Insider.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = TicketsQue_Insider/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89C6BE57DB24E9ADA2F236DE /* Pods-TicketsQue_Insider-TicketsQue_InsiderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TicketsQue_Insider-TicketsQue_InsiderTests.release.xcconfig"; path = "Target Support Files/Pods-TicketsQue_Insider-TicketsQue_InsiderTests/Pods-TicketsQue_Insider-TicketsQue_InsiderTests.release.xcconfig"; sourceTree = "<group>"; };
+		5709B34CF0A7D63546082F79 /* Pods-SixSenseFantasy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SixSenseFantasy.release.xcconfig"; path = "Target Support Files/Pods-SixSenseFantasy/Pods-SixSenseFantasy.release.xcconfig"; sourceTree = "<group>"; };
+		5B7EB9410499542E8C5724F5 /* Pods-SixSenseFantasy-SixSenseFantasyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SixSenseFantasy-SixSenseFantasyTests.debug.xcconfig"; path = "Target Support Files/Pods-SixSenseFantasy-SixSenseFantasyTests/Pods-SixSenseFantasy-SixSenseFantasyTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5DCACB8F33CDC322A6C60F78 /* libPods-SixSenseFantasy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SixSenseFantasy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = SixSenseFantasy/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		89C6BE57DB24E9ADA2F236DE /* Pods-SixSenseFantasy-SixSenseFantasyTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SixSenseFantasy-SixSenseFantasyTests.release.xcconfig"; path = "Target Support Files/Pods-SixSenseFantasy-SixSenseFantasyTests/Pods-SixSenseFantasy-SixSenseFantasyTests.release.xcconfig"; sourceTree = "<group>"; };
 		9CF7F7584F524CF2A015C866 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../src/assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		B6B626E063DA4797B10750A7 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Regular.ttf"; path = "../src/assets/fonts/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		D3887D6AD1AA4D85BA163714 /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-ExtraBold.ttf"; path = "../src/assets/fonts/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
@@ -63,7 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7699B88040F8A987B510C191 /* libPods-TicketsQue_Insider-TicketsQue_InsiderTests.a in Frameworks */,
+				7699B88040F8A987B510C191 /* libPods-SixSenseFantasy-SixSenseFantasyTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,20 +71,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0C80B921A6F3F58F76C31292 /* libPods-TicketsQue_Insider.a in Frameworks */,
+				0C80B921A6F3F58F76C31292 /* libPods-SixSenseFantasy.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* TicketsQue_InsiderTests */ = {
+		00E356EF1AD99517003FC87E /* SixSenseFantasyTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* TicketsQue_InsiderTests.m */,
+				00E356F21AD99517003FC87E /* SixSenseFantasyTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = TicketsQue_InsiderTests;
+			path = SixSenseFantasyTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -95,7 +95,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* TicketsQue_Insider */ = {
+		13B07FAE1A68108700A75B9A /* SixSenseFantasy */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -105,15 +105,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = TicketsQue_Insider;
+			name = SixSenseFantasy;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				5DCACB8F33CDC322A6C60F78 /* libPods-TicketsQue_Insider.a */,
-				19F6CBCC0A4E27FBF8BF4A61 /* libPods-TicketsQue_Insider-TicketsQue_InsiderTests.a */,
+				5DCACB8F33CDC322A6C60F78 /* libPods-SixSenseFantasy.a */,
+				19F6CBCC0A4E27FBF8BF4A61 /* libPods-SixSenseFantasy-SixSenseFantasyTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -128,9 +128,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* TicketsQue_Insider */,
+				13B07FAE1A68108700A75B9A /* SixSenseFantasy */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* TicketsQue_InsiderTests */,
+				00E356EF1AD99517003FC87E /* SixSenseFantasyTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -144,8 +144,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* TicketsQue_Insider.app */,
-				00E356EE1AD99517003FC87E /* TicketsQue_InsiderTests.xctest */,
+				13B07F961A680F5B00A75B9A /* SixSenseFantasy.app */,
+				00E356EE1AD99517003FC87E /* SixSenseFantasyTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -153,10 +153,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3B4392A12AC88292D35C810B /* Pods-TicketsQue_Insider.debug.xcconfig */,
-				5709B34CF0A7D63546082F79 /* Pods-TicketsQue_Insider.release.xcconfig */,
-				5B7EB9410499542E8C5724F5 /* Pods-TicketsQue_Insider-TicketsQue_InsiderTests.debug.xcconfig */,
-				89C6BE57DB24E9ADA2F236DE /* Pods-TicketsQue_Insider-TicketsQue_InsiderTests.release.xcconfig */,
+				3B4392A12AC88292D35C810B /* Pods-SixSenseFantasy.debug.xcconfig */,
+				5709B34CF0A7D63546082F79 /* Pods-SixSenseFantasy.release.xcconfig */,
+				5B7EB9410499542E8C5724F5 /* Pods-SixSenseFantasy-SixSenseFantasyTests.debug.xcconfig */,
+				89C6BE57DB24E9ADA2F236DE /* Pods-SixSenseFantasy-SixSenseFantasyTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -178,9 +178,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* TicketsQue_InsiderTests */ = {
+		00E356ED1AD99517003FC87E /* SixSenseFantasyTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TicketsQue_InsiderTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SixSenseFantasyTests" */;
 			buildPhases = (
 				A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -194,14 +194,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = TicketsQue_InsiderTests;
-			productName = TicketsQue_InsiderTests;
-			productReference = 00E356EE1AD99517003FC87E /* TicketsQue_InsiderTests.xctest */;
+			name = SixSenseFantasyTests;
+			productName = SixSenseFantasyTests;
+			productReference = 00E356EE1AD99517003FC87E /* SixSenseFantasyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* TicketsQue_Insider */ = {
+		13B07F861A680F5B00A75B9A /* SixSenseFantasy */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TicketsQue_Insider" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SixSenseFantasy" */;
 			buildPhases = (
 				C38B50BA6285516D6DCD4F65 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -216,9 +216,9 @@
 			);
 			dependencies = (
 			);
-			name = TicketsQue_Insider;
-			productName = TicketsQue_Insider;
-			productReference = 13B07F961A680F5B00A75B9A /* TicketsQue_Insider.app */;
+			name = SixSenseFantasy;
+			productName = SixSenseFantasy;
+			productReference = 13B07F961A680F5B00A75B9A /* SixSenseFantasy.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -238,7 +238,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TicketsQue_Insider" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SixSenseFantasy" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -251,8 +251,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* TicketsQue_Insider */,
-				00E356ED1AD99517003FC87E /* TicketsQue_InsiderTests */,
+				13B07F861A680F5B00A75B9A /* SixSenseFantasy */,
+				00E356ED1AD99517003FC87E /* SixSenseFantasyTests */,
 			);
 		};
 /* End PBXProject section */
@@ -305,15 +305,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider/Pods-TicketsQue_Insider-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy/Pods-SixSenseFantasy-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider/Pods-TicketsQue_Insider-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy/Pods-SixSenseFantasy-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider/Pods-TicketsQue_Insider-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy/Pods-SixSenseFantasy-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
@@ -331,7 +331,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TicketsQue_Insider-TicketsQue_InsiderTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-SixSenseFantasy-SixSenseFantasyTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -353,7 +353,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TicketsQue_Insider-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-SixSenseFantasy-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -366,15 +366,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider-TicketsQue_InsiderTests/Pods-TicketsQue_Insider-TicketsQue_InsiderTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy-SixSenseFantasyTests/Pods-SixSenseFantasy-SixSenseFantasyTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider-TicketsQue_InsiderTests/Pods-TicketsQue_Insider-TicketsQue_InsiderTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy-SixSenseFantasyTests/Pods-SixSenseFantasy-SixSenseFantasyTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider-TicketsQue_InsiderTests/Pods-TicketsQue_Insider-TicketsQue_InsiderTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy-SixSenseFantasyTests/Pods-SixSenseFantasy-SixSenseFantasyTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E235C05ADACE081382539298 /* [CP] Copy Pods Resources */ = {
@@ -383,15 +383,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider/Pods-TicketsQue_Insider-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy/Pods-SixSenseFantasy-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider/Pods-TicketsQue_Insider-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy/Pods-SixSenseFantasy-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider/Pods-TicketsQue_Insider-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy/Pods-SixSenseFantasy-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
@@ -400,15 +400,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider-TicketsQue_InsiderTests/Pods-TicketsQue_Insider-TicketsQue_InsiderTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy-SixSenseFantasyTests/Pods-SixSenseFantasy-SixSenseFantasyTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider-TicketsQue_InsiderTests/Pods-TicketsQue_Insider-TicketsQue_InsiderTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy-SixSenseFantasyTests/Pods-SixSenseFantasy-SixSenseFantasyTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TicketsQue_Insider-TicketsQue_InsiderTests/Pods-TicketsQue_Insider-TicketsQue_InsiderTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SixSenseFantasy-SixSenseFantasyTests/Pods-SixSenseFantasy-SixSenseFantasyTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -437,7 +437,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* TicketsQue_InsiderTests.m in Sources */,
+				00E356F31AD99517003FC87E /* SixSenseFantasyTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,7 +455,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* TicketsQue_Insider */;
+			target = 13B07F861A680F5B00A75B9A /* SixSenseFantasy */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -463,14 +463,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-TicketsQue_Insider-TicketsQue_InsiderTests.debug.xcconfig */;
+			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-SixSenseFantasy-SixSenseFantasyTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = TicketsQue_InsiderTests/Info.plist;
+				INFOPLIST_FILE = SixSenseFantasyTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -484,17 +484,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TicketsQue_Insider.app/TicketsQue_Insider";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SixSenseFantasy.app/SixSenseFantasy";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-TicketsQue_Insider-TicketsQue_InsiderTests.release.xcconfig */;
+			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-SixSenseFantasy-SixSenseFantasyTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = TicketsQue_InsiderTests/Info.plist;
+				INFOPLIST_FILE = SixSenseFantasyTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -508,19 +508,19 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TicketsQue_Insider.app/TicketsQue_Insider";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SixSenseFantasy.app/SixSenseFantasy";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-TicketsQue_Insider.debug.xcconfig */;
+			baseConfigurationReference = 3B4392A12AC88292D35C810B /* Pods-SixSenseFantasy.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = TicketsQue_Insider/Info.plist;
+				INFOPLIST_FILE = SixSenseFantasy/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -532,7 +532,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = TicketsQue_Insider;
+				PRODUCT_NAME = SixSenseFantasy;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -541,12 +541,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-TicketsQue_Insider.release.xcconfig */;
+			baseConfigurationReference = 5709B34CF0A7D63546082F79 /* Pods-SixSenseFantasy.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = TicketsQue_Insider/Info.plist;
+				INFOPLIST_FILE = SixSenseFantasy/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -558,7 +558,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = TicketsQue_Insider;
+				PRODUCT_NAME = SixSenseFantasy;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -704,7 +704,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "TicketsQue_InsiderTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "SixSenseFantasyTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -713,7 +713,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "TicketsQue_Insider" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "SixSenseFantasy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -722,7 +722,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "TicketsQue_Insider" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "SixSenseFantasy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
