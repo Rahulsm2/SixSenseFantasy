@@ -17,7 +17,6 @@ const FinalTeam = (props) => {
         </View>
     );
     return (
-
         <>
             <View style={[styles.finalListHeadlines, { flexDirection: 'row' }]}>
                 <Text style={styles.finalListHeadline}>Name</Text>

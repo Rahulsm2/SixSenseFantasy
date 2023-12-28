@@ -34,6 +34,12 @@ const HomeComponent = (props) => {
         });
     }, [selectedPlayers]);
 
+    useEffect(() => {
+        const totalCount = Object.values(selectedPlayersCount).reduce((sum, count) => sum + count, 0);
+        setTotalSelectedPlayersCount(totalCount);
+
+    }, [selectedPlayersCount]);
+
     const updateSelectedPlayers = (selectedPlayers) => {
         setSelectedPlayers(selectedPlayers);
     };
@@ -68,7 +74,7 @@ const HomeComponent = (props) => {
                 </Text>
             </View>
             <Text style={[gstyles.OpenSans_SemiBold(22, '#c2c2c2'), { marginLeft: 60 }]}>
-                V/S
+                {'V/S'}
             </Text>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 10 }}>
                 <Image source={item.imageUrl2} style={{ width: 40, height: 40 }} />
@@ -101,14 +107,6 @@ const HomeComponent = (props) => {
             return newCounts;
         });
     };
-
-    useEffect(() => {
-        const totalCount = Object.values(selectedPlayersCount).reduce((sum, count) => sum + count, 0);
-        setTotalSelectedPlayersCount(totalCount);
-
-    }, [selectedPlayersCount]);
-
-
 
     return (
         <>
