@@ -1,23 +1,60 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, StatusBar, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, StatusBar, FlatList, TextInput } from 'react-native';
 import { HEIGHT, OpenSans_Medium, WIDTH, app_Bg } from '../components/Constants';
 import { getData } from '../services/rootService';
 import { connect } from 'react-redux';
 import { showToast } from '../components/ShowToast';
+import { useNavigation } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const FinalTeam = (props) => {
 
+    const [searchText, setSearchText] = useState('');
+    const [filteredPlayers, setFilteredPlayers] = useState(props.playersSelected);
+    const navigation = useNavigation();
 
-    const renderFinalList = ({ item }) => (
-        <View style={styles.finalListRow}>
-            <Text style={[styles.finalListText, styles.tableCell, { fontWeight: 'bold', color: '#000' }]}>{item.name}</Text>
-            <Text style={[styles.finalListText, styles.tableCell]}>{item.credit}</Text>
-            <Text style={[styles.finalListText, styles.tableCell]}>{item.team}</Text>
-            <Text style={[styles.finalListText, styles.tableCell]}>{item.role}</Text>
-        </View>
-    );
+    const renderFinalList = ({ item }) => {
+        return (
+            <View style={styles.finalListRow}>
+                <Text style={[styles.finalListText, styles.tableCell, { fontWeight: 'bold', color: '#000' }]}>{item.name}</Text>
+                <Text style={[styles.finalListText, styles.tableCell]}>{item.credit}</Text>
+                <Text style={[styles.finalListText, styles.tableCell]}>{item.team}</Text>
+                <Text style={[styles.finalListText, styles.tableCell]}>{item.role}</Text>
+            </View>
+        );
+    };
+
+    const handleSearch = () => {
+        const lowerCaseSearchText = searchText.toLowerCase();
+        const filteredList = props.playersSelected.filter(
+            (player) =>
+                player.name.toLowerCase().includes(lowerCaseSearchText) ||
+                player.team.toLowerCase().includes(lowerCaseSearchText)
+        );
+        console.log("Filtered Players:", filteredList);
+        setFilteredPlayers(filteredList);
+    };
+
+
+    const isSearchActive = searchText.trim().length > 0;
+    const dataToRender = isSearchActive ? filteredPlayers : props.playersSelected;
+
     return (
         <>
+            <View style={[styles.header, { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }]}>
+                <TouchableOpacity style={{ left: 20, position: 'absolute', top: 15 }} onPress={() => {
+                    navigation.goBack();
+                }}>
+                    <Ionicons name='arrow-back-outline' size={30} color='#000000' />
+                </TouchableOpacity>
+                <TextInput
+                    style={styles.searchBar}
+                    placeholder="Search..."
+                    value={searchText}
+                    onChangeText={(text) => setSearchText(text)}
+                    onSubmitEditing={handleSearch}
+                />
+            </View>
             <View style={[styles.finalListHeadlines, { flexDirection: 'row' }]}>
                 <Text style={styles.finalListHeadline}>Name</Text>
                 <Text style={styles.finalListHeadline}>Credits</Text>
@@ -25,8 +62,8 @@ const FinalTeam = (props) => {
                 <Text style={styles.finalListHeadline}>Role</Text>
             </View>
             <FlatList
-                data={props.playersSelected}
-                keyExtractor={(item) => item.id}
+                data={dataToRender}
+                keyExtractor={(item) => (item.id ? item.id.toString() : Math.random().toString())}
                 renderItem={renderFinalList}
             />
         </>
@@ -47,6 +84,26 @@ export default connect(mapStateToProps, mapDispatchToProps)(FinalTeam);
 
 
 const styles = StyleSheet.create({
+    header: {
+        padding: 10,
+        backgroundColor: app_Bg,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    backButton: {
+        fontSize: 16,
+        color: '#000',
+    },
+    searchBar: {
+        flex: 1,
+        marginLeft: 50,
+        width: WIDTH * 0.7,
+        height: 40,
+        backgroundColor: '#fff',
+        borderRadius: 5,
+        padding: 10,
+    },
     finalListRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',

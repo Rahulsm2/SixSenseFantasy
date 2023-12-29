@@ -1,4 +1,4 @@
-package com.ticketsque.insider;
+package com.Six-Sense_Fantasy.insider;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

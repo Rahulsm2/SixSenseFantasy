@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.ticketsque.insider"
+    namespace "com.Six-Sense_Fantasy.insider"
     defaultConfig {
-        applicationId "com.ticketsque.insider"
+        applicationId "com.Six-Sense_Fantasy.insider"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 5

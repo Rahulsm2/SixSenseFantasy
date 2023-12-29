@@ -289,7 +289,7 @@ const HomeComponent = (props) => {
                                     style={styles.btnTouch}
                                     onPress={() => {
                                         props.setStatus(4)
-                                        navigation.replace('FinalTeam')
+                                        navigation.navigate('FinalTeam')
                                     }}
                                 >
                                     <Text style={gstyles.OpenSans_SemiBold(18, '#FFFFFF')}>
