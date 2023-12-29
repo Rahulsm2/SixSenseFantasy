@@ -30,7 +30,6 @@ const HomeContainer = (props) => {
     ];
 
     const matches = async () => {
-        setStatus(2);
         setIsLoading(true);
         try {
             const response = await getData('fantasy-sports/Get_All_Players_of_match.json');
@@ -43,6 +42,7 @@ const HomeContainer = (props) => {
                     setIsLoading(false);
                     return;
                 } else {
+                    setStatus(2);
                     const updatedPlayers = {};
                     for (const playerId in response) {
                         const player = response[playerId];
@@ -72,7 +72,12 @@ const HomeContainer = (props) => {
                     console.log("updatedPlayers", updatedPlayers);
                 }
             }
+            else {
+                setIsLoading(false);
+                showToast('Network Error, Please Check your Network')
+            }
         } catch (error) {
+            setIsLoading(false);
             console.error("Error fetching data:", error);
             showToast("Error fetching data");
         }

@@ -7,20 +7,20 @@ import {
     StyleSheet
 } from 'react-native';
 import { gstyles } from './components/GlobalStyles';
-import { app_Bg } from './components/Constants';
+import { HEIGHT, app_Bg } from './components/Constants';
 
 const Splash = () => {
 
     return (
         <>
             <StatusBar
-                backgroundColor='#FFFFFF'
+                backgroundColor='#236cac'
                 animated={true}
-                barStyle="dark-content"
+                barStyle="light-content"
             />
             <View style={[gstyles.container(app_Bg), gstyles.centerXY]}>
-                <Image source={require('./assets/gif/ps_gif.gif')}
-                    style={gstyles.iconSize(188, 201)}
+                <Image source={require('./assets/gif/intro_gif.gif')}
+                    style={{ height: HEIGHT }}
                 />
                 {/* <View style={styles.bottomView}>
                     <Text style={gstyles.OpenSans_Medium(16, '#000000', gstyles.me(5))}>

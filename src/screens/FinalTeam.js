@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, StatusBar, FlatList, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, StatusBar, FlatList, TextInput, ImageBackground, ScrollView } from 'react-native';
 import { HEIGHT, OpenSans_Medium, WIDTH, app_Bg } from '../components/Constants';
 import { getData } from '../services/rootService';
 import { connect } from 'react-redux';
@@ -53,8 +53,10 @@ const FinalTeam = (props) => {
                     value={searchText}
                     onChangeText={(text) => setSearchText(text)}
                     onSubmitEditing={handleSearch}
+                    fontSize={15}
                 />
             </View>
+
             <View style={[styles.finalListHeadlines, { flexDirection: 'row' }]}>
                 <Text style={styles.finalListHeadline}>Name</Text>
                 <Text style={styles.finalListHeadline}>Credits</Text>
@@ -86,7 +88,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(FinalTeam);
 const styles = StyleSheet.create({
     header: {
         padding: 10,
-        backgroundColor: app_Bg,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

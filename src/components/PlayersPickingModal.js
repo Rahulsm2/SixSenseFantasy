@@ -9,47 +9,31 @@ const PlayersPickingModal = (props) => {
 
     const [selectedPlayers, setSelectedPlayers] = useState([]);
     const [areConditionsMet, setAreConditionsMet] = useState(false);
+    const [totalCount, setTotalCount] = useState(props.totalSelectedPlayersCount);
 
     useEffect(() => {
         props.updateSelectedPlayers(selectedPlayers);
     }, [selectedPlayers, props.updateSelectedPlayers]);
 
-    const TeamA = ({ item }) => (
-        <>
-            <TouchableOpacity
-                style={[
-                    styles.list,
-                    selectedPlayers.some((p) => p.name === item.name) && {
-                        backgroundColor: 'yellow',
-                    },
-                ]}
-                onPress={() => handlePlayerSelection(item)}
-            >
-                <Text style={[gstyles.OpenSans_SemiBold(14, '#000', gstyles.ms(15)), { opacity: 1, marginVertical: 7, maxWidth: WIDTH * 0.6 }]} numberOfLines={1}>
-                    {item.name}
-                </Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[gstyles.OpenSans_SemiBold(14, 'grey', gstyles.ms(15)), { opacity: 1, marginVertical: 7, }]}>
-                        {'Credits: '}
-                    </Text>
-                    <Text style={[gstyles.OpenSans_SemiBold(14, '#000', gstyles.ms(15)), { opacity: 1, }]}>
-                        {item.credit}
-                    </Text>
-                </View>
-            </TouchableOpacity>
-        </>
-    );
+    useEffect(() => {
+        setTotalCount(props.totalSelectedPlayersCount);
+    }, [props.totalSelectedPlayersCount]);
 
-    const TeamB = ({ item }) => (
-        <>
+    const TeamA = ({ item }) => {
+        const teamSelectionCount = selectedPlayers.filter((p) => p.team === 'Melbourne Stars').length;
+        return (<>
             <TouchableOpacity
                 style={[
                     styles.list,
                     selectedPlayers.some((p) => p.name === item.name) && {
                         backgroundColor: 'yellow',
                     },
+                    !selectedPlayers.some((p) => p.name === item.name) && (!isPlayerSelectable(item) || totalCount >= 11) && {
+                        opacity: 0.4,
+                    },
                 ]}
                 onPress={() => handlePlayerSelection(item)}
+                disabled={!selectedPlayers.some((p) => p.name === item.name) && (!isPlayerSelectable(item) || totalCount >= 11)}
             >
                 <Text style={[gstyles.OpenSans_SemiBold(14, '#000', gstyles.ms(15)), { opacity: 1, marginVertical: 7, maxWidth: WIDTH * 0.6 }]} numberOfLines={1}>
                     {item.name}
@@ -63,8 +47,54 @@ const PlayersPickingModal = (props) => {
                     </Text>
                 </View>
             </TouchableOpacity>
-        </>
-    );
+        </>)
+    }
+
+    const TeamB = ({ item }) => {
+        return (<>
+            <TouchableOpacity
+                style={[
+                    styles.list,
+                    selectedPlayers.some((p) => p.name === item.name) && {
+                        backgroundColor: 'yellow',
+                    },
+                    !selectedPlayers.some((p) => p.name === item.name) && (!isPlayerSelectable(item) || totalCount >= 11) && {
+                        opacity: 0.4,
+                    },
+                ]}
+                onPress={() => handlePlayerSelection(item)}
+                disabled={!selectedPlayers.some((p) => p.name === item.name) && (!isPlayerSelectable(item) || totalCount >= 11)}
+            >
+                <Text style={[gstyles.OpenSans_SemiBold(14, '#000', gstyles.ms(15)), { opacity: 1, marginVertical: 7, maxWidth: WIDTH * 0.6 }]} numberOfLines={1}>
+                    {item.name}
+                </Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={[gstyles.OpenSans_SemiBold(14, 'grey', gstyles.ms(15)), { opacity: 1, marginVertical: 7, }]}>
+                        {'Credits: '}
+                    </Text>
+                    <Text style={[gstyles.OpenSans_SemiBold(14, '#000', gstyles.ms(15)), { opacity: 1, }]}>
+                        {item.credit}
+                    </Text>
+                </View>
+            </TouchableOpacity>
+        </>)
+    }
+
+    const isPlayerSelectable = (player) => {
+        const role = props.role;
+        const selectedPlayersForRole = selectedPlayers.filter((p) => p.role === role);
+
+        const selectedPlayersForTeam = selectedPlayersForRole.filter((p) => p.team === player.team_name);
+
+        const conditions = {
+            'Batsman': selectedPlayersForRole.length < 7,
+            'Wicket-Keeper': selectedPlayersForRole.length < 5,
+            'All-Rounder': selectedPlayersForRole.length < 4,
+            'Bowler': selectedPlayersForRole.length < 7,
+        };
+
+        return conditions[role] && selectedPlayersForTeam.length < 7;
+    };
 
     const handlePlayerSelection = (player) => {
         setSelectedPlayers((prevSelected) => {
@@ -73,18 +103,17 @@ const PlayersPickingModal = (props) => {
             if (isSelected) {
                 const updatedSelectedPlayers = prevSelected.filter((p) => p.name !== player.name);
 
-                const conditions = {
-                    'Batsman': updatedSelectedPlayers.filter((p) => p.role === 'Batsman').length >= 3 &&
-                        updatedSelectedPlayers.filter((p) => p.role === 'Batsman').length <= 7,
-                    'Wicket-Keeper': updatedSelectedPlayers.filter((p) => p.role === 'Wicket-Keeper').length >= 1 &&
-                        updatedSelectedPlayers.filter((p) => p.role === 'Wicket-Keeper').length <= 5,
-                    'All-Rounder': updatedSelectedPlayers.filter((p) => p.role === 'All-Rounder').length >= 0 &&
-                        updatedSelectedPlayers.filter((p) => p.role === 'All-Rounder').length <= 4,
-                    'Bowler': updatedSelectedPlayers.filter((p) => p.role === 'Bowler').length >= 3 &&
-                        updatedSelectedPlayers.filter((p) => p.role === 'Bowler').length <= 7,
-                };
+                setTotalCount((prevTotal) => {
+                    const newTotal = prevTotal + 1;
+                    console.log("setTotalCount", newTotal);
+                    return newTotal;
+                });
 
-                const areCurrentConditionsMet = conditions[props.role];
+                const role = props.role;
+                const selectedPlayersForRole = updatedSelectedPlayers.filter((p) => p.role === role);
+                const areCurrentConditionsMet =
+                    selectedPlayersForRole.length >= getMinCount(role) && selectedPlayersForRole.length <= getMaxCount(role);
+
                 setAreConditionsMet(areCurrentConditionsMet);
 
                 return updatedSelectedPlayers;
@@ -100,18 +129,17 @@ const PlayersPickingModal = (props) => {
                     },
                 ];
 
-                const conditions = {
-                    'Batsman': updatedSelectedPlayers.filter((p) => p.role === 'Batsman').length >= 3 &&
-                        updatedSelectedPlayers.filter((p) => p.role === 'Batsman').length <= 7,
-                    'Wicket-Keeper': updatedSelectedPlayers.filter((p) => p.role === 'Wicket-Keeper').length >= 1 &&
-                        updatedSelectedPlayers.filter((p) => p.role === 'Wicket-Keeper').length <= 5,
-                    'All-Rounder': updatedSelectedPlayers.filter((p) => p.role === 'All-Rounder').length >= 0 &&
-                        updatedSelectedPlayers.filter((p) => p.role === 'All-Rounder').length <= 4,
-                    'Bowler': updatedSelectedPlayers.filter((p) => p.role === 'Bowler').length >= 3 &&
-                        updatedSelectedPlayers.filter((p) => p.role === 'Bowler').length <= 7,
-                };
+                setTotalCount((prevTotal) => {
+                    const newTotal = prevTotal - 1;
+                    console.log("setTotalCount", newTotal);
+                    return newTotal;
+                });
 
-                const areCurrentConditionsMet = conditions[props.role];
+                const role = props.role;
+                const selectedPlayersForRole = updatedSelectedPlayers.filter((p) => p.role === role);
+                const areCurrentConditionsMet =
+                    selectedPlayersForRole.length >= getMinCount(role) && selectedPlayersForRole.length <= getMaxCount(role);
+
                 setAreConditionsMet(areCurrentConditionsMet);
 
                 return updatedSelectedPlayers;
@@ -119,9 +147,23 @@ const PlayersPickingModal = (props) => {
         });
     };
 
+    const getMinCount = (role) => {
+        return {
+            'Batsman': 3,
+            'Wicket-Keeper': 1,
+            'All-Rounder': 0,
+            'Bowler': 3,
+        }[role];
+    };
 
-
-
+    const getMaxCount = (role) => {
+        return {
+            'Batsman': 7,
+            'Wicket-Keeper': 5,
+            'All-Rounder': 4,
+            'Bowler': 7,
+        }[role];
+    };
 
 
     const continueButtonPressed = () => {

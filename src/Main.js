@@ -12,7 +12,7 @@ const Main = () => {
     const changeRoute = async () => {
         setTimeout(() => {
             setRoute('HomeContainer');
-        }, 2500);
+        }, 4000);
     };
 
     return route === 'Splash' ? <Splash /> : <Navigation initialScreen={route} />;

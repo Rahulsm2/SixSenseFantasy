@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import Modal from 'react-native-modal';
-import {TextLoader, BubblesLoader} from 'react-native-indicator';
+import { TextLoader, BubblesLoader } from 'react-native-indicator';
 
-import {WIDTH, HEIGHT, fontRegular, fontBold} from './Constants';
+import { WIDTH, HEIGHT, fontRegular, fontBold } from './Constants';
 
 class LoadingModel extends Component {
   render() {
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+
   },
 
   modalView: {
@@ -58,10 +59,10 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.25,
+    shadowOpacity: 0.5,
     shadowRadius: 4,
     elevation: 5,
     justifyContent: 'center',
-    padding:30,
+    padding: 30,
   },
 });

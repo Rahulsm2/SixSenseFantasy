@@ -1,4 +1,4 @@
-package com.Six-Sense_Fantasy.insider;
+package com.SixSenseFantasy.insider;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

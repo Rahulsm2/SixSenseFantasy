@@ -1,4 +1,4 @@
-package com.Six-Sense_Fantasy.insider;
+package com.SixSenseFantasy.insider;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

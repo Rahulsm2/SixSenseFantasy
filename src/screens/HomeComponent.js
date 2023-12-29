@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, StatusBar, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, StatusBar, FlatList, ImageBackground } from 'react-native';
 import { gstyles } from '../components/GlobalStyles';
 import { HEIGHT, OpenSans_Medium, WIDTH, app_Bg } from '../components/Constants';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -119,7 +119,13 @@ const HomeComponent = (props) => {
                 <View style={[styles.header]}>
                     {props.status != 1 ?
                         <TouchableOpacity style={{ left: 20, position: 'absolute', top: 30 }} onPress={() => {
-                            props.setStatus(1)
+                            props.setStatus(1);
+                            setSelectedPlayers([]);
+                            setSelectedPlayersCount({});
+                            setTotalSelectedPlayersCredit(100);
+                            setTotalSelectedPlayersCount(0);
+                            props.updateSelectedPlayer([])
+
                         }}>
                             <Ionicons name='arrow-back-outline' size={30} color='#FFFFFF' />
                         </TouchableOpacity>
@@ -175,7 +181,6 @@ const HomeComponent = (props) => {
                                 data={props.Matchdata}
                                 keyExtractor={(item) => item.id}
                                 renderItem={renderMatch}
-                                numColumns={1}
                             />
                         </View>
                     </> : null}
@@ -213,6 +218,12 @@ const HomeComponent = (props) => {
                             renderItem={renderRole}
                             numColumns={2}
                         />
+                        <Text style={[gstyles.OpenSans_Bold(12, 'red'), { marginVertical: 10, marginLeft: WIDTH * 0.25 }]}>
+                            {totalSelectedPlayersCount > 11 ? "***Exceeded Players Count Limit***" :
+                                totalSelectedPlayersCredit > 100 ? "***Exceed Credits Limit***" :
+                                    null}
+                        </Text>
+
                         <LinearGradient
                             start={{ x: 0, y: 1 }}
                             end={{ x: 1, y: 1 }}
@@ -263,11 +274,12 @@ const HomeComponent = (props) => {
                                 updateSelectedPlayerCount(role, selectedPlayers);
                             }}
                             updateSelectedPlayers={updateSelectedPlayers}
+                            totalSelectedPlayersCount={totalSelectedPlayersCount}
                         />
                     </> : null}
 
                 {
-                    props.status == 3 ?
+                    props.status >= 3 ?
                         <>
                             <View style={[styles.finalListHeadlines, { flexDirection: 'row' }]}>
                                 <Text style={styles.finalListHeadline}>Name</Text>
